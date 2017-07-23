@@ -53,6 +53,7 @@
       <Data key="990bf238-eb6f-4491-ad8c-ccf2c2b3bebb" value="BAT_SENS_P" />
       <Data key="2767ead9-2bf3-490b-a6b1-0a809273bc6c" value="RFM69HW_DIO0" />
       <Data key="3273ce60-233d-4de2-84e5-9e8464e39520" value="BME_SS" />
+      <Data key="5032d9b6-c3e2-481e-9ac5-e2d0f9ddbff3" value="EEPROM_PULLUP" />
       <Data key="6324d3e3-e0f4-4ff9-872b-d2c0876e8746" value="BME_MISO" />
       <Data key="76408bcc-8ad2-4574-8bc7-82dff6ed2a1a/38438ec5-732c-47a6-9805-e2b697fb82a2" value="SPI_BME280_sclk_m" />
       <Data key="76408bcc-8ad2-4574-8bc7-82dff6ed2a1a/1425177d-0d0e-4468-8bcc-e638e5509a9b" value="SPI_BME280_miso_m" />
@@ -2558,6 +2559,11 @@
     <Group key="3273ce60-233d-4de2-84e5-9e8464e39520">
       <Group key="0">
         <Data key="Port Format" value="2,3" />
+      </Group>
+    </Group>
+    <Group key="5032d9b6-c3e2-481e-9ac5-e2d0f9ddbff3">
+      <Group key="0">
+        <Data key="Port Format" value="3,0" />
       </Group>
     </Group>
     <Group key="6324d3e3-e0f4-4ff9-872b-d2c0876e8746">

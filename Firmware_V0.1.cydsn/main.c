@@ -12,6 +12,7 @@
 #include "project.h"
 #include "bme280.h"
 #include "stdio.h"
+#include "EEPROM.h"
 
 #define SPI2
 
@@ -155,8 +156,7 @@ void BME_DelayMs(uint32_t delay)
 
 int main(void)
 {
-    
-    //BME280//////////////////////////////////////////////////////
+        //BME280//////////////////////////////////////////////////////
     /* Sensor_0 interface over SPI with native chip select line */
     dev.id = 0;
     dev.interface = BME280_SPI_INTF;
@@ -181,21 +181,44 @@ int main(void)
     //RTC////////////////////////////////////////////////////////
     
     RTC_Start();
-    char outstring[100];
+    char8 outstring[100];
+    sprintf(outstring, "123456789a123456789b123456789c123456789d123456789e123456789");
+    //uint8_t txbuf[40] = "Hallo ik ben Corne";
+    //txbuf[19] = 0;
     
+    char8 rxbuf[100];
+    int i;
+    for(i=0;i<100;i++)
+        rxbuf[i]=0;
+   //EEPROM/////////////////////////////////////////////////////
+    I2C_Start();
+    //EEPROM_PULLUP_Write(1);
+   
+
+
+    
+
     //LOOP/////////////////////////////////////////////////////////
     
     //get_sensor_data_forced_mode(&dev);
     /* Place your initialization/startup code here (e.g. MyInst_Start()) */
     
+    uint64 unixtime=0;
+    //EEPROM_WriteBuffer( 0x50, 0, (uint8_t*)&unixtime, sizeof(unixtime));
+    EEPROM_ReadBuffer( 0x50, 0, (uint8_t*)&unixtime, sizeof(unixtime));
+    if(unixtime != 0)
+        RTC_SetUnixTime(unixtime);
     for(;;)
     {
         //RTC
+        
         RTC_DATE_TIME datetime;
         uint32 oldtime = datetime.time;
         uint32 olddate = datetime.date;
-        uint8 day,month,hours,minutes,seconds;
+        uint8 day,month,hours,minutes,oldminutes,seconds;
         uint16 year;
+        
+        
         RTC_GetDateAndTime(&datetime);
         if(oldtime != datetime.time)
         {
@@ -203,6 +226,7 @@ int main(void)
             month   = RTC_GetMonth(datetime.date);
             year    = RTC_GetYear(datetime.date);
             hours   = RTC_GetHours(datetime.time);
+            oldminutes = minutes;
             minutes = RTC_GetMinutes(datetime.time);
             seconds = RTC_GetSecond(datetime.time);
             sprintf(outstring, "%02d-%02d-%04d  %02d:%02d:%02d\r\n",day,month,year,hours,minutes,seconds);
@@ -211,6 +235,11 @@ int main(void)
             for(i=0;i<22;i++)
             {
                 UART_UartPutCRLF(0);
+            }
+            if(minutes != oldminutes)
+            {
+                unixtime = RTC_GetUnixTime();
+                EEPROM_WriteBuffer( 0x50, 0, (uint8_t*)&unixtime, sizeof(unixtime));
             }
         }
         //RTC

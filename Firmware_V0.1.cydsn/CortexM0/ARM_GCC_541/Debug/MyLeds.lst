@@ -1,0 +1,1304 @@
+ARM GAS  C:\Users\corne\AppData\Local\Temp\ccweVsII.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m0
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 0
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"MyLeds.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.ledsInit,"ax",%progbits
+  20              		.align	2
+  21              		.global	ledsInit
+  22              		.code	16
+  23              		.thumb_func
+  24              		.type	ledsInit, %function
+  25              	ledsInit:
+  26              	.LFB64:
+  27              		.file 1 "MyLeds.c"
+   1:MyLeds.c      **** /**
+   2:MyLeds.c      ****  * The MySensors Arduino library handles the wireless radio link and protocol
+   3:MyLeds.c      ****  * between your home built sensors/actuators and HA controller of choice.
+   4:MyLeds.c      ****  * The sensors forms a self healing radio network with optional repeaters. Each
+   5:MyLeds.c      ****  * repeater and gateway builds a routing tables in EEPROM which keeps track of the
+   6:MyLeds.c      ****  * network topology allowing messages to be routed to nodes.
+   7:MyLeds.c      ****  *
+   8:MyLeds.c      ****  * Created by Henrik Ekblad <henrik.ekblad@mysensors.org>
+   9:MyLeds.c      ****  * Copyright (C) 2013-2015 Sensnology AB
+  10:MyLeds.c      ****  * Full contributor list: https://github.com/mysensors/Arduino/graphs/contributors
+  11:MyLeds.c      ****  *
+  12:MyLeds.c      ****  * Documentation: http://www.mysensors.org
+  13:MyLeds.c      ****  * Support Forum: http://forum.mysensors.org
+  14:MyLeds.c      ****  *
+  15:MyLeds.c      ****  * This program is free software; you can redistribute it and/or
+  16:MyLeds.c      ****  * modify it under the terms of the GNU General Public License
+  17:MyLeds.c      ****  * version 2 as published by the Free Software Foundation.
+  18:MyLeds.c      ****  */
+  19:MyLeds.c      **** 
+  20:MyLeds.c      **** #include "MyLeds.h"
+  21:MyLeds.c      **** 
+  22:MyLeds.c      **** #define LED_ON_OFF_RATIO        (4)       // Power of 2 please
+  23:MyLeds.c      **** #ifndef MY_DEFAULT_LED_BLINK_PERIOD
+  24:MyLeds.c      ****     #define MY_DEFAULT_LED_BLINK_PERIOD 300
+  25:MyLeds.c      **** #endif
+  26:MyLeds.c      **** #define LED_PROCESS_INTERVAL_MS (MY_DEFAULT_LED_BLINK_PERIOD/LED_ON_OFF_RATIO)
+  27:MyLeds.c      **** 
+  28:MyLeds.c      **** // these variables don't need to be volatile, since we are not using interrupts
+  29:MyLeds.c      **** static uint8_t countRx;
+  30:MyLeds.c      **** static uint8_t countTx;
+ARM GAS  C:\Users\corne\AppData\Local\Temp\ccweVsII.s 			page 2
+
+
+  31:MyLeds.c      **** static uint8_t countErr;
+  32:MyLeds.c      **** static unsigned long prevTime;
+  33:MyLeds.c      **** 
+  34:MyLeds.c      **** inline void ledsInit()
+  35:MyLeds.c      **** {
+  28              		.loc 1 35 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              		@ link register save eliminated.
+  36:MyLeds.c      **** }
+  33              		.loc 1 36 0
+  34              		@ sp needed
+  35 0000 7047     		bx	lr
+  36              		.cfi_endproc
+  37              	.LFE64:
+  38              		.size	ledsInit, .-ledsInit
+  39 0002 C046     		.section	.text.ledsProcess,"ax",%progbits
+  40              		.align	2
+  41              		.global	ledsProcess
+  42              		.code	16
+  43              		.thumb_func
+  44              		.type	ledsProcess, %function
+  45              	ledsProcess:
+  46              	.LFB65:
+  37:MyLeds.c      **** 
+  38:MyLeds.c      **** void ledsProcess()
+  39:MyLeds.c      **** {
+  47              		.loc 1 39 0
+  48              		.cfi_startproc
+  49              		@ args = 0, pretend = 0, frame = 0
+  50              		@ frame_needed = 0, uses_anonymous_args = 0
+  51 0000 10B5     		push	{r4, lr}
+  52              		.cfi_def_cfa_offset 8
+  53              		.cfi_offset 4, -8
+  54              		.cfi_offset 14, -4
+  40:MyLeds.c      ****     uint16_t hwMillis = TIMER1_ReadCounter();
+  55              		.loc 1 40 0
+  56 0002 FFF7FEFF 		bl	TIMER1_ReadCounter
+  57              	.LVL0:
+  41:MyLeds.c      ****     // Just return if it is not the time...
+  42:MyLeds.c      **** 	if ((hwMillis-prevTime) < LED_PROCESS_INTERVAL_MS) {
+  58              		.loc 1 42 0
+  59 0006 0004     		lsls	r0, r0, #16
+  60              	.LVL1:
+  61 0008 000C     		lsrs	r0, r0, #16
+  62 000a 1B4B     		ldr	r3, .L7
+  63 000c 1B68     		ldr	r3, [r3]
+  64 000e C01A     		subs	r0, r0, r3
+  65 0010 4A28     		cmp	r0, #74
+  66 0012 30D9     		bls	.L2
+  43:MyLeds.c      **** 		return;
+  44:MyLeds.c      **** 	}
+  45:MyLeds.c      ****     prevTime = TIMER1_ReadCounter();
+  67              		.loc 1 45 0
+  68 0014 FFF7FEFF 		bl	TIMER1_ReadCounter
+  69              	.LVL2:
+ARM GAS  C:\Users\corne\AppData\Local\Temp\ccweVsII.s 			page 3
+
+
+  70 0018 174B     		ldr	r3, .L7
+  71 001a 1860     		str	r0, [r3]
+  46:MyLeds.c      **** 
+  47:MyLeds.c      **** 	uint8_t state;
+  48:MyLeds.c      **** 
+  49:MyLeds.c      **** 	// For an On/Off ratio of 4, the pattern repeated will be [on, on, on, off]
+  50:MyLeds.c      **** 	// until the counter becomes 0.
+  51:MyLeds.c      **** 	if (countRx) {
+  72              		.loc 1 51 0
+  73 001c 1B79     		ldrb	r3, [r3, #4]
+  74 001e 002B     		cmp	r3, #0
+  75 0020 02D0     		beq	.L4
+  52:MyLeds.c      **** 		--countRx;
+  76              		.loc 1 52 0
+  77 0022 013B     		subs	r3, r3, #1
+  78 0024 144A     		ldr	r2, .L7
+  79 0026 1371     		strb	r3, [r2, #4]
+  80              	.L4:
+  53:MyLeds.c      **** 	}
+  54:MyLeds.c      **** 	state = (countRx & (LED_ON_OFF_RATIO-1)) ? LED_ON : LED_OFF;
+  81              		.loc 1 54 0
+  82 0028 134C     		ldr	r4, .L7
+  83 002a 2379     		ldrb	r3, [r4, #4]
+  84 002c 0320     		movs	r0, #3
+  85 002e 1840     		ands	r0, r3
+  86 0030 4342     		rsbs	r3, r0, #0
+  87 0032 5841     		adcs	r0, r0, r3
+  88 0034 C0B2     		uxtb	r0, r0
+  89              	.LVL3:
+  55:MyLeds.c      **** 	LED_1_Write(state);
+  90              		.loc 1 55 0
+  91 0036 FFF7FEFF 		bl	LED_1_Write
+  92              	.LVL4:
+  56:MyLeds.c      **** 
+  57:MyLeds.c      **** 	if (countTx) {
+  93              		.loc 1 57 0
+  94 003a 6379     		ldrb	r3, [r4, #5]
+  95 003c 002B     		cmp	r3, #0
+  96 003e 02D0     		beq	.L5
+  58:MyLeds.c      **** 		--countTx;
+  97              		.loc 1 58 0
+  98 0040 013B     		subs	r3, r3, #1
+  99 0042 0D4A     		ldr	r2, .L7
+ 100 0044 5371     		strb	r3, [r2, #5]
+ 101              	.L5:
+  59:MyLeds.c      **** 	}
+  60:MyLeds.c      **** 	state = (countTx & (LED_ON_OFF_RATIO-1)) ? LED_ON : LED_OFF;
+ 102              		.loc 1 60 0
+ 103 0046 0C4C     		ldr	r4, .L7
+ 104 0048 6379     		ldrb	r3, [r4, #5]
+ 105 004a 0320     		movs	r0, #3
+ 106 004c 1840     		ands	r0, r3
+ 107 004e 4342     		rsbs	r3, r0, #0
+ 108 0050 5841     		adcs	r0, r0, r3
+ 109 0052 C0B2     		uxtb	r0, r0
+ 110              	.LVL5:
+  61:MyLeds.c      **** 	LED_2_Write(state);
+ARM GAS  C:\Users\corne\AppData\Local\Temp\ccweVsII.s 			page 4
+
+
+ 111              		.loc 1 61 0
+ 112 0054 FFF7FEFF 		bl	LED_2_Write
+ 113              	.LVL6:
+  62:MyLeds.c      **** 
+  63:MyLeds.c      **** 	if (countErr) {
+ 114              		.loc 1 63 0
+ 115 0058 A379     		ldrb	r3, [r4, #6]
+ 116 005a 002B     		cmp	r3, #0
+ 117 005c 02D0     		beq	.L6
+  64:MyLeds.c      **** 		--countErr;
+ 118              		.loc 1 64 0
+ 119 005e 013B     		subs	r3, r3, #1
+ 120 0060 054A     		ldr	r2, .L7
+ 121 0062 9371     		strb	r3, [r2, #6]
+ 122              	.L6:
+  65:MyLeds.c      **** 	}
+  66:MyLeds.c      **** 	state = (countErr & (LED_ON_OFF_RATIO-1)) ? LED_ON : LED_OFF;
+ 123              		.loc 1 66 0
+ 124 0064 044B     		ldr	r3, .L7
+ 125 0066 9B79     		ldrb	r3, [r3, #6]
+ 126 0068 0320     		movs	r0, #3
+ 127 006a 1840     		ands	r0, r3
+ 128 006c 4342     		rsbs	r3, r0, #0
+ 129 006e 5841     		adcs	r0, r0, r3
+ 130 0070 C0B2     		uxtb	r0, r0
+ 131              	.LVL7:
+  67:MyLeds.c      **** 	LED_3_Write(state);
+ 132              		.loc 1 67 0
+ 133 0072 FFF7FEFF 		bl	LED_3_Write
+ 134              	.LVL8:
+ 135              	.L2:
+  68:MyLeds.c      **** 
+  69:MyLeds.c      **** }
+ 136              		.loc 1 69 0
+ 137              		@ sp needed
+ 138 0076 10BD     		pop	{r4, pc}
+ 139              	.L8:
+ 140              		.align	2
+ 141              	.L7:
+ 142 0078 00000000 		.word	.LANCHOR0
+ 143              		.cfi_endproc
+ 144              	.LFE65:
+ 145              		.size	ledsProcess, .-ledsProcess
+ 146              		.section	.text.ledsBlinkRx,"ax",%progbits
+ 147              		.align	2
+ 148              		.global	ledsBlinkRx
+ 149              		.code	16
+ 150              		.thumb_func
+ 151              		.type	ledsBlinkRx, %function
+ 152              	ledsBlinkRx:
+ 153              	.LFB66:
+  70:MyLeds.c      **** 
+  71:MyLeds.c      **** void ledsBlinkRx(uint8_t cnt)
+  72:MyLeds.c      **** {
+ 154              		.loc 1 72 0
+ 155              		.cfi_startproc
+ 156              		@ args = 0, pretend = 0, frame = 0
+ARM GAS  C:\Users\corne\AppData\Local\Temp\ccweVsII.s 			page 5
+
+
+ 157              		@ frame_needed = 0, uses_anonymous_args = 0
+ 158              	.LVL9:
+ 159 0000 10B5     		push	{r4, lr}
+ 160              		.cfi_def_cfa_offset 8
+ 161              		.cfi_offset 4, -8
+ 162              		.cfi_offset 14, -4
+  73:MyLeds.c      **** 	if (!countRx) {
+ 163              		.loc 1 73 0
+ 164 0002 054B     		ldr	r3, .L11
+ 165 0004 1B79     		ldrb	r3, [r3, #4]
+ 166 0006 002B     		cmp	r3, #0
+ 167 0008 02D1     		bne	.L10
+  74:MyLeds.c      **** 		countRx = cnt*LED_ON_OFF_RATIO;
+ 168              		.loc 1 74 0
+ 169 000a 8000     		lsls	r0, r0, #2
+ 170              	.LVL10:
+ 171 000c 024B     		ldr	r3, .L11
+ 172 000e 1871     		strb	r0, [r3, #4]
+ 173              	.L10:
+  75:MyLeds.c      **** 	}
+  76:MyLeds.c      **** 	ledsProcess();
+ 174              		.loc 1 76 0
+ 175 0010 FFF7FEFF 		bl	ledsProcess
+ 176              	.LVL11:
+  77:MyLeds.c      **** }
+ 177              		.loc 1 77 0
+ 178              		@ sp needed
+ 179 0014 10BD     		pop	{r4, pc}
+ 180              	.L12:
+ 181 0016 C046     		.align	2
+ 182              	.L11:
+ 183 0018 00000000 		.word	.LANCHOR0
+ 184              		.cfi_endproc
+ 185              	.LFE66:
+ 186              		.size	ledsBlinkRx, .-ledsBlinkRx
+ 187              		.section	.text.ledsBlinkTx,"ax",%progbits
+ 188              		.align	2
+ 189              		.global	ledsBlinkTx
+ 190              		.code	16
+ 191              		.thumb_func
+ 192              		.type	ledsBlinkTx, %function
+ 193              	ledsBlinkTx:
+ 194              	.LFB67:
+  78:MyLeds.c      **** 
+  79:MyLeds.c      **** void ledsBlinkTx(uint8_t cnt)
+  80:MyLeds.c      **** {
+ 195              		.loc 1 80 0
+ 196              		.cfi_startproc
+ 197              		@ args = 0, pretend = 0, frame = 0
+ 198              		@ frame_needed = 0, uses_anonymous_args = 0
+ 199              	.LVL12:
+ 200 0000 10B5     		push	{r4, lr}
+ 201              		.cfi_def_cfa_offset 8
+ 202              		.cfi_offset 4, -8
+ 203              		.cfi_offset 14, -4
+  81:MyLeds.c      **** 	if(!countTx) {
+ 204              		.loc 1 81 0
+ARM GAS  C:\Users\corne\AppData\Local\Temp\ccweVsII.s 			page 6
+
+
+ 205 0002 054B     		ldr	r3, .L15
+ 206 0004 5B79     		ldrb	r3, [r3, #5]
+ 207 0006 002B     		cmp	r3, #0
+ 208 0008 02D1     		bne	.L14
+  82:MyLeds.c      **** 		countTx = cnt*LED_ON_OFF_RATIO;
+ 209              		.loc 1 82 0
+ 210 000a 8000     		lsls	r0, r0, #2
+ 211              	.LVL13:
+ 212 000c 024B     		ldr	r3, .L15
+ 213 000e 5871     		strb	r0, [r3, #5]
+ 214              	.L14:
+  83:MyLeds.c      **** 	}
+  84:MyLeds.c      **** 	ledsProcess();
+ 215              		.loc 1 84 0
+ 216 0010 FFF7FEFF 		bl	ledsProcess
+ 217              	.LVL14:
+  85:MyLeds.c      **** }
+ 218              		.loc 1 85 0
+ 219              		@ sp needed
+ 220 0014 10BD     		pop	{r4, pc}
+ 221              	.L16:
+ 222 0016 C046     		.align	2
+ 223              	.L15:
+ 224 0018 00000000 		.word	.LANCHOR0
+ 225              		.cfi_endproc
+ 226              	.LFE67:
+ 227              		.size	ledsBlinkTx, .-ledsBlinkTx
+ 228              		.section	.text.ledsBlinkErr,"ax",%progbits
+ 229              		.align	2
+ 230              		.global	ledsBlinkErr
+ 231              		.code	16
+ 232              		.thumb_func
+ 233              		.type	ledsBlinkErr, %function
+ 234              	ledsBlinkErr:
+ 235              	.LFB68:
+  86:MyLeds.c      **** 
+  87:MyLeds.c      **** void ledsBlinkErr(uint8_t cnt)
+  88:MyLeds.c      **** {
+ 236              		.loc 1 88 0
+ 237              		.cfi_startproc
+ 238              		@ args = 0, pretend = 0, frame = 0
+ 239              		@ frame_needed = 0, uses_anonymous_args = 0
+ 240              	.LVL15:
+ 241 0000 10B5     		push	{r4, lr}
+ 242              		.cfi_def_cfa_offset 8
+ 243              		.cfi_offset 4, -8
+ 244              		.cfi_offset 14, -4
+  89:MyLeds.c      **** 	if(!countErr) {
+ 245              		.loc 1 89 0
+ 246 0002 054B     		ldr	r3, .L19
+ 247 0004 9B79     		ldrb	r3, [r3, #6]
+ 248 0006 002B     		cmp	r3, #0
+ 249 0008 02D1     		bne	.L18
+  90:MyLeds.c      **** 		countErr = cnt*LED_ON_OFF_RATIO;
+ 250              		.loc 1 90 0
+ 251 000a 8000     		lsls	r0, r0, #2
+ 252              	.LVL16:
+ARM GAS  C:\Users\corne\AppData\Local\Temp\ccweVsII.s 			page 7
+
+
+ 253 000c 024B     		ldr	r3, .L19
+ 254 000e 9871     		strb	r0, [r3, #6]
+ 255              	.L18:
+  91:MyLeds.c      **** 	}
+  92:MyLeds.c      **** 	ledsProcess();
+ 256              		.loc 1 92 0
+ 257 0010 FFF7FEFF 		bl	ledsProcess
+ 258              	.LVL17:
+  93:MyLeds.c      **** }
+ 259              		.loc 1 93 0
+ 260              		@ sp needed
+ 261 0014 10BD     		pop	{r4, pc}
+ 262              	.L20:
+ 263 0016 C046     		.align	2
+ 264              	.L19:
+ 265 0018 00000000 		.word	.LANCHOR0
+ 266              		.cfi_endproc
+ 267              	.LFE68:
+ 268              		.size	ledsBlinkErr, .-ledsBlinkErr
+ 269              		.section	.text.ledsBlinking,"ax",%progbits
+ 270              		.align	2
+ 271              		.global	ledsBlinking
+ 272              		.code	16
+ 273              		.thumb_func
+ 274              		.type	ledsBlinking, %function
+ 275              	ledsBlinking:
+ 276              	.LFB69:
+  94:MyLeds.c      **** 
+  95:MyLeds.c      **** bool ledsBlinking()
+  96:MyLeds.c      **** {
+ 277              		.loc 1 96 0
+ 278              		.cfi_startproc
+ 279              		@ args = 0, pretend = 0, frame = 0
+ 280              		@ frame_needed = 0, uses_anonymous_args = 0
+ 281              		@ link register save eliminated.
+  97:MyLeds.c      **** 	return countRx || countTx || countErr;
+ 282              		.loc 1 97 0
+ 283 0000 0A4B     		ldr	r3, .L26
+ 284 0002 1B79     		ldrb	r3, [r3, #4]
+ 285 0004 002B     		cmp	r3, #0
+ 286 0006 09D1     		bne	.L23
+ 287              		.loc 1 97 0 is_stmt 0 discriminator 2
+ 288 0008 084B     		ldr	r3, .L26
+ 289 000a 5B79     		ldrb	r3, [r3, #5]
+ 290 000c 002B     		cmp	r3, #0
+ 291 000e 07D1     		bne	.L24
+ 292              		.loc 1 97 0 discriminator 4
+ 293 0010 064B     		ldr	r3, .L26
+ 294 0012 9B79     		ldrb	r3, [r3, #6]
+ 295 0014 002B     		cmp	r3, #0
+ 296 0016 05D0     		beq	.L25
+ 297              		.loc 1 97 0
+ 298 0018 0120     		movs	r0, #1
+ 299 001a 04E0     		b	.L22
+ 300              	.L23:
+ 301 001c 0120     		movs	r0, #1
+ 302 001e 02E0     		b	.L22
+ARM GAS  C:\Users\corne\AppData\Local\Temp\ccweVsII.s 			page 8
+
+
+ 303              	.L24:
+ 304 0020 0120     		movs	r0, #1
+ 305 0022 00E0     		b	.L22
+ 306              	.L25:
+ 307 0024 0020     		movs	r0, #0
+ 308              	.L22:
+ 309              		.loc 1 97 0 discriminator 8
+ 310 0026 C0B2     		uxtb	r0, r0
+  98:MyLeds.c      **** }
+ 311              		.loc 1 98 0 is_stmt 1 discriminator 8
+ 312              		@ sp needed
+ 313 0028 7047     		bx	lr
+ 314              	.L27:
+ 315 002a C046     		.align	2
+ 316              	.L26:
+ 317 002c 00000000 		.word	.LANCHOR0
+ 318              		.cfi_endproc
+ 319              	.LFE69:
+ 320              		.size	ledsBlinking, .-ledsBlinking
+ 321              		.bss
+ 322              		.align	2
+ 323              		.set	.LANCHOR0,. + 0
+ 324              		.type	prevTime, %object
+ 325              		.size	prevTime, 4
+ 326              	prevTime:
+ 327 0000 00000000 		.space	4
+ 328              		.type	countRx, %object
+ 329              		.size	countRx, 1
+ 330              	countRx:
+ 331 0004 00       		.space	1
+ 332              		.type	countTx, %object
+ 333              		.size	countTx, 1
+ 334              	countTx:
+ 335 0005 00       		.space	1
+ 336              		.type	countErr, %object
+ 337              		.size	countErr, 1
+ 338              	countErr:
+ 339 0006 00       		.space	1
+ 340              		.text
+ 341              	.Letext0:
+ 342              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\4.1\\psoc creator\\import\\gnu\\arm\\5.4.
+ 343              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\4.1\\psoc creator\\import\\gnu\\arm\\5.4.
+ 344              		.file 4 "MyLeds.h"
+ 345              		.file 5 "Generated_Source\\PSoC4/TIMER1.h"
+ 346              		.file 6 "Generated_Source\\PSoC4/LED_1.h"
+ 347              		.file 7 "Generated_Source\\PSoC4/LED_2.h"
+ 348              		.file 8 "Generated_Source\\PSoC4/LED_3.h"
+ 349              		.section	.debug_info,"",%progbits
+ 350              	.Ldebug_info0:
+ 351 0000 44020000 		.4byte	0x244
+ 352 0004 0400     		.2byte	0x4
+ 353 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 354 000a 04       		.byte	0x4
+ 355 000b 01       		.uleb128 0x1
+ 356 000c 96010000 		.4byte	.LASF32
+ 357 0010 0C       		.byte	0xc
+ 358 0011 2E010000 		.4byte	.LASF33
+ARM GAS  C:\Users\corne\AppData\Local\Temp\ccweVsII.s 			page 9
+
+
+ 359 0015 C3000000 		.4byte	.LASF34
+ 360 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 361 001d 00000000 		.4byte	0
+ 362 0021 00000000 		.4byte	.Ldebug_line0
+ 363 0025 02       		.uleb128 0x2
+ 364 0026 01       		.byte	0x1
+ 365 0027 06       		.byte	0x6
+ 366 0028 66020000 		.4byte	.LASF0
+ 367 002c 03       		.uleb128 0x3
+ 368 002d 1A000000 		.4byte	.LASF3
+ 369 0031 02       		.byte	0x2
+ 370 0032 1D       		.byte	0x1d
+ 371 0033 37000000 		.4byte	0x37
+ 372 0037 02       		.uleb128 0x2
+ 373 0038 01       		.byte	0x1
+ 374 0039 08       		.byte	0x8
+ 375 003a 54010000 		.4byte	.LASF1
+ 376 003e 02       		.uleb128 0x2
+ 377 003f 02       		.byte	0x2
+ 378 0040 05       		.byte	0x5
+ 379 0041 32020000 		.4byte	.LASF2
+ 380 0045 03       		.uleb128 0x3
+ 381 0046 37010000 		.4byte	.LASF4
+ 382 004a 02       		.byte	0x2
+ 383 004b 2B       		.byte	0x2b
+ 384 004c 50000000 		.4byte	0x50
+ 385 0050 02       		.uleb128 0x2
+ 386 0051 02       		.byte	0x2
+ 387 0052 07       		.byte	0x7
+ 388 0053 B0000000 		.4byte	.LASF5
+ 389 0057 02       		.uleb128 0x2
+ 390 0058 04       		.byte	0x4
+ 391 0059 05       		.byte	0x5
+ 392 005a 51020000 		.4byte	.LASF6
+ 393 005e 02       		.uleb128 0x2
+ 394 005f 04       		.byte	0x4
+ 395 0060 07       		.byte	0x7
+ 396 0061 42010000 		.4byte	.LASF7
+ 397 0065 02       		.uleb128 0x2
+ 398 0066 08       		.byte	0x8
+ 399 0067 05       		.byte	0x5
+ 400 0068 00000000 		.4byte	.LASF8
+ 401 006c 02       		.uleb128 0x2
+ 402 006d 08       		.byte	0x8
+ 403 006e 07       		.byte	0x7
+ 404 006f 69000000 		.4byte	.LASF9
+ 405 0073 04       		.uleb128 0x4
+ 406 0074 04       		.byte	0x4
+ 407 0075 05       		.byte	0x5
+ 408 0076 696E7400 		.ascii	"int\000"
+ 409 007a 02       		.uleb128 0x2
+ 410 007b 04       		.byte	0x4
+ 411 007c 07       		.byte	0x7
+ 412 007d 62010000 		.4byte	.LASF10
+ 413 0081 03       		.uleb128 0x3
+ 414 0082 78010000 		.4byte	.LASF11
+ 415 0086 03       		.byte	0x3
+ARM GAS  C:\Users\corne\AppData\Local\Temp\ccweVsII.s 			page 10
+
+
+ 416 0087 18       		.byte	0x18
+ 417 0088 2C000000 		.4byte	0x2c
+ 418 008c 03       		.uleb128 0x3
+ 419 008d 3C020000 		.4byte	.LASF12
+ 420 0091 03       		.byte	0x3
+ 421 0092 24       		.byte	0x24
+ 422 0093 45000000 		.4byte	0x45
+ 423 0097 02       		.uleb128 0x2
+ 424 0098 04       		.byte	0x4
+ 425 0099 04       		.byte	0x4
+ 426 009a 57000000 		.4byte	.LASF13
+ 427 009e 02       		.uleb128 0x2
+ 428 009f 08       		.byte	0x8
+ 429 00a0 04       		.byte	0x4
+ 430 00a1 44000000 		.4byte	.LASF14
+ 431 00a5 02       		.uleb128 0x2
+ 432 00a6 01       		.byte	0x1
+ 433 00a7 08       		.byte	0x8
+ 434 00a8 2D020000 		.4byte	.LASF15
+ 435 00ac 02       		.uleb128 0x2
+ 436 00ad 08       		.byte	0x8
+ 437 00ae 04       		.byte	0x4
+ 438 00af 5A020000 		.4byte	.LASF16
+ 439 00b3 02       		.uleb128 0x2
+ 440 00b4 04       		.byte	0x4
+ 441 00b5 07       		.byte	0x7
+ 442 00b6 24020000 		.4byte	.LASF17
+ 443 00ba 03       		.uleb128 0x3
+ 444 00bb 3F000000 		.4byte	.LASF18
+ 445 00bf 04       		.byte	0x4
+ 446 00c0 21       		.byte	0x21
+ 447 00c1 37000000 		.4byte	0x37
+ 448 00c5 05       		.uleb128 0x5
+ 449 00c6 8D010000 		.4byte	.LASF35
+ 450 00ca 01       		.byte	0x1
+ 451 00cb 22       		.byte	0x22
+ 452 00cc 00000000 		.4byte	.LFB64
+ 453 00d0 02000000 		.4byte	.LFE64-.LFB64
+ 454 00d4 01       		.uleb128 0x1
+ 455 00d5 9C       		.byte	0x9c
+ 456 00d6 06       		.uleb128 0x6
+ 457 00d7 45020000 		.4byte	.LASF36
+ 458 00db 01       		.byte	0x1
+ 459 00dc 26       		.byte	0x26
+ 460 00dd 00000000 		.4byte	.LFB65
+ 461 00e1 7C000000 		.4byte	.LFE65-.LFB65
+ 462 00e5 01       		.uleb128 0x1
+ 463 00e6 9C       		.byte	0x9c
+ 464 00e7 37010000 		.4byte	0x137
+ 465 00eb 07       		.uleb128 0x7
+ 466 00ec 24000000 		.4byte	.LASF19
+ 467 00f0 01       		.byte	0x1
+ 468 00f1 28       		.byte	0x28
+ 469 00f2 8C000000 		.4byte	0x8c
+ 470 00f6 00000000 		.4byte	.LLST0
+ 471 00fa 07       		.uleb128 0x7
+ 472 00fb 2D000000 		.4byte	.LASF20
+ARM GAS  C:\Users\corne\AppData\Local\Temp\ccweVsII.s 			page 11
+
+
+ 473 00ff 01       		.byte	0x1
+ 474 0100 2F       		.byte	0x2f
+ 475 0101 81000000 		.4byte	0x81
+ 476 0105 13000000 		.4byte	.LLST1
+ 477 0109 08       		.uleb128 0x8
+ 478 010a 06000000 		.4byte	.LVL0
+ 479 010e 1A020000 		.4byte	0x21a
+ 480 0112 08       		.uleb128 0x8
+ 481 0113 18000000 		.4byte	.LVL2
+ 482 0117 1A020000 		.4byte	0x21a
+ 483 011b 08       		.uleb128 0x8
+ 484 011c 3A000000 		.4byte	.LVL4
+ 485 0120 26020000 		.4byte	0x226
+ 486 0124 08       		.uleb128 0x8
+ 487 0125 58000000 		.4byte	.LVL6
+ 488 0129 31020000 		.4byte	0x231
+ 489 012d 08       		.uleb128 0x8
+ 490 012e 76000000 		.4byte	.LVL8
+ 491 0132 3C020000 		.4byte	0x23c
+ 492 0136 00       		.byte	0
+ 493 0137 09       		.uleb128 0x9
+ 494 0138 4B000000 		.4byte	.LASF21
+ 495 013c 01       		.byte	0x1
+ 496 013d 47       		.byte	0x47
+ 497 013e 00000000 		.4byte	.LFB66
+ 498 0142 1C000000 		.4byte	.LFE66-.LFB66
+ 499 0146 01       		.uleb128 0x1
+ 500 0147 9C       		.byte	0x9c
+ 501 0148 65010000 		.4byte	0x165
+ 502 014c 0A       		.uleb128 0xa
+ 503 014d 636E7400 		.ascii	"cnt\000"
+ 504 0151 01       		.byte	0x1
+ 505 0152 47       		.byte	0x47
+ 506 0153 81000000 		.4byte	0x81
+ 507 0157 3C000000 		.4byte	.LLST2
+ 508 015b 08       		.uleb128 0x8
+ 509 015c 14000000 		.4byte	.LVL11
+ 510 0160 D6000000 		.4byte	0xd6
+ 511 0164 00       		.byte	0
+ 512 0165 09       		.uleb128 0x9
+ 513 0166 5D000000 		.4byte	.LASF22
+ 514 016a 01       		.byte	0x1
+ 515 016b 4F       		.byte	0x4f
+ 516 016c 00000000 		.4byte	.LFB67
+ 517 0170 1C000000 		.4byte	.LFE67-.LFB67
+ 518 0174 01       		.uleb128 0x1
+ 519 0175 9C       		.byte	0x9c
+ 520 0176 93010000 		.4byte	0x193
+ 521 017a 0A       		.uleb128 0xa
+ 522 017b 636E7400 		.ascii	"cnt\000"
+ 523 017f 01       		.byte	0x1
+ 524 0180 4F       		.byte	0x4f
+ 525 0181 81000000 		.4byte	0x81
+ 526 0185 5D000000 		.4byte	.LLST3
+ 527 0189 08       		.uleb128 0x8
+ 528 018a 14000000 		.4byte	.LVL14
+ 529 018e D6000000 		.4byte	0xd6
+ARM GAS  C:\Users\corne\AppData\Local\Temp\ccweVsII.s 			page 12
+
+
+ 530 0192 00       		.byte	0
+ 531 0193 09       		.uleb128 0x9
+ 532 0194 9B000000 		.4byte	.LASF23
+ 533 0198 01       		.byte	0x1
+ 534 0199 57       		.byte	0x57
+ 535 019a 00000000 		.4byte	.LFB68
+ 536 019e 1C000000 		.4byte	.LFE68-.LFB68
+ 537 01a2 01       		.uleb128 0x1
+ 538 01a3 9C       		.byte	0x9c
+ 539 01a4 C1010000 		.4byte	0x1c1
+ 540 01a8 0A       		.uleb128 0xa
+ 541 01a9 636E7400 		.ascii	"cnt\000"
+ 542 01ad 01       		.byte	0x1
+ 543 01ae 57       		.byte	0x57
+ 544 01af 81000000 		.4byte	0x81
+ 545 01b3 7E000000 		.4byte	.LLST4
+ 546 01b7 08       		.uleb128 0x8
+ 547 01b8 14000000 		.4byte	.LVL17
+ 548 01bc D6000000 		.4byte	0xd6
+ 549 01c0 00       		.byte	0
+ 550 01c1 0B       		.uleb128 0xb
+ 551 01c2 80010000 		.4byte	.LASF37
+ 552 01c6 01       		.byte	0x1
+ 553 01c7 5F       		.byte	0x5f
+ 554 01c8 BA000000 		.4byte	0xba
+ 555 01cc 00000000 		.4byte	.LFB69
+ 556 01d0 30000000 		.4byte	.LFE69-.LFB69
+ 557 01d4 01       		.uleb128 0x1
+ 558 01d5 9C       		.byte	0x9c
+ 559 01d6 0C       		.uleb128 0xc
+ 560 01d7 80000000 		.4byte	.LASF24
+ 561 01db 01       		.byte	0x1
+ 562 01dc 1D       		.byte	0x1d
+ 563 01dd 81000000 		.4byte	0x81
+ 564 01e1 05       		.uleb128 0x5
+ 565 01e2 03       		.byte	0x3
+ 566 01e3 04000000 		.4byte	countRx
+ 567 01e7 0C       		.uleb128 0xc
+ 568 01e8 A8000000 		.4byte	.LASF25
+ 569 01ec 01       		.byte	0x1
+ 570 01ed 1E       		.byte	0x1e
+ 571 01ee 81000000 		.4byte	0x81
+ 572 01f2 05       		.uleb128 0x5
+ 573 01f3 03       		.byte	0x3
+ 574 01f4 05000000 		.4byte	countTx
+ 575 01f8 0C       		.uleb128 0xc
+ 576 01f9 7E020000 		.4byte	.LASF26
+ 577 01fd 01       		.byte	0x1
+ 578 01fe 1F       		.byte	0x1f
+ 579 01ff 81000000 		.4byte	0x81
+ 580 0203 05       		.uleb128 0x5
+ 581 0204 03       		.byte	0x3
+ 582 0205 06000000 		.4byte	countErr
+ 583 0209 0C       		.uleb128 0xc
+ 584 020a 6F010000 		.4byte	.LASF27
+ 585 020e 01       		.byte	0x1
+ 586 020f 20       		.byte	0x20
+ARM GAS  C:\Users\corne\AppData\Local\Temp\ccweVsII.s 			page 13
+
+
+ 587 0210 5E000000 		.4byte	0x5e
+ 588 0214 05       		.uleb128 0x5
+ 589 0215 03       		.byte	0x3
+ 590 0216 00000000 		.4byte	prevTime
+ 591 021a 0D       		.uleb128 0xd
+ 592 021b 88000000 		.4byte	.LASF28
+ 593 021f 88000000 		.4byte	.LASF28
+ 594 0223 05       		.byte	0x5
+ 595 0224 4B01     		.2byte	0x14b
+ 596 0226 0E       		.uleb128 0xe
+ 597 0227 72020000 		.4byte	.LASF29
+ 598 022b 72020000 		.4byte	.LASF29
+ 599 022f 06       		.byte	0x6
+ 600 0230 33       		.byte	0x33
+ 601 0231 0E       		.uleb128 0xe
+ 602 0232 0E000000 		.4byte	.LASF30
+ 603 0236 0E000000 		.4byte	.LASF30
+ 604 023a 07       		.byte	0x7
+ 605 023b 33       		.byte	0x33
+ 606 023c 0E       		.uleb128 0xe
+ 607 023d 33000000 		.4byte	.LASF31
+ 608 0241 33000000 		.4byte	.LASF31
+ 609 0245 08       		.byte	0x8
+ 610 0246 33       		.byte	0x33
+ 611 0247 00       		.byte	0
+ 612              		.section	.debug_abbrev,"",%progbits
+ 613              	.Ldebug_abbrev0:
+ 614 0000 01       		.uleb128 0x1
+ 615 0001 11       		.uleb128 0x11
+ 616 0002 01       		.byte	0x1
+ 617 0003 25       		.uleb128 0x25
+ 618 0004 0E       		.uleb128 0xe
+ 619 0005 13       		.uleb128 0x13
+ 620 0006 0B       		.uleb128 0xb
+ 621 0007 03       		.uleb128 0x3
+ 622 0008 0E       		.uleb128 0xe
+ 623 0009 1B       		.uleb128 0x1b
+ 624 000a 0E       		.uleb128 0xe
+ 625 000b 55       		.uleb128 0x55
+ 626 000c 17       		.uleb128 0x17
+ 627 000d 11       		.uleb128 0x11
+ 628 000e 01       		.uleb128 0x1
+ 629 000f 10       		.uleb128 0x10
+ 630 0010 17       		.uleb128 0x17
+ 631 0011 00       		.byte	0
+ 632 0012 00       		.byte	0
+ 633 0013 02       		.uleb128 0x2
+ 634 0014 24       		.uleb128 0x24
+ 635 0015 00       		.byte	0
+ 636 0016 0B       		.uleb128 0xb
+ 637 0017 0B       		.uleb128 0xb
+ 638 0018 3E       		.uleb128 0x3e
+ 639 0019 0B       		.uleb128 0xb
+ 640 001a 03       		.uleb128 0x3
+ 641 001b 0E       		.uleb128 0xe
+ 642 001c 00       		.byte	0
+ 643 001d 00       		.byte	0
+ARM GAS  C:\Users\corne\AppData\Local\Temp\ccweVsII.s 			page 14
+
+
+ 644 001e 03       		.uleb128 0x3
+ 645 001f 16       		.uleb128 0x16
+ 646 0020 00       		.byte	0
+ 647 0021 03       		.uleb128 0x3
+ 648 0022 0E       		.uleb128 0xe
+ 649 0023 3A       		.uleb128 0x3a
+ 650 0024 0B       		.uleb128 0xb
+ 651 0025 3B       		.uleb128 0x3b
+ 652 0026 0B       		.uleb128 0xb
+ 653 0027 49       		.uleb128 0x49
+ 654 0028 13       		.uleb128 0x13
+ 655 0029 00       		.byte	0
+ 656 002a 00       		.byte	0
+ 657 002b 04       		.uleb128 0x4
+ 658 002c 24       		.uleb128 0x24
+ 659 002d 00       		.byte	0
+ 660 002e 0B       		.uleb128 0xb
+ 661 002f 0B       		.uleb128 0xb
+ 662 0030 3E       		.uleb128 0x3e
+ 663 0031 0B       		.uleb128 0xb
+ 664 0032 03       		.uleb128 0x3
+ 665 0033 08       		.uleb128 0x8
+ 666 0034 00       		.byte	0
+ 667 0035 00       		.byte	0
+ 668 0036 05       		.uleb128 0x5
+ 669 0037 2E       		.uleb128 0x2e
+ 670 0038 00       		.byte	0
+ 671 0039 3F       		.uleb128 0x3f
+ 672 003a 19       		.uleb128 0x19
+ 673 003b 03       		.uleb128 0x3
+ 674 003c 0E       		.uleb128 0xe
+ 675 003d 3A       		.uleb128 0x3a
+ 676 003e 0B       		.uleb128 0xb
+ 677 003f 3B       		.uleb128 0x3b
+ 678 0040 0B       		.uleb128 0xb
+ 679 0041 11       		.uleb128 0x11
+ 680 0042 01       		.uleb128 0x1
+ 681 0043 12       		.uleb128 0x12
+ 682 0044 06       		.uleb128 0x6
+ 683 0045 40       		.uleb128 0x40
+ 684 0046 18       		.uleb128 0x18
+ 685 0047 9742     		.uleb128 0x2117
+ 686 0049 19       		.uleb128 0x19
+ 687 004a 00       		.byte	0
+ 688 004b 00       		.byte	0
+ 689 004c 06       		.uleb128 0x6
+ 690 004d 2E       		.uleb128 0x2e
+ 691 004e 01       		.byte	0x1
+ 692 004f 3F       		.uleb128 0x3f
+ 693 0050 19       		.uleb128 0x19
+ 694 0051 03       		.uleb128 0x3
+ 695 0052 0E       		.uleb128 0xe
+ 696 0053 3A       		.uleb128 0x3a
+ 697 0054 0B       		.uleb128 0xb
+ 698 0055 3B       		.uleb128 0x3b
+ 699 0056 0B       		.uleb128 0xb
+ 700 0057 11       		.uleb128 0x11
+ARM GAS  C:\Users\corne\AppData\Local\Temp\ccweVsII.s 			page 15
+
+
+ 701 0058 01       		.uleb128 0x1
+ 702 0059 12       		.uleb128 0x12
+ 703 005a 06       		.uleb128 0x6
+ 704 005b 40       		.uleb128 0x40
+ 705 005c 18       		.uleb128 0x18
+ 706 005d 9742     		.uleb128 0x2117
+ 707 005f 19       		.uleb128 0x19
+ 708 0060 01       		.uleb128 0x1
+ 709 0061 13       		.uleb128 0x13
+ 710 0062 00       		.byte	0
+ 711 0063 00       		.byte	0
+ 712 0064 07       		.uleb128 0x7
+ 713 0065 34       		.uleb128 0x34
+ 714 0066 00       		.byte	0
+ 715 0067 03       		.uleb128 0x3
+ 716 0068 0E       		.uleb128 0xe
+ 717 0069 3A       		.uleb128 0x3a
+ 718 006a 0B       		.uleb128 0xb
+ 719 006b 3B       		.uleb128 0x3b
+ 720 006c 0B       		.uleb128 0xb
+ 721 006d 49       		.uleb128 0x49
+ 722 006e 13       		.uleb128 0x13
+ 723 006f 02       		.uleb128 0x2
+ 724 0070 17       		.uleb128 0x17
+ 725 0071 00       		.byte	0
+ 726 0072 00       		.byte	0
+ 727 0073 08       		.uleb128 0x8
+ 728 0074 898201   		.uleb128 0x4109
+ 729 0077 00       		.byte	0
+ 730 0078 11       		.uleb128 0x11
+ 731 0079 01       		.uleb128 0x1
+ 732 007a 31       		.uleb128 0x31
+ 733 007b 13       		.uleb128 0x13
+ 734 007c 00       		.byte	0
+ 735 007d 00       		.byte	0
+ 736 007e 09       		.uleb128 0x9
+ 737 007f 2E       		.uleb128 0x2e
+ 738 0080 01       		.byte	0x1
+ 739 0081 3F       		.uleb128 0x3f
+ 740 0082 19       		.uleb128 0x19
+ 741 0083 03       		.uleb128 0x3
+ 742 0084 0E       		.uleb128 0xe
+ 743 0085 3A       		.uleb128 0x3a
+ 744 0086 0B       		.uleb128 0xb
+ 745 0087 3B       		.uleb128 0x3b
+ 746 0088 0B       		.uleb128 0xb
+ 747 0089 27       		.uleb128 0x27
+ 748 008a 19       		.uleb128 0x19
+ 749 008b 11       		.uleb128 0x11
+ 750 008c 01       		.uleb128 0x1
+ 751 008d 12       		.uleb128 0x12
+ 752 008e 06       		.uleb128 0x6
+ 753 008f 40       		.uleb128 0x40
+ 754 0090 18       		.uleb128 0x18
+ 755 0091 9742     		.uleb128 0x2117
+ 756 0093 19       		.uleb128 0x19
+ 757 0094 01       		.uleb128 0x1
+ARM GAS  C:\Users\corne\AppData\Local\Temp\ccweVsII.s 			page 16
+
+
+ 758 0095 13       		.uleb128 0x13
+ 759 0096 00       		.byte	0
+ 760 0097 00       		.byte	0
+ 761 0098 0A       		.uleb128 0xa
+ 762 0099 05       		.uleb128 0x5
+ 763 009a 00       		.byte	0
+ 764 009b 03       		.uleb128 0x3
+ 765 009c 08       		.uleb128 0x8
+ 766 009d 3A       		.uleb128 0x3a
+ 767 009e 0B       		.uleb128 0xb
+ 768 009f 3B       		.uleb128 0x3b
+ 769 00a0 0B       		.uleb128 0xb
+ 770 00a1 49       		.uleb128 0x49
+ 771 00a2 13       		.uleb128 0x13
+ 772 00a3 02       		.uleb128 0x2
+ 773 00a4 17       		.uleb128 0x17
+ 774 00a5 00       		.byte	0
+ 775 00a6 00       		.byte	0
+ 776 00a7 0B       		.uleb128 0xb
+ 777 00a8 2E       		.uleb128 0x2e
+ 778 00a9 00       		.byte	0
+ 779 00aa 3F       		.uleb128 0x3f
+ 780 00ab 19       		.uleb128 0x19
+ 781 00ac 03       		.uleb128 0x3
+ 782 00ad 0E       		.uleb128 0xe
+ 783 00ae 3A       		.uleb128 0x3a
+ 784 00af 0B       		.uleb128 0xb
+ 785 00b0 3B       		.uleb128 0x3b
+ 786 00b1 0B       		.uleb128 0xb
+ 787 00b2 49       		.uleb128 0x49
+ 788 00b3 13       		.uleb128 0x13
+ 789 00b4 11       		.uleb128 0x11
+ 790 00b5 01       		.uleb128 0x1
+ 791 00b6 12       		.uleb128 0x12
+ 792 00b7 06       		.uleb128 0x6
+ 793 00b8 40       		.uleb128 0x40
+ 794 00b9 18       		.uleb128 0x18
+ 795 00ba 9742     		.uleb128 0x2117
+ 796 00bc 19       		.uleb128 0x19
+ 797 00bd 00       		.byte	0
+ 798 00be 00       		.byte	0
+ 799 00bf 0C       		.uleb128 0xc
+ 800 00c0 34       		.uleb128 0x34
+ 801 00c1 00       		.byte	0
+ 802 00c2 03       		.uleb128 0x3
+ 803 00c3 0E       		.uleb128 0xe
+ 804 00c4 3A       		.uleb128 0x3a
+ 805 00c5 0B       		.uleb128 0xb
+ 806 00c6 3B       		.uleb128 0x3b
+ 807 00c7 0B       		.uleb128 0xb
+ 808 00c8 49       		.uleb128 0x49
+ 809 00c9 13       		.uleb128 0x13
+ 810 00ca 02       		.uleb128 0x2
+ 811 00cb 18       		.uleb128 0x18
+ 812 00cc 00       		.byte	0
+ 813 00cd 00       		.byte	0
+ 814 00ce 0D       		.uleb128 0xd
+ARM GAS  C:\Users\corne\AppData\Local\Temp\ccweVsII.s 			page 17
+
+
+ 815 00cf 2E       		.uleb128 0x2e
+ 816 00d0 00       		.byte	0
+ 817 00d1 3F       		.uleb128 0x3f
+ 818 00d2 19       		.uleb128 0x19
+ 819 00d3 3C       		.uleb128 0x3c
+ 820 00d4 19       		.uleb128 0x19
+ 821 00d5 6E       		.uleb128 0x6e
+ 822 00d6 0E       		.uleb128 0xe
+ 823 00d7 03       		.uleb128 0x3
+ 824 00d8 0E       		.uleb128 0xe
+ 825 00d9 3A       		.uleb128 0x3a
+ 826 00da 0B       		.uleb128 0xb
+ 827 00db 3B       		.uleb128 0x3b
+ 828 00dc 05       		.uleb128 0x5
+ 829 00dd 00       		.byte	0
+ 830 00de 00       		.byte	0
+ 831 00df 0E       		.uleb128 0xe
+ 832 00e0 2E       		.uleb128 0x2e
+ 833 00e1 00       		.byte	0
+ 834 00e2 3F       		.uleb128 0x3f
+ 835 00e3 19       		.uleb128 0x19
+ 836 00e4 3C       		.uleb128 0x3c
+ 837 00e5 19       		.uleb128 0x19
+ 838 00e6 6E       		.uleb128 0x6e
+ 839 00e7 0E       		.uleb128 0xe
+ 840 00e8 03       		.uleb128 0x3
+ 841 00e9 0E       		.uleb128 0xe
+ 842 00ea 3A       		.uleb128 0x3a
+ 843 00eb 0B       		.uleb128 0xb
+ 844 00ec 3B       		.uleb128 0x3b
+ 845 00ed 0B       		.uleb128 0xb
+ 846 00ee 00       		.byte	0
+ 847 00ef 00       		.byte	0
+ 848 00f0 00       		.byte	0
+ 849              		.section	.debug_loc,"",%progbits
+ 850              	.Ldebug_loc0:
+ 851              	.LLST0:
+ 852 0000 06000000 		.4byte	.LVL0
+ 853 0004 08000000 		.4byte	.LVL1
+ 854 0008 0100     		.2byte	0x1
+ 855 000a 50       		.byte	0x50
+ 856 000b 00000000 		.4byte	0
+ 857 000f 00000000 		.4byte	0
+ 858              	.LLST1:
+ 859 0013 36000000 		.4byte	.LVL3
+ 860 0017 39000000 		.4byte	.LVL4-1
+ 861 001b 0100     		.2byte	0x1
+ 862 001d 50       		.byte	0x50
+ 863 001e 54000000 		.4byte	.LVL5
+ 864 0022 57000000 		.4byte	.LVL6-1
+ 865 0026 0100     		.2byte	0x1
+ 866 0028 50       		.byte	0x50
+ 867 0029 72000000 		.4byte	.LVL7
+ 868 002d 75000000 		.4byte	.LVL8-1
+ 869 0031 0100     		.2byte	0x1
+ 870 0033 50       		.byte	0x50
+ 871 0034 00000000 		.4byte	0
+ARM GAS  C:\Users\corne\AppData\Local\Temp\ccweVsII.s 			page 18
+
+
+ 872 0038 00000000 		.4byte	0
+ 873              	.LLST2:
+ 874 003c 00000000 		.4byte	.LVL9
+ 875 0040 0C000000 		.4byte	.LVL10
+ 876 0044 0100     		.2byte	0x1
+ 877 0046 50       		.byte	0x50
+ 878 0047 0C000000 		.4byte	.LVL10
+ 879 004b 1C000000 		.4byte	.LFE66
+ 880 004f 0400     		.2byte	0x4
+ 881 0051 F3       		.byte	0xf3
+ 882 0052 01       		.uleb128 0x1
+ 883 0053 50       		.byte	0x50
+ 884 0054 9F       		.byte	0x9f
+ 885 0055 00000000 		.4byte	0
+ 886 0059 00000000 		.4byte	0
+ 887              	.LLST3:
+ 888 005d 00000000 		.4byte	.LVL12
+ 889 0061 0C000000 		.4byte	.LVL13
+ 890 0065 0100     		.2byte	0x1
+ 891 0067 50       		.byte	0x50
+ 892 0068 0C000000 		.4byte	.LVL13
+ 893 006c 1C000000 		.4byte	.LFE67
+ 894 0070 0400     		.2byte	0x4
+ 895 0072 F3       		.byte	0xf3
+ 896 0073 01       		.uleb128 0x1
+ 897 0074 50       		.byte	0x50
+ 898 0075 9F       		.byte	0x9f
+ 899 0076 00000000 		.4byte	0
+ 900 007a 00000000 		.4byte	0
+ 901              	.LLST4:
+ 902 007e 00000000 		.4byte	.LVL15
+ 903 0082 0C000000 		.4byte	.LVL16
+ 904 0086 0100     		.2byte	0x1
+ 905 0088 50       		.byte	0x50
+ 906 0089 0C000000 		.4byte	.LVL16
+ 907 008d 1C000000 		.4byte	.LFE68
+ 908 0091 0400     		.2byte	0x4
+ 909 0093 F3       		.byte	0xf3
+ 910 0094 01       		.uleb128 0x1
+ 911 0095 50       		.byte	0x50
+ 912 0096 9F       		.byte	0x9f
+ 913 0097 00000000 		.4byte	0
+ 914 009b 00000000 		.4byte	0
+ 915              		.section	.debug_aranges,"",%progbits
+ 916 0000 44000000 		.4byte	0x44
+ 917 0004 0200     		.2byte	0x2
+ 918 0006 00000000 		.4byte	.Ldebug_info0
+ 919 000a 04       		.byte	0x4
+ 920 000b 00       		.byte	0
+ 921 000c 0000     		.2byte	0
+ 922 000e 0000     		.2byte	0
+ 923 0010 00000000 		.4byte	.LFB64
+ 924 0014 02000000 		.4byte	.LFE64-.LFB64
+ 925 0018 00000000 		.4byte	.LFB65
+ 926 001c 7C000000 		.4byte	.LFE65-.LFB65
+ 927 0020 00000000 		.4byte	.LFB66
+ 928 0024 1C000000 		.4byte	.LFE66-.LFB66
+ARM GAS  C:\Users\corne\AppData\Local\Temp\ccweVsII.s 			page 19
+
+
+ 929 0028 00000000 		.4byte	.LFB67
+ 930 002c 1C000000 		.4byte	.LFE67-.LFB67
+ 931 0030 00000000 		.4byte	.LFB68
+ 932 0034 1C000000 		.4byte	.LFE68-.LFB68
+ 933 0038 00000000 		.4byte	.LFB69
+ 934 003c 30000000 		.4byte	.LFE69-.LFB69
+ 935 0040 00000000 		.4byte	0
+ 936 0044 00000000 		.4byte	0
+ 937              		.section	.debug_ranges,"",%progbits
+ 938              	.Ldebug_ranges0:
+ 939 0000 00000000 		.4byte	.LFB64
+ 940 0004 02000000 		.4byte	.LFE64
+ 941 0008 00000000 		.4byte	.LFB65
+ 942 000c 7C000000 		.4byte	.LFE65
+ 943 0010 00000000 		.4byte	.LFB66
+ 944 0014 1C000000 		.4byte	.LFE66
+ 945 0018 00000000 		.4byte	.LFB67
+ 946 001c 1C000000 		.4byte	.LFE67
+ 947 0020 00000000 		.4byte	.LFB68
+ 948 0024 1C000000 		.4byte	.LFE68
+ 949 0028 00000000 		.4byte	.LFB69
+ 950 002c 30000000 		.4byte	.LFE69
+ 951 0030 00000000 		.4byte	0
+ 952 0034 00000000 		.4byte	0
+ 953              		.section	.debug_line,"",%progbits
+ 954              	.Ldebug_line0:
+ 955 0000 05020000 		.section	.debug_str,"MS",%progbits,1
+ 955      02006C01 
+ 955      00000201 
+ 955      FB0E0D00 
+ 955      01010101 
+ 956              	.LASF8:
+ 957 0000 6C6F6E67 		.ascii	"long long int\000"
+ 957      206C6F6E 
+ 957      6720696E 
+ 957      7400
+ 958              	.LASF30:
+ 959 000e 4C45445F 		.ascii	"LED_2_Write\000"
+ 959      325F5772 
+ 959      69746500 
+ 960              	.LASF3:
+ 961 001a 5F5F7569 		.ascii	"__uint8_t\000"
+ 961      6E74385F 
+ 961      7400
+ 962              	.LASF19:
+ 963 0024 68774D69 		.ascii	"hwMillis\000"
+ 963      6C6C6973 
+ 963      00
+ 964              	.LASF20:
+ 965 002d 73746174 		.ascii	"state\000"
+ 965      6500
+ 966              	.LASF31:
+ 967 0033 4C45445F 		.ascii	"LED_3_Write\000"
+ 967      335F5772 
+ 967      69746500 
+ 968              	.LASF18:
+ 969 003f 626F6F6C 		.ascii	"bool\000"
+ARM GAS  C:\Users\corne\AppData\Local\Temp\ccweVsII.s 			page 20
+
+
+ 969      00
+ 970              	.LASF14:
+ 971 0044 646F7562 		.ascii	"double\000"
+ 971      6C6500
+ 972              	.LASF21:
+ 973 004b 6C656473 		.ascii	"ledsBlinkRx\000"
+ 973      426C696E 
+ 973      6B527800 
+ 974              	.LASF13:
+ 975 0057 666C6F61 		.ascii	"float\000"
+ 975      7400
+ 976              	.LASF22:
+ 977 005d 6C656473 		.ascii	"ledsBlinkTx\000"
+ 977      426C696E 
+ 977      6B547800 
+ 978              	.LASF9:
+ 979 0069 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 979      206C6F6E 
+ 979      6720756E 
+ 979      7369676E 
+ 979      65642069 
+ 980              	.LASF24:
+ 981 0080 636F756E 		.ascii	"countRx\000"
+ 981      74527800 
+ 982              	.LASF28:
+ 983 0088 54494D45 		.ascii	"TIMER1_ReadCounter\000"
+ 983      52315F52 
+ 983      65616443 
+ 983      6F756E74 
+ 983      657200
+ 984              	.LASF23:
+ 985 009b 6C656473 		.ascii	"ledsBlinkErr\000"
+ 985      426C696E 
+ 985      6B457272 
+ 985      00
+ 986              	.LASF25:
+ 987 00a8 636F756E 		.ascii	"countTx\000"
+ 987      74547800 
+ 988              	.LASF5:
+ 989 00b0 73686F72 		.ascii	"short unsigned int\000"
+ 989      7420756E 
+ 989      7369676E 
+ 989      65642069 
+ 989      6E7400
+ 990              	.LASF34:
+ 991 00c3 433A5C55 		.ascii	"C:\\Users\\corne\\Dropbox\\prive\\projects\\Wireles"
+ 991      73657273 
+ 991      5C636F72 
+ 991      6E655C44 
+ 991      726F7062 
+ 992 00f0 735F7365 		.ascii	"s_sensornode\\Software\\Wireless_sensornode\\Firmwa"
+ 992      6E736F72 
+ 992      6E6F6465 
+ 992      5C536F66 
+ 992      74776172 
+ 993 0120 72655F56 		.ascii	"re_V0.1.cydsn\000"
+ 993      302E312E 
+ARM GAS  C:\Users\corne\AppData\Local\Temp\ccweVsII.s 			page 21
+
+
+ 993      63796473 
+ 993      6E00
+ 994              	.LASF33:
+ 995 012e 4D794C65 		.ascii	"MyLeds.c\000"
+ 995      64732E63 
+ 995      00
+ 996              	.LASF4:
+ 997 0137 5F5F7569 		.ascii	"__uint16_t\000"
+ 997      6E743136 
+ 997      5F7400
+ 998              	.LASF7:
+ 999 0142 6C6F6E67 		.ascii	"long unsigned int\000"
+ 999      20756E73 
+ 999      69676E65 
+ 999      6420696E 
+ 999      7400
+ 1000              	.LASF1:
+ 1001 0154 756E7369 		.ascii	"unsigned char\000"
+ 1001      676E6564 
+ 1001      20636861 
+ 1001      7200
+ 1002              	.LASF10:
+ 1003 0162 756E7369 		.ascii	"unsigned int\000"
+ 1003      676E6564 
+ 1003      20696E74 
+ 1003      00
+ 1004              	.LASF27:
+ 1005 016f 70726576 		.ascii	"prevTime\000"
+ 1005      54696D65 
+ 1005      00
+ 1006              	.LASF11:
+ 1007 0178 75696E74 		.ascii	"uint8_t\000"
+ 1007      385F7400 
+ 1008              	.LASF37:
+ 1009 0180 6C656473 		.ascii	"ledsBlinking\000"
+ 1009      426C696E 
+ 1009      6B696E67 
+ 1009      00
+ 1010              	.LASF35:
+ 1011 018d 6C656473 		.ascii	"ledsInit\000"
+ 1011      496E6974 
+ 1011      00
+ 1012              	.LASF32:
+ 1013 0196 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 1013      43313120 
+ 1013      352E342E 
+ 1013      31203230 
+ 1013      31363036 
+ 1014 01c9 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m0 -mthumb -g -O"
+ 1014      20726576 
+ 1014      6973696F 
+ 1014      6E203233 
+ 1014      37373135 
+ 1015 01fc 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
+ 1015      66756E63 
+ 1015      74696F6E 
+ 1015      2D736563 
+ARM GAS  C:\Users\corne\AppData\Local\Temp\ccweVsII.s 			page 22
+
+
+ 1015      74696F6E 
+ 1016              	.LASF17:
+ 1017 0224 73697A65 		.ascii	"sizetype\000"
+ 1017      74797065 
+ 1017      00
+ 1018              	.LASF15:
+ 1019 022d 63686172 		.ascii	"char\000"
+ 1019      00
+ 1020              	.LASF2:
+ 1021 0232 73686F72 		.ascii	"short int\000"
+ 1021      7420696E 
+ 1021      7400
+ 1022              	.LASF12:
+ 1023 023c 75696E74 		.ascii	"uint16_t\000"
+ 1023      31365F74 
+ 1023      00
+ 1024              	.LASF36:
+ 1025 0245 6C656473 		.ascii	"ledsProcess\000"
+ 1025      50726F63 
+ 1025      65737300 
+ 1026              	.LASF6:
+ 1027 0251 6C6F6E67 		.ascii	"long int\000"
+ 1027      20696E74 
+ 1027      00
+ 1028              	.LASF16:
+ 1029 025a 6C6F6E67 		.ascii	"long double\000"
+ 1029      20646F75 
+ 1029      626C6500 
+ 1030              	.LASF0:
+ 1031 0266 7369676E 		.ascii	"signed char\000"
+ 1031      65642063 
+ 1031      68617200 
+ 1032              	.LASF29:
+ 1033 0272 4C45445F 		.ascii	"LED_1_Write\000"
+ 1033      315F5772 
+ 1033      69746500 
+ 1034              	.LASF26:
+ 1035 027e 636F756E 		.ascii	"countErr\000"
+ 1035      74457272 
+ 1035      00
+ 1036              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

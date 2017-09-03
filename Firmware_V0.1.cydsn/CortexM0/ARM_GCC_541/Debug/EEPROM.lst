@@ -1,0 +1,3058 @@
+ARM GAS  C:\Users\corne\AppData\Local\Temp\cczZFaNz.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m0
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 0
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"EEPROM.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.EEPROM_WriteBuf,"ax",%progbits
+  20              		.align	2
+  21              		.global	EEPROM_WriteBuf
+  22              		.code	16
+  23              		.thumb_func
+  24              		.type	EEPROM_WriteBuf, %function
+  25              	EEPROM_WriteBuf:
+  26              	.LFB65:
+  27              		.file 1 "EEPROM.c"
+   1:EEPROM.c      **** /* ========================================
+   2:EEPROM.c      ****  *
+   3:EEPROM.c      ****  * Copyright YOUR COMPANY, THE YEAR
+   4:EEPROM.c      ****  * All Rights Reserved
+   5:EEPROM.c      ****  * UNPUBLISHED, LICENSED SOFTWARE.
+   6:EEPROM.c      ****  *
+   7:EEPROM.c      ****  * CONFIDENTIAL AND PROPRIETARY INFORMATION
+   8:EEPROM.c      ****  * WHICH IS THE PROPERTY OF your company.
+   9:EEPROM.c      ****  *
+  10:EEPROM.c      ****  * ========================================
+  11:EEPROM.c      **** */
+  12:EEPROM.c      **** 
+  13:EEPROM.c      **** /* [] END OF FILE */
+  14:EEPROM.c      **** 
+  15:EEPROM.c      **** #include "EEPROM.h"
+  16:EEPROM.c      **** 
+  17:EEPROM.c      **** #ifdef old
+  18:EEPROM.c      **** void EEPROM_WriteBuf(uint8_t addr, uint16_t subaddr, uint8_t *data, uint8_t len)
+  19:EEPROM.c      **** {
+  28              		.loc 1 19 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              	.LVL0:
+  33 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+  34              		.cfi_def_cfa_offset 24
+  35              		.cfi_offset 3, -24
+  36              		.cfi_offset 4, -20
+  37              		.cfi_offset 5, -16
+  38              		.cfi_offset 6, -12
+ARM GAS  C:\Users\corne\AppData\Local\Temp\cczZFaNz.s 			page 2
+
+
+  39              		.cfi_offset 7, -8
+  40              		.cfi_offset 14, -4
+  41 0002 0700     		movs	r7, r0
+  42 0004 0C00     		movs	r4, r1
+  43 0006 1600     		movs	r6, r2
+  44 0008 1D00     		movs	r5, r3
+  20:EEPROM.c      ****     EEPROM_WC_Write(0);
+  45              		.loc 1 20 0
+  46 000a 0020     		movs	r0, #0
+  47              	.LVL1:
+  48 000c FFF7FEFF 		bl	EEPROM_WC_Write
+  49              	.LVL2:
+  21:EEPROM.c      ****     //I2C_I2CMasterWriteBuf(addr, data, len, I2C_I2C_MODE_COMPLETE_XFER);
+  22:EEPROM.c      ****     I2C_I2CMasterSendStart(addr, I2C_I2C_WRITE_XFER_MODE);
+  50              		.loc 1 22 0
+  51 0010 0021     		movs	r1, #0
+  52 0012 3800     		movs	r0, r7
+  53 0014 FFF7FEFF 		bl	I2C_I2CMasterSendStart
+  54              	.LVL3:
+  23:EEPROM.c      ****     uint8_t HighByte, LowByte;
+  24:EEPROM.c      ****     HighByte = ((subaddr >> 8)&0xFF);
+  55              		.loc 1 24 0
+  56 0018 200A     		lsrs	r0, r4, #8
+  57              	.LVL4:
+  25:EEPROM.c      ****     LowByte = (subaddr & 0xFF);
+  58              		.loc 1 25 0
+  59 001a E4B2     		uxtb	r4, r4
+  60              	.LVL5:
+  26:EEPROM.c      ****     I2C_I2CMasterWriteByte(HighByte);
+  61              		.loc 1 26 0
+  62 001c FFF7FEFF 		bl	I2C_I2CMasterWriteByte
+  63              	.LVL6:
+  27:EEPROM.c      ****     I2C_I2CMasterWriteByte(LowByte);
+  64              		.loc 1 27 0
+  65 0020 2000     		movs	r0, r4
+  66 0022 FFF7FEFF 		bl	I2C_I2CMasterWriteByte
+  67              	.LVL7:
+  28:EEPROM.c      ****     while(len--)
+  68              		.loc 1 28 0
+  69 0026 04E0     		b	.L2
+  70              	.LVL8:
+  71              	.L3:
+  29:EEPROM.c      ****     {
+  30:EEPROM.c      ****         I2C_I2CMasterWriteByte((uint32_t)*data);
+  72              		.loc 1 30 0
+  73 0028 3078     		ldrb	r0, [r6]
+  74 002a FFF7FEFF 		bl	I2C_I2CMasterWriteByte
+  75              	.LVL9:
+  31:EEPROM.c      ****         data++;
+  76              		.loc 1 31 0
+  77 002e 0136     		adds	r6, r6, #1
+  78              	.LVL10:
+  28:EEPROM.c      ****     while(len--)
+  79              		.loc 1 28 0
+  80 0030 2500     		movs	r5, r4
+  81              	.LVL11:
+  82              	.L2:
+ARM GAS  C:\Users\corne\AppData\Local\Temp\cczZFaNz.s 			page 3
+
+
+  83 0032 6B1E     		subs	r3, r5, #1
+  84 0034 DCB2     		uxtb	r4, r3
+  85              	.LVL12:
+  86 0036 002D     		cmp	r5, #0
+  87 0038 F6D1     		bne	.L3
+  32:EEPROM.c      ****     }
+  33:EEPROM.c      ****     I2C_I2CMasterSendStop();
+  88              		.loc 1 33 0
+  89 003a FFF7FEFF 		bl	I2C_I2CMasterSendStop
+  90              	.LVL13:
+  34:EEPROM.c      ****     
+  35:EEPROM.c      **** }
+  91              		.loc 1 35 0
+  92              		@ sp needed
+  93              	.LVL14:
+  94              	.LVL15:
+  95              	.LVL16:
+  96 003e F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+  97              		.cfi_endproc
+  98              	.LFE65:
+  99              		.size	EEPROM_WriteBuf, .-EEPROM_WriteBuf
+ 100              		.section	.text.EEPROM_ReadBuf,"ax",%progbits
+ 101              		.align	2
+ 102              		.global	EEPROM_ReadBuf
+ 103              		.code	16
+ 104              		.thumb_func
+ 105              		.type	EEPROM_ReadBuf, %function
+ 106              	EEPROM_ReadBuf:
+ 107              	.LFB66:
+  36:EEPROM.c      **** 
+  37:EEPROM.c      **** uint8_t EEPROM_ReadBuf(uint8_t addr, uint16_t subaddr, uint8_t *data, uint8_t len)
+  38:EEPROM.c      **** {
+ 108              		.loc 1 38 0
+ 109              		.cfi_startproc
+ 110              		@ args = 0, pretend = 0, frame = 0
+ 111              		@ frame_needed = 0, uses_anonymous_args = 0
+ 112              	.LVL17:
+ 113 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 114              		.cfi_def_cfa_offset 24
+ 115              		.cfi_offset 3, -24
+ 116              		.cfi_offset 4, -20
+ 117              		.cfi_offset 5, -16
+ 118              		.cfi_offset 6, -12
+ 119              		.cfi_offset 7, -8
+ 120              		.cfi_offset 14, -4
+ 121 0002 0700     		movs	r7, r0
+ 122 0004 0E00     		movs	r6, r1
+ 123 0006 1500     		movs	r5, r2
+ 124 0008 1C00     		movs	r4, r3
+  39:EEPROM.c      ****     //I2C_I2CMasterWriteBuf(addr, data, len, I2C_I2C_MODE_COMPLETE_XFER);
+  40:EEPROM.c      ****     I2C_I2CMasterSendStart(addr, I2C_I2C_WRITE_XFER_MODE);
+ 125              		.loc 1 40 0
+ 126 000a 0021     		movs	r1, #0
+ 127              	.LVL18:
+ 128 000c FFF7FEFF 		bl	I2C_I2CMasterSendStart
+ 129              	.LVL19:
+  41:EEPROM.c      ****     uint8_t HighByte, LowByte;
+ARM GAS  C:\Users\corne\AppData\Local\Temp\cczZFaNz.s 			page 4
+
+
+  42:EEPROM.c      ****     HighByte = ((subaddr >> 8)&0xFF);
+ 130              		.loc 1 42 0
+ 131 0010 300A     		lsrs	r0, r6, #8
+ 132              	.LVL20:
+  43:EEPROM.c      ****     LowByte = (subaddr & 0xFF);
+ 133              		.loc 1 43 0
+ 134 0012 F6B2     		uxtb	r6, r6
+ 135              	.LVL21:
+  44:EEPROM.c      ****     I2C_I2CMasterWriteByte(HighByte);
+ 136              		.loc 1 44 0
+ 137 0014 FFF7FEFF 		bl	I2C_I2CMasterWriteByte
+ 138              	.LVL22:
+  45:EEPROM.c      ****     I2C_I2CMasterWriteByte(LowByte);
+ 139              		.loc 1 45 0
+ 140 0018 3000     		movs	r0, r6
+ 141 001a FFF7FEFF 		bl	I2C_I2CMasterWriteByte
+ 142              	.LVL23:
+  46:EEPROM.c      ****     I2C_I2CMasterSendRestart(addr, I2C_I2C_READ_XFER_MODE);
+ 143              		.loc 1 46 0
+ 144 001e 0121     		movs	r1, #1
+ 145 0020 3800     		movs	r0, r7
+ 146 0022 FFF7FEFF 		bl	I2C_I2CMasterSendRestart
+ 147              	.LVL24:
+  47:EEPROM.c      ****     len--;
+ 148              		.loc 1 47 0
+ 149 0026 013C     		subs	r4, r4, #1
+ 150 0028 E3B2     		uxtb	r3, r4
+ 151              	.LVL25:
+  48:EEPROM.c      ****     while(len--)
+ 152              		.loc 1 48 0
+ 153 002a 05E0     		b	.L5
+ 154              	.LVL26:
+ 155              	.L6:
+  49:EEPROM.c      ****     {
+  50:EEPROM.c      ****         *data = I2C_I2CMasterReadByte(I2C_I2C_ACK_DATA);
+ 156              		.loc 1 50 0
+ 157 002c 0020     		movs	r0, #0
+ 158 002e FFF7FEFF 		bl	I2C_I2CMasterReadByte
+ 159              	.LVL27:
+ 160 0032 2870     		strb	r0, [r5]
+  51:EEPROM.c      ****         data++;
+ 161              		.loc 1 51 0
+ 162 0034 0135     		adds	r5, r5, #1
+ 163              	.LVL28:
+  48:EEPROM.c      ****     while(len--)
+ 164              		.loc 1 48 0
+ 165 0036 2300     		movs	r3, r4
+ 166              	.LVL29:
+ 167              	.L5:
+ 168 0038 5A1E     		subs	r2, r3, #1
+ 169 003a D4B2     		uxtb	r4, r2
+ 170              	.LVL30:
+ 171 003c 002B     		cmp	r3, #0
+ 172 003e F5D1     		bne	.L6
+  52:EEPROM.c      ****     }
+  53:EEPROM.c      ****     *data = I2C_I2CMasterReadByte(I2C_I2C_NAK_DATA);
+ 173              		.loc 1 53 0
+ARM GAS  C:\Users\corne\AppData\Local\Temp\cczZFaNz.s 			page 5
+
+
+ 174 0040 0120     		movs	r0, #1
+ 175 0042 FFF7FEFF 		bl	I2C_I2CMasterReadByte
+ 176              	.LVL31:
+ 177 0046 2870     		strb	r0, [r5]
+  54:EEPROM.c      ****     I2C_I2CMasterSendStop();
+ 178              		.loc 1 54 0
+ 179 0048 FFF7FEFF 		bl	I2C_I2CMasterSendStop
+ 180              	.LVL32:
+  55:EEPROM.c      ****     return 0;
+  56:EEPROM.c      **** }
+ 181              		.loc 1 56 0
+ 182 004c 0020     		movs	r0, #0
+ 183              		@ sp needed
+ 184              	.LVL33:
+ 185              	.LVL34:
+ 186              	.LVL35:
+ 187 004e F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 188              		.cfi_endproc
+ 189              	.LFE66:
+ 190              		.size	EEPROM_ReadBuf, .-EEPROM_ReadBuf
+ 191              		.section	.text.EEPROM_WriteByte,"ax",%progbits
+ 192              		.align	2
+ 193              		.global	EEPROM_WriteByte
+ 194              		.code	16
+ 195              		.thumb_func
+ 196              		.type	EEPROM_WriteByte, %function
+ 197              	EEPROM_WriteByte:
+ 198              	.LFB67:
+  57:EEPROM.c      **** #endif
+  58:EEPROM.c      **** 
+  59:EEPROM.c      **** 
+  60:EEPROM.c      **** void EEPROM_WriteByte(uint16_t addr, uint16_t subaddr, uint8_t data)
+  61:EEPROM.c      **** {
+ 199              		.loc 1 61 0
+ 200              		.cfi_startproc
+ 201              		@ args = 0, pretend = 0, frame = 8
+ 202              		@ frame_needed = 0, uses_anonymous_args = 0
+ 203              	.LVL36:
+ 204 0000 10B5     		push	{r4, lr}
+ 205              		.cfi_def_cfa_offset 8
+ 206              		.cfi_offset 4, -8
+ 207              		.cfi_offset 14, -4
+ 208 0002 82B0     		sub	sp, sp, #8
+ 209              		.cfi_def_cfa_offset 16
+  62:EEPROM.c      ****     uint8_t EEPROM_Writebuffer[3];
+  63:EEPROM.c      ****     //EEPROM_WC_Write(0);
+  64:EEPROM.c      ****     EEPROM_Writebuffer[0] = ((subaddr >> 8) & 0xFF);
+ 210              		.loc 1 64 0
+ 211 0004 01AC     		add	r4, sp, #4
+ 212 0006 0B0A     		lsrs	r3, r1, #8
+ 213 0008 2370     		strb	r3, [r4]
+  65:EEPROM.c      ****     EEPROM_Writebuffer[1] = ((subaddr & 0xFF));
+ 214              		.loc 1 65 0
+ 215 000a 6170     		strb	r1, [r4, #1]
+  66:EEPROM.c      ****     EEPROM_Writebuffer[2] = data;
+ 216              		.loc 1 66 0
+ 217 000c A270     		strb	r2, [r4, #2]
+ARM GAS  C:\Users\corne\AppData\Local\Temp\cczZFaNz.s 			page 6
+
+
+  67:EEPROM.c      ****     I2C_I2CMasterWriteBuf(addr, &EEPROM_Writebuffer[0], 3, I2C_I2C_MODE_COMPLETE_XFER);
+ 218              		.loc 1 67 0
+ 219 000e 0023     		movs	r3, #0
+ 220 0010 0322     		movs	r2, #3
+ 221              	.LVL37:
+ 222 0012 2100     		movs	r1, r4
+ 223              	.LVL38:
+ 224 0014 FFF7FEFF 		bl	I2C_I2CMasterWriteBuf
+ 225              	.LVL39:
+  68:EEPROM.c      ****     //EEPROM_WC_Write(1);
+  69:EEPROM.c      **** }
+ 226              		.loc 1 69 0
+ 227 0018 02B0     		add	sp, sp, #8
+ 228              		@ sp needed
+ 229 001a 10BD     		pop	{r4, pc}
+ 230              		.cfi_endproc
+ 231              	.LFE67:
+ 232              		.size	EEPROM_WriteByte, .-EEPROM_WriteByte
+ 233              		.section	.text.EEPROM_ReadByte,"ax",%progbits
+ 234              		.align	2
+ 235              		.global	EEPROM_ReadByte
+ 236              		.code	16
+ 237              		.thumb_func
+ 238              		.type	EEPROM_ReadByte, %function
+ 239              	EEPROM_ReadByte:
+ 240              	.LFB68:
+  70:EEPROM.c      **** 
+  71:EEPROM.c      **** uint8_t EEPROM_ReadByte(uint16_t addr, uint16_t subaddr)
+  72:EEPROM.c      **** {
+ 241              		.loc 1 72 0
+ 242              		.cfi_startproc
+ 243              		@ args = 0, pretend = 0, frame = 0
+ 244              		@ frame_needed = 0, uses_anonymous_args = 0
+ 245              	.LVL40:
+ 246 0000 70B5     		push	{r4, r5, r6, lr}
+ 247              		.cfi_def_cfa_offset 16
+ 248              		.cfi_offset 4, -16
+ 249              		.cfi_offset 5, -12
+ 250              		.cfi_offset 6, -8
+ 251              		.cfi_offset 14, -4
+ 252 0002 0500     		movs	r5, r0
+ 253 0004 0C00     		movs	r4, r1
+  73:EEPROM.c      ****     uint8_t buf;
+  74:EEPROM.c      ****     //EEPROM_Writebuffer[2] = data;
+  75:EEPROM.c      ****     I2C_I2CMasterSendStart(addr, I2C_I2C_WRITE_XFER_MODE);
+ 254              		.loc 1 75 0
+ 255 0006 0021     		movs	r1, #0
+ 256              	.LVL41:
+ 257 0008 FFF7FEFF 		bl	I2C_I2CMasterSendStart
+ 258              	.LVL42:
+  76:EEPROM.c      ****     I2C_I2CMasterWriteByte(((subaddr >> 8) & 0xFF));
+ 259              		.loc 1 76 0
+ 260 000c 200A     		lsrs	r0, r4, #8
+ 261 000e FFF7FEFF 		bl	I2C_I2CMasterWriteByte
+ 262              	.LVL43:
+  77:EEPROM.c      ****     I2C_I2CMasterWriteByte(((subaddr & 0xFF)));
+ 263              		.loc 1 77 0
+ARM GAS  C:\Users\corne\AppData\Local\Temp\cczZFaNz.s 			page 7
+
+
+ 264 0012 FF20     		movs	r0, #255
+ 265 0014 2040     		ands	r0, r4
+ 266 0016 FFF7FEFF 		bl	I2C_I2CMasterWriteByte
+ 267              	.LVL44:
+  78:EEPROM.c      ****     I2C_I2CMasterSendRestart(addr, I2C_I2C_READ_XFER_MODE);
+ 268              		.loc 1 78 0
+ 269 001a 0121     		movs	r1, #1
+ 270 001c 2800     		movs	r0, r5
+ 271 001e FFF7FEFF 		bl	I2C_I2CMasterSendRestart
+ 272              	.LVL45:
+  79:EEPROM.c      ****     buf = I2C_I2CMasterReadByte(I2C_I2C_NAK_DATA);
+ 273              		.loc 1 79 0
+ 274 0022 0120     		movs	r0, #1
+ 275 0024 FFF7FEFF 		bl	I2C_I2CMasterReadByte
+ 276              	.LVL46:
+ 277 0028 C4B2     		uxtb	r4, r0
+ 278              	.LVL47:
+  80:EEPROM.c      ****     I2C_I2CMasterSendStop();
+ 279              		.loc 1 80 0
+ 280 002a FFF7FEFF 		bl	I2C_I2CMasterSendStop
+ 281              	.LVL48:
+  81:EEPROM.c      ****     return buf;
+  82:EEPROM.c      **** }
+ 282              		.loc 1 82 0
+ 283 002e 2000     		movs	r0, r4
+ 284              		@ sp needed
+ 285              	.LVL49:
+ 286 0030 70BD     		pop	{r4, r5, r6, pc}
+ 287              		.cfi_endproc
+ 288              	.LFE68:
+ 289              		.size	EEPROM_ReadByte, .-EEPROM_ReadByte
+ 290 0032 C046     		.section	.text.EEPROM_WriteBuffer,"ax",%progbits
+ 291              		.align	2
+ 292              		.global	EEPROM_WriteBuffer
+ 293              		.code	16
+ 294              		.thumb_func
+ 295              		.type	EEPROM_WriteBuffer, %function
+ 296              	EEPROM_WriteBuffer:
+ 297              	.LFB69:
+  83:EEPROM.c      **** 
+  84:EEPROM.c      **** void EEPROM_WriteBuffer(uint16_t addr, uint16_t subaddr, uint8_t* data, uint8_t len)
+  85:EEPROM.c      **** {
+ 298              		.loc 1 85 0
+ 299              		.cfi_startproc
+ 300              		@ args = 0, pretend = 0, frame = 8
+ 301              		@ frame_needed = 0, uses_anonymous_args = 0
+ 302              	.LVL50:
+ 303 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 304              		.cfi_def_cfa_offset 20
+ 305              		.cfi_offset 4, -20
+ 306              		.cfi_offset 5, -16
+ 307              		.cfi_offset 6, -12
+ 308              		.cfi_offset 7, -8
+ 309              		.cfi_offset 14, -4
+ 310 0002 4746     		mov	r7, r8
+ 311 0004 80B4     		push	{r7}
+ 312              		.cfi_def_cfa_offset 24
+ARM GAS  C:\Users\corne\AppData\Local\Temp\cczZFaNz.s 			page 8
+
+
+ 313              		.cfi_offset 8, -24
+ 314 0006 82B0     		sub	sp, sp, #8
+ 315              		.cfi_def_cfa_offset 32
+ 316 0008 0D00     		movs	r5, r1
+ 317 000a 1600     		movs	r6, r2
+ 318 000c 1F00     		movs	r7, r3
+  86:EEPROM.c      ****     uint16_t pageaddr = ((subaddr & 0xFFE0) >> 5);
+ 319              		.loc 1 86 0
+ 320 000e 4B09     		lsrs	r3, r1, #5
+ 321              	.LVL51:
+ 322 0010 9846     		mov	r8, r3
+ 323              	.LVL52:
+  87:EEPROM.c      ****     uint8_t byteaddr  = (subaddr & 0x1F);
+ 324              		.loc 1 87 0
+ 325 0012 1F24     		movs	r4, #31
+ 326 0014 0C40     		ands	r4, r1
+ 327              	.LVL53:
+  88:EEPROM.c      ****    
+  89:EEPROM.c      ****     I2C_I2CMasterSendStart(addr, I2C_I2C_WRITE_XFER_MODE);
+ 328              		.loc 1 89 0
+ 329 0016 0190     		str	r0, [sp, #4]
+ 330 0018 0021     		movs	r1, #0
+ 331              	.LVL54:
+ 332 001a FFF7FEFF 		bl	I2C_I2CMasterSendStart
+ 333              	.LVL55:
+  90:EEPROM.c      ****     CyDelayCycles(1);
+ 334              		.loc 1 90 0
+ 335 001e 0120     		movs	r0, #1
+ 336 0020 FFF7FEFF 		bl	CyDelayCycles
+ 337              	.LVL56:
+  91:EEPROM.c      ****     I2C_I2CMasterWriteByte(((subaddr >> 8) & 0xFF));
+ 338              		.loc 1 91 0
+ 339 0024 280A     		lsrs	r0, r5, #8
+ 340 0026 FFF7FEFF 		bl	I2C_I2CMasterWriteByte
+ 341              	.LVL57:
+  92:EEPROM.c      ****     CyDelayCycles(1);
+ 342              		.loc 1 92 0
+ 343 002a 0120     		movs	r0, #1
+ 344 002c FFF7FEFF 		bl	CyDelayCycles
+ 345              	.LVL58:
+  93:EEPROM.c      ****     I2C_I2CMasterWriteByte(((subaddr & 0xFF)));
+ 346              		.loc 1 93 0
+ 347 0030 FF20     		movs	r0, #255
+ 348 0032 2840     		ands	r0, r5
+ 349 0034 FFF7FEFF 		bl	I2C_I2CMasterWriteByte
+ 350              	.LVL59:
+  94:EEPROM.c      ****     CyDelayCycles(1);
+ 351              		.loc 1 94 0
+ 352 0038 0120     		movs	r0, #1
+ 353 003a FFF7FEFF 		bl	CyDelayCycles
+ 354              	.LVL60:
+  95:EEPROM.c      ****     while(len--)
+ 355              		.loc 1 95 0
+ 356 003e 2BE0     		b	.L10
+ 357              	.LVL61:
+ 358              	.L12:
+  96:EEPROM.c      ****     {
+ARM GAS  C:\Users\corne\AppData\Local\Temp\cczZFaNz.s 			page 9
+
+
+  97:EEPROM.c      ****         I2C_I2CMasterWriteByte(*data);
+ 359              		.loc 1 97 0
+ 360 0040 3078     		ldrb	r0, [r6]
+ 361 0042 FFF7FEFF 		bl	I2C_I2CMasterWriteByte
+ 362              	.LVL62:
+  98:EEPROM.c      ****         CyDelayCycles(1);
+ 363              		.loc 1 98 0
+ 364 0046 0120     		movs	r0, #1
+ 365 0048 FFF7FEFF 		bl	CyDelayCycles
+ 366              	.LVL63:
+  99:EEPROM.c      ****         data++;
+ 367              		.loc 1 99 0
+ 368 004c 0136     		adds	r6, r6, #1
+ 369              	.LVL64:
+ 100:EEPROM.c      ****         byteaddr++;
+ 370              		.loc 1 100 0
+ 371 004e 0134     		adds	r4, r4, #1
+ 372              	.LVL65:
+ 373 0050 E4B2     		uxtb	r4, r4
+ 374              	.LVL66:
+ 101:EEPROM.c      ****         if(byteaddr == 32 && len>0)
+ 375              		.loc 1 101 0
+ 376 0052 202C     		cmp	r4, #32
+ 377 0054 1FD1     		bne	.L11
+ 378              		.loc 1 101 0 is_stmt 0 discriminator 1
+ 379 0056 002D     		cmp	r5, #0
+ 380 0058 1DD0     		beq	.L11
+ 381              	.LVL67:
+ 102:EEPROM.c      ****         {
+ 103:EEPROM.c      ****             byteaddr = 0;
+ 104:EEPROM.c      ****             pageaddr++;
+ 382              		.loc 1 104 0 is_stmt 1
+ 383 005a 4346     		mov	r3, r8
+ 384 005c 0133     		adds	r3, r3, #1
+ 385 005e 9BB2     		uxth	r3, r3
+ 386 0060 9846     		mov	r8, r3
+ 387              	.LVL68:
+ 105:EEPROM.c      ****             I2C_I2CMasterSendStop();
+ 388              		.loc 1 105 0
+ 389 0062 FFF7FEFF 		bl	I2C_I2CMasterSendStop
+ 390              	.LVL69:
+ 106:EEPROM.c      ****             CyDelay(7);
+ 391              		.loc 1 106 0
+ 392 0066 0720     		movs	r0, #7
+ 393 0068 FFF7FEFF 		bl	CyDelay
+ 394              	.LVL70:
+ 107:EEPROM.c      ****             I2C_I2CMasterSendStart(addr, I2C_I2C_WRITE_XFER_MODE);
+ 395              		.loc 1 107 0
+ 396 006c 0021     		movs	r1, #0
+ 397 006e 0198     		ldr	r0, [sp, #4]
+ 398 0070 FFF7FEFF 		bl	I2C_I2CMasterSendStart
+ 399              	.LVL71:
+ 108:EEPROM.c      ****             CyDelayCycles(1);
+ 400              		.loc 1 108 0
+ 401 0074 0120     		movs	r0, #1
+ 402 0076 FFF7FEFF 		bl	CyDelayCycles
+ 403              	.LVL72:
+ARM GAS  C:\Users\corne\AppData\Local\Temp\cczZFaNz.s 			page 10
+
+
+ 109:EEPROM.c      ****             subaddr = (pageaddr << 5);
+ 404              		.loc 1 109 0
+ 405 007a 4346     		mov	r3, r8
+ 406 007c 5C01     		lsls	r4, r3, #5
+ 407 007e A4B2     		uxth	r4, r4
+ 408              	.LVL73:
+ 110:EEPROM.c      ****             I2C_I2CMasterWriteByte(((subaddr >> 8) & 0xFF));
+ 409              		.loc 1 110 0
+ 410 0080 200A     		lsrs	r0, r4, #8
+ 411 0082 FFF7FEFF 		bl	I2C_I2CMasterWriteByte
+ 412              	.LVL74:
+ 111:EEPROM.c      ****             CyDelayCycles(1);
+ 413              		.loc 1 111 0
+ 414 0086 0120     		movs	r0, #1
+ 415 0088 FFF7FEFF 		bl	CyDelayCycles
+ 416              	.LVL75:
+ 112:EEPROM.c      ****             I2C_I2CMasterWriteByte(((subaddr & 0xFF)));
+ 417              		.loc 1 112 0
+ 418 008c FF20     		movs	r0, #255
+ 419 008e 2040     		ands	r0, r4
+ 420 0090 FFF7FEFF 		bl	I2C_I2CMasterWriteByte
+ 421              	.LVL76:
+ 103:EEPROM.c      ****             pageaddr++;
+ 422              		.loc 1 103 0
+ 423 0094 0024     		movs	r4, #0
+ 424              	.LVL77:
+ 425              	.L11:
+ 426 0096 2F00     		movs	r7, r5
+ 427              	.LVL78:
+ 428              	.L10:
+  95:EEPROM.c      ****     {
+ 429              		.loc 1 95 0
+ 430 0098 7D1E     		subs	r5, r7, #1
+ 431 009a EDB2     		uxtb	r5, r5
+ 432              	.LVL79:
+ 433 009c 002F     		cmp	r7, #0
+ 434 009e CFD1     		bne	.L12
+ 113:EEPROM.c      ****         }
+ 114:EEPROM.c      ****     }
+ 115:EEPROM.c      ****     I2C_I2CMasterSendStop();
+ 435              		.loc 1 115 0
+ 436 00a0 FFF7FEFF 		bl	I2C_I2CMasterSendStop
+ 437              	.LVL80:
+ 116:EEPROM.c      ****     CyDelay(7);
+ 438              		.loc 1 116 0
+ 439 00a4 0720     		movs	r0, #7
+ 440 00a6 FFF7FEFF 		bl	CyDelay
+ 441              	.LVL81:
+ 117:EEPROM.c      **** }
+ 442              		.loc 1 117 0
+ 443 00aa 02B0     		add	sp, sp, #8
+ 444              		@ sp needed
+ 445              	.LVL82:
+ 446              	.LVL83:
+ 447              	.LVL84:
+ 448              	.LVL85:
+ 449              	.LVL86:
+ARM GAS  C:\Users\corne\AppData\Local\Temp\cczZFaNz.s 			page 11
+
+
+ 450 00ac 04BC     		pop	{r2}
+ 451 00ae 9046     		mov	r8, r2
+ 452 00b0 F0BD     		pop	{r4, r5, r6, r7, pc}
+ 453              		.cfi_endproc
+ 454              	.LFE69:
+ 455              		.size	EEPROM_WriteBuffer, .-EEPROM_WriteBuffer
+ 456 00b2 C046     		.section	.text.EEPROM_ReadBuffer,"ax",%progbits
+ 457              		.align	2
+ 458              		.global	EEPROM_ReadBuffer
+ 459              		.code	16
+ 460              		.thumb_func
+ 461              		.type	EEPROM_ReadBuffer, %function
+ 462              	EEPROM_ReadBuffer:
+ 463              	.LFB70:
+ 118:EEPROM.c      **** 
+ 119:EEPROM.c      **** void EEPROM_ReadBuffer(uint16_t addr, uint16_t subaddr, uint8_t* data, uint8_t len)
+ 120:EEPROM.c      **** {
+ 464              		.loc 1 120 0
+ 465              		.cfi_startproc
+ 466              		@ args = 0, pretend = 0, frame = 8
+ 467              		@ frame_needed = 0, uses_anonymous_args = 0
+ 468              	.LVL87:
+ 469 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 470              		.cfi_def_cfa_offset 20
+ 471              		.cfi_offset 4, -20
+ 472              		.cfi_offset 5, -16
+ 473              		.cfi_offset 6, -12
+ 474              		.cfi_offset 7, -8
+ 475              		.cfi_offset 14, -4
+ 476 0002 4F46     		mov	r7, r9
+ 477 0004 4646     		mov	r6, r8
+ 478 0006 C0B4     		push	{r6, r7}
+ 479              		.cfi_def_cfa_offset 28
+ 480              		.cfi_offset 8, -28
+ 481              		.cfi_offset 9, -24
+ 482 0008 83B0     		sub	sp, sp, #12
+ 483              		.cfi_def_cfa_offset 40
+ 484 000a 0400     		movs	r4, r0
+ 485 000c 8846     		mov	r8, r1
+ 486 000e 1600     		movs	r6, r2
+ 487 0010 1D00     		movs	r5, r3
+ 121:EEPROM.c      ****     uint16_t pageaddr = ((subaddr & 0xFFE0) >> 5);
+ 488              		.loc 1 121 0
+ 489 0012 4B09     		lsrs	r3, r1, #5
+ 490              	.LVL88:
+ 491 0014 9946     		mov	r9, r3
+ 492              	.LVL89:
+ 122:EEPROM.c      ****     uint8_t byteaddr  = (subaddr & 0x1F);
+ 493              		.loc 1 122 0
+ 494 0016 1F27     		movs	r7, #31
+ 495 0018 0F40     		ands	r7, r1
+ 496              	.LVL90:
+ 123:EEPROM.c      ****     I2C_I2CMasterClearReadBuf();
+ 497              		.loc 1 123 0
+ 498 001a FFF7FEFF 		bl	I2C_I2CMasterClearReadBuf
+ 499              	.LVL91:
+ 124:EEPROM.c      ****     I2C_I2CMasterSendStart(addr, I2C_I2C_WRITE_XFER_MODE);
+ARM GAS  C:\Users\corne\AppData\Local\Temp\cczZFaNz.s 			page 12
+
+
+ 500              		.loc 1 124 0
+ 501 001e 0194     		str	r4, [sp, #4]
+ 502 0020 0021     		movs	r1, #0
+ 503 0022 2000     		movs	r0, r4
+ 504 0024 FFF7FEFF 		bl	I2C_I2CMasterSendStart
+ 505              	.LVL92:
+ 125:EEPROM.c      ****     CyDelayCycles(1);
+ 506              		.loc 1 125 0
+ 507 0028 0120     		movs	r0, #1
+ 508 002a FFF7FEFF 		bl	CyDelayCycles
+ 509              	.LVL93:
+ 126:EEPROM.c      ****     I2C_I2CMasterWriteByte(((subaddr >> 8) & 0xFF));
+ 510              		.loc 1 126 0
+ 511 002e 4346     		mov	r3, r8
+ 512 0030 180A     		lsrs	r0, r3, #8
+ 513 0032 FFF7FEFF 		bl	I2C_I2CMasterWriteByte
+ 514              	.LVL94:
+ 127:EEPROM.c      ****     CyDelayCycles(1);
+ 515              		.loc 1 127 0
+ 516 0036 0120     		movs	r0, #1
+ 517 0038 FFF7FEFF 		bl	CyDelayCycles
+ 518              	.LVL95:
+ 128:EEPROM.c      ****     I2C_I2CMasterWriteByte(((subaddr & 0xFF)));
+ 519              		.loc 1 128 0
+ 520 003c FF20     		movs	r0, #255
+ 521 003e 4346     		mov	r3, r8
+ 522 0040 1840     		ands	r0, r3
+ 523 0042 FFF7FEFF 		bl	I2C_I2CMasterWriteByte
+ 524              	.LVL96:
+ 129:EEPROM.c      ****     CyDelayCycles(1);
+ 525              		.loc 1 129 0
+ 526 0046 0120     		movs	r0, #1
+ 527 0048 FFF7FEFF 		bl	CyDelayCycles
+ 528              	.LVL97:
+ 130:EEPROM.c      ****     I2C_I2CMasterSendRestart(addr, I2C_I2C_READ_XFER_MODE);
+ 529              		.loc 1 130 0
+ 530 004c 0121     		movs	r1, #1
+ 531 004e 2000     		movs	r0, r4
+ 532 0050 FFF7FEFF 		bl	I2C_I2CMasterSendRestart
+ 533              	.LVL98:
+ 131:EEPROM.c      ****     CyDelayCycles(1);
+ 534              		.loc 1 131 0
+ 535 0054 0120     		movs	r0, #1
+ 536 0056 FFF7FEFF 		bl	CyDelayCycles
+ 537              	.LVL99:
+ 132:EEPROM.c      ****     while(len--)
+ 538              		.loc 1 132 0
+ 539 005a 3EE0     		b	.L14
+ 540              	.LVL100:
+ 541              	.L18:
+ 133:EEPROM.c      ****     {
+ 134:EEPROM.c      ****         if(len)
+ 542              		.loc 1 134 0
+ 543 005c 002C     		cmp	r4, #0
+ 544 005e 04D0     		beq	.L15
+ 135:EEPROM.c      ****             *data = I2C_I2CMasterReadByte(I2C_I2C_ACK_DATA);
+ 545              		.loc 1 135 0
+ARM GAS  C:\Users\corne\AppData\Local\Temp\cczZFaNz.s 			page 13
+
+
+ 546 0060 0020     		movs	r0, #0
+ 547 0062 FFF7FEFF 		bl	I2C_I2CMasterReadByte
+ 548              	.LVL101:
+ 549 0066 3070     		strb	r0, [r6]
+ 550 0068 03E0     		b	.L16
+ 551              	.L15:
+ 136:EEPROM.c      ****         else
+ 137:EEPROM.c      ****             *data = I2C_I2CMasterReadByte(I2C_I2C_NAK_DATA);
+ 552              		.loc 1 137 0
+ 553 006a 0120     		movs	r0, #1
+ 554 006c FFF7FEFF 		bl	I2C_I2CMasterReadByte
+ 555              	.LVL102:
+ 556 0070 3070     		strb	r0, [r6]
+ 557              	.L16:
+ 138:EEPROM.c      ****         CyDelayCycles(1);
+ 558              		.loc 1 138 0
+ 559 0072 0120     		movs	r0, #1
+ 560 0074 FFF7FEFF 		bl	CyDelayCycles
+ 561              	.LVL103:
+ 139:EEPROM.c      ****         data++;
+ 562              		.loc 1 139 0
+ 563 0078 0136     		adds	r6, r6, #1
+ 564              	.LVL104:
+ 140:EEPROM.c      ****         byteaddr++;
+ 565              		.loc 1 140 0
+ 566 007a 0137     		adds	r7, r7, #1
+ 567              	.LVL105:
+ 568 007c FFB2     		uxtb	r7, r7
+ 569              	.LVL106:
+ 141:EEPROM.c      ****         if(byteaddr == 100 && len>0)
+ 570              		.loc 1 141 0
+ 571 007e 642F     		cmp	r7, #100
+ 572 0080 2AD1     		bne	.L17
+ 573              		.loc 1 141 0 is_stmt 0 discriminator 1
+ 574 0082 002C     		cmp	r4, #0
+ 575 0084 28D0     		beq	.L17
+ 576              	.LVL107:
+ 142:EEPROM.c      ****         {
+ 143:EEPROM.c      ****             byteaddr = 0;
+ 144:EEPROM.c      ****             pageaddr++;
+ 577              		.loc 1 144 0 is_stmt 1
+ 578 0086 4B46     		mov	r3, r9
+ 579 0088 0133     		adds	r3, r3, #1
+ 580 008a 9BB2     		uxth	r3, r3
+ 581 008c 9946     		mov	r9, r3
+ 582              	.LVL108:
+ 145:EEPROM.c      ****             I2C_I2CMasterSendStop();
+ 583              		.loc 1 145 0
+ 584 008e FFF7FEFF 		bl	I2C_I2CMasterSendStop
+ 585              	.LVL109:
+ 146:EEPROM.c      ****             CyDelayCycles(1);
+ 586              		.loc 1 146 0
+ 587 0092 0120     		movs	r0, #1
+ 588 0094 FFF7FEFF 		bl	CyDelayCycles
+ 589              	.LVL110:
+ 147:EEPROM.c      ****             I2C_I2CMasterSendStart(addr, I2C_I2C_WRITE_XFER_MODE);
+ 590              		.loc 1 147 0
+ARM GAS  C:\Users\corne\AppData\Local\Temp\cczZFaNz.s 			page 14
+
+
+ 591 0098 0021     		movs	r1, #0
+ 592 009a 019F     		ldr	r7, [sp, #4]
+ 593 009c 3800     		movs	r0, r7
+ 594 009e FFF7FEFF 		bl	I2C_I2CMasterSendStart
+ 595              	.LVL111:
+ 148:EEPROM.c      ****             CyDelayCycles(1);
+ 596              		.loc 1 148 0
+ 597 00a2 0120     		movs	r0, #1
+ 598 00a4 FFF7FEFF 		bl	CyDelayCycles
+ 599              	.LVL112:
+ 149:EEPROM.c      ****             subaddr = (pageaddr << 5);
+ 600              		.loc 1 149 0
+ 601 00a8 4B46     		mov	r3, r9
+ 602 00aa 5D01     		lsls	r5, r3, #5
+ 603 00ac ADB2     		uxth	r5, r5
+ 604              	.LVL113:
+ 150:EEPROM.c      ****             I2C_I2CMasterWriteByte(((subaddr >> 8) & 0xFF));
+ 605              		.loc 1 150 0
+ 606 00ae 280A     		lsrs	r0, r5, #8
+ 607 00b0 FFF7FEFF 		bl	I2C_I2CMasterWriteByte
+ 608              	.LVL114:
+ 151:EEPROM.c      ****             CyDelayCycles(1);
+ 609              		.loc 1 151 0
+ 610 00b4 0120     		movs	r0, #1
+ 611 00b6 FFF7FEFF 		bl	CyDelayCycles
+ 612              	.LVL115:
+ 152:EEPROM.c      ****             I2C_I2CMasterWriteByte(((subaddr & 0xFF)));
+ 613              		.loc 1 152 0
+ 614 00ba FF20     		movs	r0, #255
+ 615 00bc 2840     		ands	r0, r5
+ 616 00be FFF7FEFF 		bl	I2C_I2CMasterWriteByte
+ 617              	.LVL116:
+ 153:EEPROM.c      ****             CyDelayCycles(1);
+ 618              		.loc 1 153 0
+ 619 00c2 0120     		movs	r0, #1
+ 620 00c4 FFF7FEFF 		bl	CyDelayCycles
+ 621              	.LVL117:
+ 154:EEPROM.c      ****             I2C_I2CMasterSendRestart(addr, I2C_I2C_READ_XFER_MODE);
+ 622              		.loc 1 154 0
+ 623 00c8 0121     		movs	r1, #1
+ 624 00ca 3800     		movs	r0, r7
+ 625 00cc FFF7FEFF 		bl	I2C_I2CMasterSendRestart
+ 626              	.LVL118:
+ 155:EEPROM.c      ****             CyDelayCycles(1);
+ 627              		.loc 1 155 0
+ 628 00d0 0120     		movs	r0, #1
+ 629 00d2 FFF7FEFF 		bl	CyDelayCycles
+ 630              	.LVL119:
+ 143:EEPROM.c      ****             pageaddr++;
+ 631              		.loc 1 143 0
+ 632 00d6 0027     		movs	r7, #0
+ 633              	.LVL120:
+ 634              	.L17:
+ 635 00d8 2500     		movs	r5, r4
+ 636              	.LVL121:
+ 637              	.L14:
+ 132:EEPROM.c      ****     {
+ARM GAS  C:\Users\corne\AppData\Local\Temp\cczZFaNz.s 			page 15
+
+
+ 638              		.loc 1 132 0
+ 639 00da 6C1E     		subs	r4, r5, #1
+ 640 00dc E4B2     		uxtb	r4, r4
+ 641              	.LVL122:
+ 642 00de 002D     		cmp	r5, #0
+ 643 00e0 BCD1     		bne	.L18
+ 156:EEPROM.c      ****         }
+ 157:EEPROM.c      ****     }
+ 158:EEPROM.c      ****     I2C_I2CMasterSendStop();
+ 644              		.loc 1 158 0
+ 645 00e2 FFF7FEFF 		bl	I2C_I2CMasterSendStop
+ 646              	.LVL123:
+ 159:EEPROM.c      **** }
+ 647              		.loc 1 159 0
+ 648 00e6 03B0     		add	sp, sp, #12
+ 649              		@ sp needed
+ 650              	.LVL124:
+ 651              	.LVL125:
+ 652              	.LVL126:
+ 653              	.LVL127:
+ 654              	.LVL128:
+ 655 00e8 0CBC     		pop	{r2, r3}
+ 656 00ea 9046     		mov	r8, r2
+ 657 00ec 9946     		mov	r9, r3
+ 658 00ee F0BD     		pop	{r4, r5, r6, r7, pc}
+ 659              		.cfi_endproc
+ 660              	.LFE70:
+ 661              		.size	EEPROM_ReadBuffer, .-EEPROM_ReadBuffer
+ 662              		.text
+ 663              	.Letext0:
+ 664              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\4.1\\psoc creator\\import\\gnu\\arm\\5.4.
+ 665              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\4.1\\psoc creator\\import\\gnu\\arm\\5.4.
+ 666              		.file 4 "Generated_Source\\PSoC4/EEPROM_WC.h"
+ 667              		.file 5 "Generated_Source\\PSoC4/I2C_I2C.h"
+ 668              		.file 6 "Generated_Source\\PSoC4/CyLib.h"
+ 669              		.section	.debug_info,"",%progbits
+ 670              	.Ldebug_info0:
+ 671 0000 1C080000 		.4byte	0x81c
+ 672 0004 0400     		.2byte	0x4
+ 673 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 674 000a 04       		.byte	0x4
+ 675 000b 01       		.uleb128 0x1
+ 676 000c 01020000 		.4byte	.LASF44
+ 677 0010 0C       		.byte	0xc
+ 678 0011 60010000 		.4byte	.LASF45
+ 679 0015 00000000 		.4byte	.LASF46
+ 680 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 681 001d 00000000 		.4byte	0
+ 682 0021 00000000 		.4byte	.Ldebug_line0
+ 683 0025 02       		.uleb128 0x2
+ 684 0026 01       		.byte	0x1
+ 685 0027 06       		.byte	0x6
+ 686 0028 2A030000 		.4byte	.LASF0
+ 687 002c 03       		.uleb128 0x3
+ 688 002d 74000000 		.4byte	.LASF3
+ 689 0031 02       		.byte	0x2
+ 690 0032 1D       		.byte	0x1d
+ARM GAS  C:\Users\corne\AppData\Local\Temp\cczZFaNz.s 			page 16
+
+
+ 691 0033 37000000 		.4byte	0x37
+ 692 0037 02       		.uleb128 0x2
+ 693 0038 01       		.byte	0x1
+ 694 0039 08       		.byte	0x8
+ 695 003a DD000000 		.4byte	.LASF1
+ 696 003e 02       		.uleb128 0x2
+ 697 003f 02       		.byte	0x2
+ 698 0040 05       		.byte	0x5
+ 699 0041 C2020000 		.4byte	.LASF2
+ 700 0045 03       		.uleb128 0x3
+ 701 0046 69010000 		.4byte	.LASF4
+ 702 004a 02       		.byte	0x2
+ 703 004b 2B       		.byte	0x2b
+ 704 004c 50000000 		.4byte	0x50
+ 705 0050 02       		.uleb128 0x2
+ 706 0051 02       		.byte	0x2
+ 707 0052 07       		.byte	0x7
+ 708 0053 B0000000 		.4byte	.LASF5
+ 709 0057 02       		.uleb128 0x2
+ 710 0058 04       		.byte	0x4
+ 711 0059 05       		.byte	0x5
+ 712 005a 0D030000 		.4byte	.LASF6
+ 713 005e 03       		.uleb128 0x3
+ 714 005f 7B010000 		.4byte	.LASF7
+ 715 0063 02       		.byte	0x2
+ 716 0064 41       		.byte	0x41
+ 717 0065 69000000 		.4byte	0x69
+ 718 0069 02       		.uleb128 0x2
+ 719 006a 04       		.byte	0x4
+ 720 006b 07       		.byte	0x7
+ 721 006c 10010000 		.4byte	.LASF8
+ 722 0070 02       		.uleb128 0x2
+ 723 0071 08       		.byte	0x8
+ 724 0072 05       		.byte	0x5
+ 725 0073 98020000 		.4byte	.LASF9
+ 726 0077 02       		.uleb128 0x2
+ 727 0078 08       		.byte	0x8
+ 728 0079 07       		.byte	0x7
+ 729 007a D1010000 		.4byte	.LASF10
+ 730 007e 04       		.uleb128 0x4
+ 731 007f 04       		.byte	0x4
+ 732 0080 05       		.byte	0x5
+ 733 0081 696E7400 		.ascii	"int\000"
+ 734 0085 02       		.uleb128 0x2
+ 735 0086 04       		.byte	0x4
+ 736 0087 07       		.byte	0x7
+ 737 0088 B2010000 		.4byte	.LASF11
+ 738 008c 03       		.uleb128 0x3
+ 739 008d E8010000 		.4byte	.LASF12
+ 740 0091 03       		.byte	0x3
+ 741 0092 18       		.byte	0x18
+ 742 0093 2C000000 		.4byte	0x2c
+ 743 0097 03       		.uleb128 0x3
+ 744 0098 CC020000 		.4byte	.LASF13
+ 745 009c 03       		.byte	0x3
+ 746 009d 24       		.byte	0x24
+ 747 009e 45000000 		.4byte	0x45
+ARM GAS  C:\Users\corne\AppData\Local\Temp\cczZFaNz.s 			page 17
+
+
+ 748 00a2 03       		.uleb128 0x3
+ 749 00a3 04030000 		.4byte	.LASF14
+ 750 00a7 03       		.byte	0x3
+ 751 00a8 30       		.byte	0x30
+ 752 00a9 5E000000 		.4byte	0x5e
+ 753 00ad 02       		.uleb128 0x2
+ 754 00ae 04       		.byte	0x4
+ 755 00af 04       		.byte	0x4
+ 756 00b0 D2000000 		.4byte	.LASF15
+ 757 00b4 02       		.uleb128 0x2
+ 758 00b5 08       		.byte	0x8
+ 759 00b6 04       		.byte	0x4
+ 760 00b7 74010000 		.4byte	.LASF16
+ 761 00bb 02       		.uleb128 0x2
+ 762 00bc 01       		.byte	0x1
+ 763 00bd 08       		.byte	0x8
+ 764 00be A6020000 		.4byte	.LASF17
+ 765 00c2 02       		.uleb128 0x2
+ 766 00c3 08       		.byte	0x8
+ 767 00c4 04       		.byte	0x4
+ 768 00c5 16030000 		.4byte	.LASF18
+ 769 00c9 02       		.uleb128 0x2
+ 770 00ca 04       		.byte	0x4
+ 771 00cb 07       		.byte	0x7
+ 772 00cc 8F020000 		.4byte	.LASF19
+ 773 00d0 05       		.uleb128 0x5
+ 774 00d1 7E000000 		.4byte	.LASF25
+ 775 00d5 01       		.byte	0x1
+ 776 00d6 12       		.byte	0x12
+ 777 00d7 00000000 		.4byte	.LFB65
+ 778 00db 40000000 		.4byte	.LFE65-.LFB65
+ 779 00df 01       		.uleb128 0x1
+ 780 00e0 9C       		.byte	0x9c
+ 781 00e1 9B010000 		.4byte	0x19b
+ 782 00e5 06       		.uleb128 0x6
+ 783 00e6 38010000 		.4byte	.LASF20
+ 784 00ea 01       		.byte	0x1
+ 785 00eb 12       		.byte	0x12
+ 786 00ec 8C000000 		.4byte	0x8c
+ 787 00f0 00000000 		.4byte	.LLST0
+ 788 00f4 06       		.uleb128 0x6
+ 789 00f5 8E000000 		.4byte	.LASF21
+ 790 00f9 01       		.byte	0x1
+ 791 00fa 12       		.byte	0x12
+ 792 00fb 97000000 		.4byte	0x97
+ 793 00ff 21000000 		.4byte	.LLST1
+ 794 0103 06       		.uleb128 0x6
+ 795 0104 D8000000 		.4byte	.LASF22
+ 796 0108 01       		.byte	0x1
+ 797 0109 12       		.byte	0x12
+ 798 010a 9B010000 		.4byte	0x19b
+ 799 010e 42000000 		.4byte	.LLST2
+ 800 0112 07       		.uleb128 0x7
+ 801 0113 6C656E00 		.ascii	"len\000"
+ 802 0117 01       		.byte	0x1
+ 803 0118 12       		.byte	0x12
+ 804 0119 8C000000 		.4byte	0x8c
+ARM GAS  C:\Users\corne\AppData\Local\Temp\cczZFaNz.s 			page 18
+
+
+ 805 011d 60000000 		.4byte	.LLST3
+ 806 0121 08       		.uleb128 0x8
+ 807 0122 6B000000 		.4byte	.LASF23
+ 808 0126 01       		.byte	0x1
+ 809 0127 17       		.byte	0x17
+ 810 0128 8C000000 		.4byte	0x8c
+ 811 012c AF000000 		.4byte	.LLST4
+ 812 0130 08       		.uleb128 0x8
+ 813 0131 22030000 		.4byte	.LASF24
+ 814 0135 01       		.byte	0x1
+ 815 0136 17       		.byte	0x17
+ 816 0137 8C000000 		.4byte	0x8c
+ 817 013b C2000000 		.4byte	.LLST5
+ 818 013f 09       		.uleb128 0x9
+ 819 0140 10000000 		.4byte	.LVL2
+ 820 0144 AA070000 		.4byte	0x7aa
+ 821 0148 52010000 		.4byte	0x152
+ 822 014c 0A       		.uleb128 0xa
+ 823 014d 01       		.uleb128 0x1
+ 824 014e 50       		.byte	0x50
+ 825 014f 01       		.uleb128 0x1
+ 826 0150 30       		.byte	0x30
+ 827 0151 00       		.byte	0
+ 828 0152 09       		.uleb128 0x9
+ 829 0153 18000000 		.4byte	.LVL3
+ 830 0157 B5070000 		.4byte	0x7b5
+ 831 015b 6B010000 		.4byte	0x16b
+ 832 015f 0A       		.uleb128 0xa
+ 833 0160 01       		.uleb128 0x1
+ 834 0161 50       		.byte	0x50
+ 835 0162 02       		.uleb128 0x2
+ 836 0163 77       		.byte	0x77
+ 837 0164 00       		.sleb128 0
+ 838 0165 0A       		.uleb128 0xa
+ 839 0166 01       		.uleb128 0x1
+ 840 0167 51       		.byte	0x51
+ 841 0168 01       		.uleb128 0x1
+ 842 0169 30       		.byte	0x30
+ 843 016a 00       		.byte	0
+ 844 016b 0B       		.uleb128 0xb
+ 845 016c 20000000 		.4byte	.LVL6
+ 846 0170 C1070000 		.4byte	0x7c1
+ 847 0174 09       		.uleb128 0x9
+ 848 0175 26000000 		.4byte	.LVL7
+ 849 0179 C1070000 		.4byte	0x7c1
+ 850 017d 88010000 		.4byte	0x188
+ 851 0181 0A       		.uleb128 0xa
+ 852 0182 01       		.uleb128 0x1
+ 853 0183 50       		.byte	0x50
+ 854 0184 02       		.uleb128 0x2
+ 855 0185 74       		.byte	0x74
+ 856 0186 00       		.sleb128 0
+ 857 0187 00       		.byte	0
+ 858 0188 0B       		.uleb128 0xb
+ 859 0189 2E000000 		.4byte	.LVL9
+ 860 018d C1070000 		.4byte	0x7c1
+ 861 0191 0B       		.uleb128 0xb
+ARM GAS  C:\Users\corne\AppData\Local\Temp\cczZFaNz.s 			page 19
+
+
+ 862 0192 3E000000 		.4byte	.LVL13
+ 863 0196 CD070000 		.4byte	0x7cd
+ 864 019a 00       		.byte	0
+ 865 019b 0C       		.uleb128 0xc
+ 866 019c 04       		.byte	0x4
+ 867 019d 8C000000 		.4byte	0x8c
+ 868 01a1 0D       		.uleb128 0xd
+ 869 01a2 C3000000 		.4byte	.LASF28
+ 870 01a6 01       		.byte	0x1
+ 871 01a7 25       		.byte	0x25
+ 872 01a8 8C000000 		.4byte	0x8c
+ 873 01ac 00000000 		.4byte	.LFB66
+ 874 01b0 50000000 		.4byte	.LFE66-.LFB66
+ 875 01b4 01       		.uleb128 0x1
+ 876 01b5 9C       		.byte	0x9c
+ 877 01b6 93020000 		.4byte	0x293
+ 878 01ba 06       		.uleb128 0x6
+ 879 01bb 38010000 		.4byte	.LASF20
+ 880 01bf 01       		.byte	0x1
+ 881 01c0 25       		.byte	0x25
+ 882 01c1 8C000000 		.4byte	0x8c
+ 883 01c5 D5000000 		.4byte	.LLST6
+ 884 01c9 06       		.uleb128 0x6
+ 885 01ca 8E000000 		.4byte	.LASF21
+ 886 01ce 01       		.byte	0x1
+ 887 01cf 25       		.byte	0x25
+ 888 01d0 97000000 		.4byte	0x97
+ 889 01d4 F6000000 		.4byte	.LLST7
+ 890 01d8 06       		.uleb128 0x6
+ 891 01d9 D8000000 		.4byte	.LASF22
+ 892 01dd 01       		.byte	0x1
+ 893 01de 25       		.byte	0x25
+ 894 01df 9B010000 		.4byte	0x19b
+ 895 01e3 17010000 		.4byte	.LLST8
+ 896 01e7 07       		.uleb128 0x7
+ 897 01e8 6C656E00 		.ascii	"len\000"
+ 898 01ec 01       		.byte	0x1
+ 899 01ed 25       		.byte	0x25
+ 900 01ee 8C000000 		.4byte	0x8c
+ 901 01f2 35010000 		.4byte	.LLST9
+ 902 01f6 08       		.uleb128 0x8
+ 903 01f7 6B000000 		.4byte	.LASF23
+ 904 01fb 01       		.byte	0x1
+ 905 01fc 29       		.byte	0x29
+ 906 01fd 8C000000 		.4byte	0x8c
+ 907 0201 82010000 		.4byte	.LLST10
+ 908 0205 08       		.uleb128 0x8
+ 909 0206 22030000 		.4byte	.LASF24
+ 910 020a 01       		.byte	0x1
+ 911 020b 29       		.byte	0x29
+ 912 020c 8C000000 		.4byte	0x8c
+ 913 0210 95010000 		.4byte	.LLST11
+ 914 0214 09       		.uleb128 0x9
+ 915 0215 10000000 		.4byte	.LVL19
+ 916 0219 B5070000 		.4byte	0x7b5
+ 917 021d 2D020000 		.4byte	0x22d
+ 918 0221 0A       		.uleb128 0xa
+ARM GAS  C:\Users\corne\AppData\Local\Temp\cczZFaNz.s 			page 20
+
+
+ 919 0222 01       		.uleb128 0x1
+ 920 0223 50       		.byte	0x50
+ 921 0224 02       		.uleb128 0x2
+ 922 0225 77       		.byte	0x77
+ 923 0226 00       		.sleb128 0
+ 924 0227 0A       		.uleb128 0xa
+ 925 0228 01       		.uleb128 0x1
+ 926 0229 51       		.byte	0x51
+ 927 022a 01       		.uleb128 0x1
+ 928 022b 30       		.byte	0x30
+ 929 022c 00       		.byte	0
+ 930 022d 0B       		.uleb128 0xb
+ 931 022e 18000000 		.4byte	.LVL22
+ 932 0232 C1070000 		.4byte	0x7c1
+ 933 0236 09       		.uleb128 0x9
+ 934 0237 1E000000 		.4byte	.LVL23
+ 935 023b C1070000 		.4byte	0x7c1
+ 936 023f 4A020000 		.4byte	0x24a
+ 937 0243 0A       		.uleb128 0xa
+ 938 0244 01       		.uleb128 0x1
+ 939 0245 50       		.byte	0x50
+ 940 0246 02       		.uleb128 0x2
+ 941 0247 76       		.byte	0x76
+ 942 0248 00       		.sleb128 0
+ 943 0249 00       		.byte	0
+ 944 024a 09       		.uleb128 0x9
+ 945 024b 26000000 		.4byte	.LVL24
+ 946 024f D9070000 		.4byte	0x7d9
+ 947 0253 63020000 		.4byte	0x263
+ 948 0257 0A       		.uleb128 0xa
+ 949 0258 01       		.uleb128 0x1
+ 950 0259 50       		.byte	0x50
+ 951 025a 02       		.uleb128 0x2
+ 952 025b 77       		.byte	0x77
+ 953 025c 00       		.sleb128 0
+ 954 025d 0A       		.uleb128 0xa
+ 955 025e 01       		.uleb128 0x1
+ 956 025f 51       		.byte	0x51
+ 957 0260 01       		.uleb128 0x1
+ 958 0261 31       		.byte	0x31
+ 959 0262 00       		.byte	0
+ 960 0263 09       		.uleb128 0x9
+ 961 0264 32000000 		.4byte	.LVL27
+ 962 0268 E5070000 		.4byte	0x7e5
+ 963 026c 76020000 		.4byte	0x276
+ 964 0270 0A       		.uleb128 0xa
+ 965 0271 01       		.uleb128 0x1
+ 966 0272 50       		.byte	0x50
+ 967 0273 01       		.uleb128 0x1
+ 968 0274 30       		.byte	0x30
+ 969 0275 00       		.byte	0
+ 970 0276 09       		.uleb128 0x9
+ 971 0277 46000000 		.4byte	.LVL31
+ 972 027b E5070000 		.4byte	0x7e5
+ 973 027f 89020000 		.4byte	0x289
+ 974 0283 0A       		.uleb128 0xa
+ 975 0284 01       		.uleb128 0x1
+ARM GAS  C:\Users\corne\AppData\Local\Temp\cczZFaNz.s 			page 21
+
+
+ 976 0285 50       		.byte	0x50
+ 977 0286 01       		.uleb128 0x1
+ 978 0287 31       		.byte	0x31
+ 979 0288 00       		.byte	0
+ 980 0289 0B       		.uleb128 0xb
+ 981 028a 4C000000 		.4byte	.LVL32
+ 982 028e CD070000 		.4byte	0x7cd
+ 983 0292 00       		.byte	0
+ 984 0293 05       		.uleb128 0x5
+ 985 0294 F0010000 		.4byte	.LASF26
+ 986 0298 01       		.byte	0x1
+ 987 0299 3C       		.byte	0x3c
+ 988 029a 00000000 		.4byte	.LFB67
+ 989 029e 1C000000 		.4byte	.LFE67-.LFB67
+ 990 02a2 01       		.uleb128 0x1
+ 991 02a3 9C       		.byte	0x9c
+ 992 02a4 FE020000 		.4byte	0x2fe
+ 993 02a8 06       		.uleb128 0x6
+ 994 02a9 38010000 		.4byte	.LASF20
+ 995 02ad 01       		.byte	0x1
+ 996 02ae 3C       		.byte	0x3c
+ 997 02af 97000000 		.4byte	0x97
+ 998 02b3 A8010000 		.4byte	.LLST12
+ 999 02b7 06       		.uleb128 0x6
+ 1000 02b8 8E000000 		.4byte	.LASF21
+ 1001 02bc 01       		.byte	0x1
+ 1002 02bd 3C       		.byte	0x3c
+ 1003 02be 97000000 		.4byte	0x97
+ 1004 02c2 C9010000 		.4byte	.LLST13
+ 1005 02c6 06       		.uleb128 0x6
+ 1006 02c7 D8000000 		.4byte	.LASF22
+ 1007 02cb 01       		.byte	0x1
+ 1008 02cc 3C       		.byte	0x3c
+ 1009 02cd 8C000000 		.4byte	0x8c
+ 1010 02d1 EA010000 		.4byte	.LLST14
+ 1011 02d5 0E       		.uleb128 0xe
+ 1012 02d6 86010000 		.4byte	.LASF27
+ 1013 02da 01       		.byte	0x1
+ 1014 02db 3E       		.byte	0x3e
+ 1015 02dc FE020000 		.4byte	0x2fe
+ 1016 02e0 02       		.uleb128 0x2
+ 1017 02e1 91       		.byte	0x91
+ 1018 02e2 74       		.sleb128 -12
+ 1019 02e3 0F       		.uleb128 0xf
+ 1020 02e4 18000000 		.4byte	.LVL39
+ 1021 02e8 F1070000 		.4byte	0x7f1
+ 1022 02ec 0A       		.uleb128 0xa
+ 1023 02ed 01       		.uleb128 0x1
+ 1024 02ee 51       		.byte	0x51
+ 1025 02ef 02       		.uleb128 0x2
+ 1026 02f0 74       		.byte	0x74
+ 1027 02f1 00       		.sleb128 0
+ 1028 02f2 0A       		.uleb128 0xa
+ 1029 02f3 01       		.uleb128 0x1
+ 1030 02f4 52       		.byte	0x52
+ 1031 02f5 01       		.uleb128 0x1
+ 1032 02f6 33       		.byte	0x33
+ARM GAS  C:\Users\corne\AppData\Local\Temp\cczZFaNz.s 			page 22
+
+
+ 1033 02f7 0A       		.uleb128 0xa
+ 1034 02f8 01       		.uleb128 0x1
+ 1035 02f9 53       		.byte	0x53
+ 1036 02fa 01       		.uleb128 0x1
+ 1037 02fb 30       		.byte	0x30
+ 1038 02fc 00       		.byte	0
+ 1039 02fd 00       		.byte	0
+ 1040 02fe 10       		.uleb128 0x10
+ 1041 02ff 8C000000 		.4byte	0x8c
+ 1042 0303 0E030000 		.4byte	0x30e
+ 1043 0307 11       		.uleb128 0x11
+ 1044 0308 C9000000 		.4byte	0xc9
+ 1045 030c 02       		.byte	0x2
+ 1046 030d 00       		.byte	0
+ 1047 030e 0D       		.uleb128 0xd
+ 1048 030f D5020000 		.4byte	.LASF29
+ 1049 0313 01       		.byte	0x1
+ 1050 0314 47       		.byte	0x47
+ 1051 0315 8C000000 		.4byte	0x8c
+ 1052 0319 00000000 		.4byte	.LFB68
+ 1053 031d 32000000 		.4byte	.LFE68-.LFB68
+ 1054 0321 01       		.uleb128 0x1
+ 1055 0322 9C       		.byte	0x9c
+ 1056 0323 D0030000 		.4byte	0x3d0
+ 1057 0327 06       		.uleb128 0x6
+ 1058 0328 38010000 		.4byte	.LASF20
+ 1059 032c 01       		.byte	0x1
+ 1060 032d 47       		.byte	0x47
+ 1061 032e 97000000 		.4byte	0x97
+ 1062 0332 17020000 		.4byte	.LLST15
+ 1063 0336 06       		.uleb128 0x6
+ 1064 0337 8E000000 		.4byte	.LASF21
+ 1065 033b 01       		.byte	0x1
+ 1066 033c 47       		.byte	0x47
+ 1067 033d 97000000 		.4byte	0x97
+ 1068 0341 38020000 		.4byte	.LLST16
+ 1069 0345 12       		.uleb128 0x12
+ 1070 0346 62756600 		.ascii	"buf\000"
+ 1071 034a 01       		.byte	0x1
+ 1072 034b 49       		.byte	0x49
+ 1073 034c 8C000000 		.4byte	0x8c
+ 1074 0350 59020000 		.4byte	.LLST17
+ 1075 0354 09       		.uleb128 0x9
+ 1076 0355 0C000000 		.4byte	.LVL42
+ 1077 0359 B5070000 		.4byte	0x7b5
+ 1078 035d 6D030000 		.4byte	0x36d
+ 1079 0361 0A       		.uleb128 0xa
+ 1080 0362 01       		.uleb128 0x1
+ 1081 0363 50       		.byte	0x50
+ 1082 0364 02       		.uleb128 0x2
+ 1083 0365 75       		.byte	0x75
+ 1084 0366 00       		.sleb128 0
+ 1085 0367 0A       		.uleb128 0xa
+ 1086 0368 01       		.uleb128 0x1
+ 1087 0369 51       		.byte	0x51
+ 1088 036a 01       		.uleb128 0x1
+ 1089 036b 30       		.byte	0x30
+ARM GAS  C:\Users\corne\AppData\Local\Temp\cczZFaNz.s 			page 23
+
+
+ 1090 036c 00       		.byte	0
+ 1091 036d 09       		.uleb128 0x9
+ 1092 036e 12000000 		.4byte	.LVL43
+ 1093 0372 C1070000 		.4byte	0x7c1
+ 1094 0376 83030000 		.4byte	0x383
+ 1095 037a 0A       		.uleb128 0xa
+ 1096 037b 01       		.uleb128 0x1
+ 1097 037c 50       		.byte	0x50
+ 1098 037d 04       		.uleb128 0x4
+ 1099 037e 74       		.byte	0x74
+ 1100 037f 00       		.sleb128 0
+ 1101 0380 38       		.byte	0x38
+ 1102 0381 25       		.byte	0x25
+ 1103 0382 00       		.byte	0
+ 1104 0383 09       		.uleb128 0x9
+ 1105 0384 1A000000 		.4byte	.LVL44
+ 1106 0388 C1070000 		.4byte	0x7c1
+ 1107 038c 9A030000 		.4byte	0x39a
+ 1108 0390 0A       		.uleb128 0xa
+ 1109 0391 01       		.uleb128 0x1
+ 1110 0392 50       		.byte	0x50
+ 1111 0393 05       		.uleb128 0x5
+ 1112 0394 74       		.byte	0x74
+ 1113 0395 00       		.sleb128 0
+ 1114 0396 08       		.byte	0x8
+ 1115 0397 FF       		.byte	0xff
+ 1116 0398 1A       		.byte	0x1a
+ 1117 0399 00       		.byte	0
+ 1118 039a 09       		.uleb128 0x9
+ 1119 039b 22000000 		.4byte	.LVL45
+ 1120 039f D9070000 		.4byte	0x7d9
+ 1121 03a3 B3030000 		.4byte	0x3b3
+ 1122 03a7 0A       		.uleb128 0xa
+ 1123 03a8 01       		.uleb128 0x1
+ 1124 03a9 50       		.byte	0x50
+ 1125 03aa 02       		.uleb128 0x2
+ 1126 03ab 75       		.byte	0x75
+ 1127 03ac 00       		.sleb128 0
+ 1128 03ad 0A       		.uleb128 0xa
+ 1129 03ae 01       		.uleb128 0x1
+ 1130 03af 51       		.byte	0x51
+ 1131 03b0 01       		.uleb128 0x1
+ 1132 03b1 31       		.byte	0x31
+ 1133 03b2 00       		.byte	0
+ 1134 03b3 09       		.uleb128 0x9
+ 1135 03b4 28000000 		.4byte	.LVL46
+ 1136 03b8 E5070000 		.4byte	0x7e5
+ 1137 03bc C6030000 		.4byte	0x3c6
+ 1138 03c0 0A       		.uleb128 0xa
+ 1139 03c1 01       		.uleb128 0x1
+ 1140 03c2 50       		.byte	0x50
+ 1141 03c3 01       		.uleb128 0x1
+ 1142 03c4 31       		.byte	0x31
+ 1143 03c5 00       		.byte	0
+ 1144 03c6 0B       		.uleb128 0xb
+ 1145 03c7 2E000000 		.4byte	.LVL48
+ 1146 03cb CD070000 		.4byte	0x7cd
+ARM GAS  C:\Users\corne\AppData\Local\Temp\cczZFaNz.s 			page 24
+
+
+ 1147 03cf 00       		.byte	0
+ 1148 03d0 05       		.uleb128 0x5
+ 1149 03d1 4D010000 		.4byte	.LASF30
+ 1150 03d5 01       		.byte	0x1
+ 1151 03d6 54       		.byte	0x54
+ 1152 03d7 00000000 		.4byte	.LFB69
+ 1153 03db B2000000 		.4byte	.LFE69-.LFB69
+ 1154 03df 01       		.uleb128 0x1
+ 1155 03e0 9C       		.byte	0x9c
+ 1156 03e1 7D050000 		.4byte	0x57d
+ 1157 03e5 06       		.uleb128 0x6
+ 1158 03e6 38010000 		.4byte	.LASF20
+ 1159 03ea 01       		.byte	0x1
+ 1160 03eb 54       		.byte	0x54
+ 1161 03ec 97000000 		.4byte	0x97
+ 1162 03f0 77020000 		.4byte	.LLST18
+ 1163 03f4 06       		.uleb128 0x6
+ 1164 03f5 8E000000 		.4byte	.LASF21
+ 1165 03f9 01       		.byte	0x1
+ 1166 03fa 54       		.byte	0x54
+ 1167 03fb 97000000 		.4byte	0x97
+ 1168 03ff 98020000 		.4byte	.LLST19
+ 1169 0403 06       		.uleb128 0x6
+ 1170 0404 D8000000 		.4byte	.LASF22
+ 1171 0408 01       		.byte	0x1
+ 1172 0409 54       		.byte	0x54
+ 1173 040a 9B010000 		.4byte	0x19b
+ 1174 040e C4020000 		.4byte	.LLST20
+ 1175 0412 07       		.uleb128 0x7
+ 1176 0413 6C656E00 		.ascii	"len\000"
+ 1177 0417 01       		.byte	0x1
+ 1178 0418 54       		.byte	0x54
+ 1179 0419 8C000000 		.4byte	0x8c
+ 1180 041d E2020000 		.4byte	.LLST21
+ 1181 0421 08       		.uleb128 0x8
+ 1182 0422 36030000 		.4byte	.LASF31
+ 1183 0426 01       		.byte	0x1
+ 1184 0427 56       		.byte	0x56
+ 1185 0428 97000000 		.4byte	0x97
+ 1186 042c 31030000 		.4byte	.LLST22
+ 1187 0430 08       		.uleb128 0x8
+ 1188 0431 FB020000 		.4byte	.LASF32
+ 1189 0435 01       		.byte	0x1
+ 1190 0436 57       		.byte	0x57
+ 1191 0437 8C000000 		.4byte	0x8c
+ 1192 043b 44030000 		.4byte	.LLST23
+ 1193 043f 09       		.uleb128 0x9
+ 1194 0440 1E000000 		.4byte	.LVL55
+ 1195 0444 B5070000 		.4byte	0x7b5
+ 1196 0448 59040000 		.4byte	0x459
+ 1197 044c 0A       		.uleb128 0xa
+ 1198 044d 01       		.uleb128 0x1
+ 1199 044e 50       		.byte	0x50
+ 1200 044f 03       		.uleb128 0x3
+ 1201 0450 91       		.byte	0x91
+ 1202 0451 64       		.sleb128 -28
+ 1203 0452 06       		.byte	0x6
+ARM GAS  C:\Users\corne\AppData\Local\Temp\cczZFaNz.s 			page 25
+
+
+ 1204 0453 0A       		.uleb128 0xa
+ 1205 0454 01       		.uleb128 0x1
+ 1206 0455 51       		.byte	0x51
+ 1207 0456 01       		.uleb128 0x1
+ 1208 0457 30       		.byte	0x30
+ 1209 0458 00       		.byte	0
+ 1210 0459 09       		.uleb128 0x9
+ 1211 045a 24000000 		.4byte	.LVL56
+ 1212 045e FD070000 		.4byte	0x7fd
+ 1213 0462 6C040000 		.4byte	0x46c
+ 1214 0466 0A       		.uleb128 0xa
+ 1215 0467 01       		.uleb128 0x1
+ 1216 0468 50       		.byte	0x50
+ 1217 0469 01       		.uleb128 0x1
+ 1218 046a 31       		.byte	0x31
+ 1219 046b 00       		.byte	0
+ 1220 046c 09       		.uleb128 0x9
+ 1221 046d 2A000000 		.4byte	.LVL57
+ 1222 0471 C1070000 		.4byte	0x7c1
+ 1223 0475 82040000 		.4byte	0x482
+ 1224 0479 0A       		.uleb128 0xa
+ 1225 047a 01       		.uleb128 0x1
+ 1226 047b 50       		.byte	0x50
+ 1227 047c 04       		.uleb128 0x4
+ 1228 047d 75       		.byte	0x75
+ 1229 047e 00       		.sleb128 0
+ 1230 047f 38       		.byte	0x38
+ 1231 0480 25       		.byte	0x25
+ 1232 0481 00       		.byte	0
+ 1233 0482 09       		.uleb128 0x9
+ 1234 0483 30000000 		.4byte	.LVL58
+ 1235 0487 FD070000 		.4byte	0x7fd
+ 1236 048b 95040000 		.4byte	0x495
+ 1237 048f 0A       		.uleb128 0xa
+ 1238 0490 01       		.uleb128 0x1
+ 1239 0491 50       		.byte	0x50
+ 1240 0492 01       		.uleb128 0x1
+ 1241 0493 31       		.byte	0x31
+ 1242 0494 00       		.byte	0
+ 1243 0495 09       		.uleb128 0x9
+ 1244 0496 38000000 		.4byte	.LVL59
+ 1245 049a C1070000 		.4byte	0x7c1
+ 1246 049e AC040000 		.4byte	0x4ac
+ 1247 04a2 0A       		.uleb128 0xa
+ 1248 04a3 01       		.uleb128 0x1
+ 1249 04a4 50       		.byte	0x50
+ 1250 04a5 05       		.uleb128 0x5
+ 1251 04a6 75       		.byte	0x75
+ 1252 04a7 00       		.sleb128 0
+ 1253 04a8 08       		.byte	0x8
+ 1254 04a9 FF       		.byte	0xff
+ 1255 04aa 1A       		.byte	0x1a
+ 1256 04ab 00       		.byte	0
+ 1257 04ac 09       		.uleb128 0x9
+ 1258 04ad 3E000000 		.4byte	.LVL60
+ 1259 04b1 FD070000 		.4byte	0x7fd
+ 1260 04b5 BF040000 		.4byte	0x4bf
+ARM GAS  C:\Users\corne\AppData\Local\Temp\cczZFaNz.s 			page 26
+
+
+ 1261 04b9 0A       		.uleb128 0xa
+ 1262 04ba 01       		.uleb128 0x1
+ 1263 04bb 50       		.byte	0x50
+ 1264 04bc 01       		.uleb128 0x1
+ 1265 04bd 31       		.byte	0x31
+ 1266 04be 00       		.byte	0
+ 1267 04bf 0B       		.uleb128 0xb
+ 1268 04c0 46000000 		.4byte	.LVL62
+ 1269 04c4 C1070000 		.4byte	0x7c1
+ 1270 04c8 09       		.uleb128 0x9
+ 1271 04c9 4C000000 		.4byte	.LVL63
+ 1272 04cd FD070000 		.4byte	0x7fd
+ 1273 04d1 DB040000 		.4byte	0x4db
+ 1274 04d5 0A       		.uleb128 0xa
+ 1275 04d6 01       		.uleb128 0x1
+ 1276 04d7 50       		.byte	0x50
+ 1277 04d8 01       		.uleb128 0x1
+ 1278 04d9 31       		.byte	0x31
+ 1279 04da 00       		.byte	0
+ 1280 04db 0B       		.uleb128 0xb
+ 1281 04dc 66000000 		.4byte	.LVL69
+ 1282 04e0 CD070000 		.4byte	0x7cd
+ 1283 04e4 09       		.uleb128 0x9
+ 1284 04e5 6C000000 		.4byte	.LVL70
+ 1285 04e9 08080000 		.4byte	0x808
+ 1286 04ed F7040000 		.4byte	0x4f7
+ 1287 04f1 0A       		.uleb128 0xa
+ 1288 04f2 01       		.uleb128 0x1
+ 1289 04f3 50       		.byte	0x50
+ 1290 04f4 01       		.uleb128 0x1
+ 1291 04f5 37       		.byte	0x37
+ 1292 04f6 00       		.byte	0
+ 1293 04f7 09       		.uleb128 0x9
+ 1294 04f8 74000000 		.4byte	.LVL71
+ 1295 04fc B5070000 		.4byte	0x7b5
+ 1296 0500 11050000 		.4byte	0x511
+ 1297 0504 0A       		.uleb128 0xa
+ 1298 0505 01       		.uleb128 0x1
+ 1299 0506 50       		.byte	0x50
+ 1300 0507 03       		.uleb128 0x3
+ 1301 0508 91       		.byte	0x91
+ 1302 0509 64       		.sleb128 -28
+ 1303 050a 06       		.byte	0x6
+ 1304 050b 0A       		.uleb128 0xa
+ 1305 050c 01       		.uleb128 0x1
+ 1306 050d 51       		.byte	0x51
+ 1307 050e 01       		.uleb128 0x1
+ 1308 050f 30       		.byte	0x30
+ 1309 0510 00       		.byte	0
+ 1310 0511 09       		.uleb128 0x9
+ 1311 0512 7A000000 		.4byte	.LVL72
+ 1312 0516 FD070000 		.4byte	0x7fd
+ 1313 051a 24050000 		.4byte	0x524
+ 1314 051e 0A       		.uleb128 0xa
+ 1315 051f 01       		.uleb128 0x1
+ 1316 0520 50       		.byte	0x50
+ 1317 0521 01       		.uleb128 0x1
+ARM GAS  C:\Users\corne\AppData\Local\Temp\cczZFaNz.s 			page 27
+
+
+ 1318 0522 31       		.byte	0x31
+ 1319 0523 00       		.byte	0
+ 1320 0524 09       		.uleb128 0x9
+ 1321 0525 86000000 		.4byte	.LVL74
+ 1322 0529 C1070000 		.4byte	0x7c1
+ 1323 052d 3A050000 		.4byte	0x53a
+ 1324 0531 0A       		.uleb128 0xa
+ 1325 0532 01       		.uleb128 0x1
+ 1326 0533 50       		.byte	0x50
+ 1327 0534 04       		.uleb128 0x4
+ 1328 0535 74       		.byte	0x74
+ 1329 0536 00       		.sleb128 0
+ 1330 0537 38       		.byte	0x38
+ 1331 0538 25       		.byte	0x25
+ 1332 0539 00       		.byte	0
+ 1333 053a 09       		.uleb128 0x9
+ 1334 053b 8C000000 		.4byte	.LVL75
+ 1335 053f FD070000 		.4byte	0x7fd
+ 1336 0543 4D050000 		.4byte	0x54d
+ 1337 0547 0A       		.uleb128 0xa
+ 1338 0548 01       		.uleb128 0x1
+ 1339 0549 50       		.byte	0x50
+ 1340 054a 01       		.uleb128 0x1
+ 1341 054b 31       		.byte	0x31
+ 1342 054c 00       		.byte	0
+ 1343 054d 09       		.uleb128 0x9
+ 1344 054e 94000000 		.4byte	.LVL76
+ 1345 0552 C1070000 		.4byte	0x7c1
+ 1346 0556 64050000 		.4byte	0x564
+ 1347 055a 0A       		.uleb128 0xa
+ 1348 055b 01       		.uleb128 0x1
+ 1349 055c 50       		.byte	0x50
+ 1350 055d 05       		.uleb128 0x5
+ 1351 055e 74       		.byte	0x74
+ 1352 055f 00       		.sleb128 0
+ 1353 0560 08       		.byte	0x8
+ 1354 0561 FF       		.byte	0xff
+ 1355 0562 1A       		.byte	0x1a
+ 1356 0563 00       		.byte	0
+ 1357 0564 0B       		.uleb128 0xb
+ 1358 0565 A4000000 		.4byte	.LVL80
+ 1359 0569 CD070000 		.4byte	0x7cd
+ 1360 056d 0F       		.uleb128 0xf
+ 1361 056e AA000000 		.4byte	.LVL81
+ 1362 0572 08080000 		.4byte	0x808
+ 1363 0576 0A       		.uleb128 0xa
+ 1364 0577 01       		.uleb128 0x1
+ 1365 0578 50       		.byte	0x50
+ 1366 0579 01       		.uleb128 0x1
+ 1367 057a 37       		.byte	0x37
+ 1368 057b 00       		.byte	0
+ 1369 057c 00       		.byte	0
+ 1370 057d 05       		.uleb128 0x5
+ 1371 057e BF010000 		.4byte	.LASF33
+ 1372 0582 01       		.byte	0x1
+ 1373 0583 77       		.byte	0x77
+ 1374 0584 00000000 		.4byte	.LFB70
+ARM GAS  C:\Users\corne\AppData\Local\Temp\cczZFaNz.s 			page 28
+
+
+ 1375 0588 F0000000 		.4byte	.LFE70-.LFB70
+ 1376 058c 01       		.uleb128 0x1
+ 1377 058d 9C       		.byte	0x9c
+ 1378 058e AA070000 		.4byte	0x7aa
+ 1379 0592 06       		.uleb128 0x6
+ 1380 0593 38010000 		.4byte	.LASF20
+ 1381 0597 01       		.byte	0x1
+ 1382 0598 77       		.byte	0x77
+ 1383 0599 97000000 		.4byte	0x97
+ 1384 059d 79030000 		.4byte	.LLST24
+ 1385 05a1 06       		.uleb128 0x6
+ 1386 05a2 8E000000 		.4byte	.LASF21
+ 1387 05a6 01       		.byte	0x1
+ 1388 05a7 77       		.byte	0x77
+ 1389 05a8 97000000 		.4byte	0x97
+ 1390 05ac 9A030000 		.4byte	.LLST25
+ 1391 05b0 06       		.uleb128 0x6
+ 1392 05b1 D8000000 		.4byte	.LASF22
+ 1393 05b5 01       		.byte	0x1
+ 1394 05b6 77       		.byte	0x77
+ 1395 05b7 9B010000 		.4byte	0x19b
+ 1396 05bb C6030000 		.4byte	.LLST26
+ 1397 05bf 07       		.uleb128 0x7
+ 1398 05c0 6C656E00 		.ascii	"len\000"
+ 1399 05c4 01       		.byte	0x1
+ 1400 05c5 77       		.byte	0x77
+ 1401 05c6 8C000000 		.4byte	0x8c
+ 1402 05ca E4030000 		.4byte	.LLST27
+ 1403 05ce 08       		.uleb128 0x8
+ 1404 05cf 36030000 		.4byte	.LASF31
+ 1405 05d3 01       		.byte	0x1
+ 1406 05d4 79       		.byte	0x79
+ 1407 05d5 97000000 		.4byte	0x97
+ 1408 05d9 33040000 		.4byte	.LLST28
+ 1409 05dd 08       		.uleb128 0x8
+ 1410 05de FB020000 		.4byte	.LASF32
+ 1411 05e2 01       		.byte	0x1
+ 1412 05e3 7A       		.byte	0x7a
+ 1413 05e4 8C000000 		.4byte	0x8c
+ 1414 05e8 46040000 		.4byte	.LLST29
+ 1415 05ec 0B       		.uleb128 0xb
+ 1416 05ed 1E000000 		.4byte	.LVL91
+ 1417 05f1 13080000 		.4byte	0x813
+ 1418 05f5 09       		.uleb128 0x9
+ 1419 05f6 28000000 		.4byte	.LVL92
+ 1420 05fa B5070000 		.4byte	0x7b5
+ 1421 05fe 0E060000 		.4byte	0x60e
+ 1422 0602 0A       		.uleb128 0xa
+ 1423 0603 01       		.uleb128 0x1
+ 1424 0604 50       		.byte	0x50
+ 1425 0605 02       		.uleb128 0x2
+ 1426 0606 74       		.byte	0x74
+ 1427 0607 00       		.sleb128 0
+ 1428 0608 0A       		.uleb128 0xa
+ 1429 0609 01       		.uleb128 0x1
+ 1430 060a 51       		.byte	0x51
+ 1431 060b 01       		.uleb128 0x1
+ARM GAS  C:\Users\corne\AppData\Local\Temp\cczZFaNz.s 			page 29
+
+
+ 1432 060c 30       		.byte	0x30
+ 1433 060d 00       		.byte	0
+ 1434 060e 09       		.uleb128 0x9
+ 1435 060f 2E000000 		.4byte	.LVL93
+ 1436 0613 FD070000 		.4byte	0x7fd
+ 1437 0617 21060000 		.4byte	0x621
+ 1438 061b 0A       		.uleb128 0xa
+ 1439 061c 01       		.uleb128 0x1
+ 1440 061d 50       		.byte	0x50
+ 1441 061e 01       		.uleb128 0x1
+ 1442 061f 31       		.byte	0x31
+ 1443 0620 00       		.byte	0
+ 1444 0621 09       		.uleb128 0x9
+ 1445 0622 36000000 		.4byte	.LVL94
+ 1446 0626 C1070000 		.4byte	0x7c1
+ 1447 062a 37060000 		.4byte	0x637
+ 1448 062e 0A       		.uleb128 0xa
+ 1449 062f 01       		.uleb128 0x1
+ 1450 0630 50       		.byte	0x50
+ 1451 0631 04       		.uleb128 0x4
+ 1452 0632 78       		.byte	0x78
+ 1453 0633 00       		.sleb128 0
+ 1454 0634 38       		.byte	0x38
+ 1455 0635 25       		.byte	0x25
+ 1456 0636 00       		.byte	0
+ 1457 0637 09       		.uleb128 0x9
+ 1458 0638 3C000000 		.4byte	.LVL95
+ 1459 063c FD070000 		.4byte	0x7fd
+ 1460 0640 4A060000 		.4byte	0x64a
+ 1461 0644 0A       		.uleb128 0xa
+ 1462 0645 01       		.uleb128 0x1
+ 1463 0646 50       		.byte	0x50
+ 1464 0647 01       		.uleb128 0x1
+ 1465 0648 31       		.byte	0x31
+ 1466 0649 00       		.byte	0
+ 1467 064a 09       		.uleb128 0x9
+ 1468 064b 46000000 		.4byte	.LVL96
+ 1469 064f C1070000 		.4byte	0x7c1
+ 1470 0653 61060000 		.4byte	0x661
+ 1471 0657 0A       		.uleb128 0xa
+ 1472 0658 01       		.uleb128 0x1
+ 1473 0659 50       		.byte	0x50
+ 1474 065a 05       		.uleb128 0x5
+ 1475 065b 78       		.byte	0x78
+ 1476 065c 00       		.sleb128 0
+ 1477 065d 08       		.byte	0x8
+ 1478 065e FF       		.byte	0xff
+ 1479 065f 1A       		.byte	0x1a
+ 1480 0660 00       		.byte	0
+ 1481 0661 09       		.uleb128 0x9
+ 1482 0662 4C000000 		.4byte	.LVL97
+ 1483 0666 FD070000 		.4byte	0x7fd
+ 1484 066a 74060000 		.4byte	0x674
+ 1485 066e 0A       		.uleb128 0xa
+ 1486 066f 01       		.uleb128 0x1
+ 1487 0670 50       		.byte	0x50
+ 1488 0671 01       		.uleb128 0x1
+ARM GAS  C:\Users\corne\AppData\Local\Temp\cczZFaNz.s 			page 30
+
+
+ 1489 0672 31       		.byte	0x31
+ 1490 0673 00       		.byte	0
+ 1491 0674 09       		.uleb128 0x9
+ 1492 0675 54000000 		.4byte	.LVL98
+ 1493 0679 D9070000 		.4byte	0x7d9
+ 1494 067d 8D060000 		.4byte	0x68d
+ 1495 0681 0A       		.uleb128 0xa
+ 1496 0682 01       		.uleb128 0x1
+ 1497 0683 50       		.byte	0x50
+ 1498 0684 02       		.uleb128 0x2
+ 1499 0685 74       		.byte	0x74
+ 1500 0686 00       		.sleb128 0
+ 1501 0687 0A       		.uleb128 0xa
+ 1502 0688 01       		.uleb128 0x1
+ 1503 0689 51       		.byte	0x51
+ 1504 068a 01       		.uleb128 0x1
+ 1505 068b 31       		.byte	0x31
+ 1506 068c 00       		.byte	0
+ 1507 068d 09       		.uleb128 0x9
+ 1508 068e 5A000000 		.4byte	.LVL99
+ 1509 0692 FD070000 		.4byte	0x7fd
+ 1510 0696 A0060000 		.4byte	0x6a0
+ 1511 069a 0A       		.uleb128 0xa
+ 1512 069b 01       		.uleb128 0x1
+ 1513 069c 50       		.byte	0x50
+ 1514 069d 01       		.uleb128 0x1
+ 1515 069e 31       		.byte	0x31
+ 1516 069f 00       		.byte	0
+ 1517 06a0 09       		.uleb128 0x9
+ 1518 06a1 66000000 		.4byte	.LVL101
+ 1519 06a5 E5070000 		.4byte	0x7e5
+ 1520 06a9 B3060000 		.4byte	0x6b3
+ 1521 06ad 0A       		.uleb128 0xa
+ 1522 06ae 01       		.uleb128 0x1
+ 1523 06af 50       		.byte	0x50
+ 1524 06b0 01       		.uleb128 0x1
+ 1525 06b1 30       		.byte	0x30
+ 1526 06b2 00       		.byte	0
+ 1527 06b3 09       		.uleb128 0x9
+ 1528 06b4 70000000 		.4byte	.LVL102
+ 1529 06b8 E5070000 		.4byte	0x7e5
+ 1530 06bc C6060000 		.4byte	0x6c6
+ 1531 06c0 0A       		.uleb128 0xa
+ 1532 06c1 01       		.uleb128 0x1
+ 1533 06c2 50       		.byte	0x50
+ 1534 06c3 01       		.uleb128 0x1
+ 1535 06c4 31       		.byte	0x31
+ 1536 06c5 00       		.byte	0
+ 1537 06c6 09       		.uleb128 0x9
+ 1538 06c7 78000000 		.4byte	.LVL103
+ 1539 06cb FD070000 		.4byte	0x7fd
+ 1540 06cf D9060000 		.4byte	0x6d9
+ 1541 06d3 0A       		.uleb128 0xa
+ 1542 06d4 01       		.uleb128 0x1
+ 1543 06d5 50       		.byte	0x50
+ 1544 06d6 01       		.uleb128 0x1
+ 1545 06d7 31       		.byte	0x31
+ARM GAS  C:\Users\corne\AppData\Local\Temp\cczZFaNz.s 			page 31
+
+
+ 1546 06d8 00       		.byte	0
+ 1547 06d9 0B       		.uleb128 0xb
+ 1548 06da 92000000 		.4byte	.LVL109
+ 1549 06de CD070000 		.4byte	0x7cd
+ 1550 06e2 09       		.uleb128 0x9
+ 1551 06e3 98000000 		.4byte	.LVL110
+ 1552 06e7 FD070000 		.4byte	0x7fd
+ 1553 06eb F5060000 		.4byte	0x6f5
+ 1554 06ef 0A       		.uleb128 0xa
+ 1555 06f0 01       		.uleb128 0x1
+ 1556 06f1 50       		.byte	0x50
+ 1557 06f2 01       		.uleb128 0x1
+ 1558 06f3 31       		.byte	0x31
+ 1559 06f4 00       		.byte	0
+ 1560 06f5 09       		.uleb128 0x9
+ 1561 06f6 A2000000 		.4byte	.LVL111
+ 1562 06fa B5070000 		.4byte	0x7b5
+ 1563 06fe 0E070000 		.4byte	0x70e
+ 1564 0702 0A       		.uleb128 0xa
+ 1565 0703 01       		.uleb128 0x1
+ 1566 0704 50       		.byte	0x50
+ 1567 0705 02       		.uleb128 0x2
+ 1568 0706 77       		.byte	0x77
+ 1569 0707 00       		.sleb128 0
+ 1570 0708 0A       		.uleb128 0xa
+ 1571 0709 01       		.uleb128 0x1
+ 1572 070a 51       		.byte	0x51
+ 1573 070b 01       		.uleb128 0x1
+ 1574 070c 30       		.byte	0x30
+ 1575 070d 00       		.byte	0
+ 1576 070e 09       		.uleb128 0x9
+ 1577 070f A8000000 		.4byte	.LVL112
+ 1578 0713 FD070000 		.4byte	0x7fd
+ 1579 0717 21070000 		.4byte	0x721
+ 1580 071b 0A       		.uleb128 0xa
+ 1581 071c 01       		.uleb128 0x1
+ 1582 071d 50       		.byte	0x50
+ 1583 071e 01       		.uleb128 0x1
+ 1584 071f 31       		.byte	0x31
+ 1585 0720 00       		.byte	0
+ 1586 0721 09       		.uleb128 0x9
+ 1587 0722 B4000000 		.4byte	.LVL114
+ 1588 0726 C1070000 		.4byte	0x7c1
+ 1589 072a 37070000 		.4byte	0x737
+ 1590 072e 0A       		.uleb128 0xa
+ 1591 072f 01       		.uleb128 0x1
+ 1592 0730 50       		.byte	0x50
+ 1593 0731 04       		.uleb128 0x4
+ 1594 0732 75       		.byte	0x75
+ 1595 0733 00       		.sleb128 0
+ 1596 0734 38       		.byte	0x38
+ 1597 0735 25       		.byte	0x25
+ 1598 0736 00       		.byte	0
+ 1599 0737 09       		.uleb128 0x9
+ 1600 0738 BA000000 		.4byte	.LVL115
+ 1601 073c FD070000 		.4byte	0x7fd
+ 1602 0740 4A070000 		.4byte	0x74a
+ARM GAS  C:\Users\corne\AppData\Local\Temp\cczZFaNz.s 			page 32
+
+
+ 1603 0744 0A       		.uleb128 0xa
+ 1604 0745 01       		.uleb128 0x1
+ 1605 0746 50       		.byte	0x50
+ 1606 0747 01       		.uleb128 0x1
+ 1607 0748 31       		.byte	0x31
+ 1608 0749 00       		.byte	0
+ 1609 074a 09       		.uleb128 0x9
+ 1610 074b C2000000 		.4byte	.LVL116
+ 1611 074f C1070000 		.4byte	0x7c1
+ 1612 0753 61070000 		.4byte	0x761
+ 1613 0757 0A       		.uleb128 0xa
+ 1614 0758 01       		.uleb128 0x1
+ 1615 0759 50       		.byte	0x50
+ 1616 075a 05       		.uleb128 0x5
+ 1617 075b 75       		.byte	0x75
+ 1618 075c 00       		.sleb128 0
+ 1619 075d 08       		.byte	0x8
+ 1620 075e FF       		.byte	0xff
+ 1621 075f 1A       		.byte	0x1a
+ 1622 0760 00       		.byte	0
+ 1623 0761 09       		.uleb128 0x9
+ 1624 0762 C8000000 		.4byte	.LVL117
+ 1625 0766 FD070000 		.4byte	0x7fd
+ 1626 076a 74070000 		.4byte	0x774
+ 1627 076e 0A       		.uleb128 0xa
+ 1628 076f 01       		.uleb128 0x1
+ 1629 0770 50       		.byte	0x50
+ 1630 0771 01       		.uleb128 0x1
+ 1631 0772 31       		.byte	0x31
+ 1632 0773 00       		.byte	0
+ 1633 0774 09       		.uleb128 0x9
+ 1634 0775 D0000000 		.4byte	.LVL118
+ 1635 0779 D9070000 		.4byte	0x7d9
+ 1636 077d 8D070000 		.4byte	0x78d
+ 1637 0781 0A       		.uleb128 0xa
+ 1638 0782 01       		.uleb128 0x1
+ 1639 0783 50       		.byte	0x50
+ 1640 0784 02       		.uleb128 0x2
+ 1641 0785 77       		.byte	0x77
+ 1642 0786 00       		.sleb128 0
+ 1643 0787 0A       		.uleb128 0xa
+ 1644 0788 01       		.uleb128 0x1
+ 1645 0789 51       		.byte	0x51
+ 1646 078a 01       		.uleb128 0x1
+ 1647 078b 31       		.byte	0x31
+ 1648 078c 00       		.byte	0
+ 1649 078d 09       		.uleb128 0x9
+ 1650 078e D6000000 		.4byte	.LVL119
+ 1651 0792 FD070000 		.4byte	0x7fd
+ 1652 0796 A0070000 		.4byte	0x7a0
+ 1653 079a 0A       		.uleb128 0xa
+ 1654 079b 01       		.uleb128 0x1
+ 1655 079c 50       		.byte	0x50
+ 1656 079d 01       		.uleb128 0x1
+ 1657 079e 31       		.byte	0x31
+ 1658 079f 00       		.byte	0
+ 1659 07a0 0B       		.uleb128 0xb
+ARM GAS  C:\Users\corne\AppData\Local\Temp\cczZFaNz.s 			page 33
+
+
+ 1660 07a1 E6000000 		.4byte	.LVL123
+ 1661 07a5 CD070000 		.4byte	0x7cd
+ 1662 07a9 00       		.byte	0
+ 1663 07aa 13       		.uleb128 0x13
+ 1664 07ab 3D010000 		.4byte	.LASF34
+ 1665 07af 3D010000 		.4byte	.LASF34
+ 1666 07b3 04       		.byte	0x4
+ 1667 07b4 33       		.byte	0x33
+ 1668 07b5 14       		.uleb128 0x14
+ 1669 07b6 EB000000 		.4byte	.LASF35
+ 1670 07ba EB000000 		.4byte	.LASF35
+ 1671 07be 05       		.byte	0x5
+ 1672 07bf 1B01     		.2byte	0x11b
+ 1673 07c1 14       		.uleb128 0x14
+ 1674 07c2 AB020000 		.4byte	.LASF36
+ 1675 07c6 AB020000 		.4byte	.LASF36
+ 1676 07ca 05       		.byte	0x5
+ 1677 07cb 1E01     		.2byte	0x11e
+ 1678 07cd 14       		.uleb128 0x14
+ 1679 07ce 47030000 		.4byte	.LASF37
+ 1680 07d2 47030000 		.4byte	.LASF37
+ 1681 07d6 05       		.byte	0x5
+ 1682 07d7 1D01     		.2byte	0x11d
+ 1683 07d9 14       		.uleb128 0x14
+ 1684 07da 99010000 		.4byte	.LASF38
+ 1685 07de 99010000 		.4byte	.LASF38
+ 1686 07e2 05       		.byte	0x5
+ 1687 07e3 1C01     		.2byte	0x11c
+ 1688 07e5 14       		.uleb128 0x14
+ 1689 07e6 E5020000 		.4byte	.LASF39
+ 1690 07ea E5020000 		.4byte	.LASF39
+ 1691 07ee 05       		.byte	0x5
+ 1692 07ef 1F01     		.2byte	0x11f
+ 1693 07f1 14       		.uleb128 0x14
+ 1694 07f2 22010000 		.4byte	.LASF40
+ 1695 07f6 22010000 		.4byte	.LASF40
+ 1696 07fa 05       		.byte	0x5
+ 1697 07fb 1301     		.2byte	0x113
+ 1698 07fd 13       		.uleb128 0x13
+ 1699 07fe 02010000 		.4byte	.LASF41
+ 1700 0802 02010000 		.4byte	.LASF41
+ 1701 0806 06       		.byte	0x6
+ 1702 0807 DC       		.byte	0xdc
+ 1703 0808 13       		.uleb128 0x13
+ 1704 0809 3F030000 		.4byte	.LASF42
+ 1705 080d 3F030000 		.4byte	.LASF42
+ 1706 0811 06       		.byte	0x6
+ 1707 0812 D9       		.byte	0xd9
+ 1708 0813 14       		.uleb128 0x14
+ 1709 0814 96000000 		.4byte	.LASF43
+ 1710 0818 96000000 		.4byte	.LASF43
+ 1711 081c 05       		.byte	0x5
+ 1712 081d 1701     		.2byte	0x117
+ 1713 081f 00       		.byte	0
+ 1714              		.section	.debug_abbrev,"",%progbits
+ 1715              	.Ldebug_abbrev0:
+ 1716 0000 01       		.uleb128 0x1
+ARM GAS  C:\Users\corne\AppData\Local\Temp\cczZFaNz.s 			page 34
+
+
+ 1717 0001 11       		.uleb128 0x11
+ 1718 0002 01       		.byte	0x1
+ 1719 0003 25       		.uleb128 0x25
+ 1720 0004 0E       		.uleb128 0xe
+ 1721 0005 13       		.uleb128 0x13
+ 1722 0006 0B       		.uleb128 0xb
+ 1723 0007 03       		.uleb128 0x3
+ 1724 0008 0E       		.uleb128 0xe
+ 1725 0009 1B       		.uleb128 0x1b
+ 1726 000a 0E       		.uleb128 0xe
+ 1727 000b 55       		.uleb128 0x55
+ 1728 000c 17       		.uleb128 0x17
+ 1729 000d 11       		.uleb128 0x11
+ 1730 000e 01       		.uleb128 0x1
+ 1731 000f 10       		.uleb128 0x10
+ 1732 0010 17       		.uleb128 0x17
+ 1733 0011 00       		.byte	0
+ 1734 0012 00       		.byte	0
+ 1735 0013 02       		.uleb128 0x2
+ 1736 0014 24       		.uleb128 0x24
+ 1737 0015 00       		.byte	0
+ 1738 0016 0B       		.uleb128 0xb
+ 1739 0017 0B       		.uleb128 0xb
+ 1740 0018 3E       		.uleb128 0x3e
+ 1741 0019 0B       		.uleb128 0xb
+ 1742 001a 03       		.uleb128 0x3
+ 1743 001b 0E       		.uleb128 0xe
+ 1744 001c 00       		.byte	0
+ 1745 001d 00       		.byte	0
+ 1746 001e 03       		.uleb128 0x3
+ 1747 001f 16       		.uleb128 0x16
+ 1748 0020 00       		.byte	0
+ 1749 0021 03       		.uleb128 0x3
+ 1750 0022 0E       		.uleb128 0xe
+ 1751 0023 3A       		.uleb128 0x3a
+ 1752 0024 0B       		.uleb128 0xb
+ 1753 0025 3B       		.uleb128 0x3b
+ 1754 0026 0B       		.uleb128 0xb
+ 1755 0027 49       		.uleb128 0x49
+ 1756 0028 13       		.uleb128 0x13
+ 1757 0029 00       		.byte	0
+ 1758 002a 00       		.byte	0
+ 1759 002b 04       		.uleb128 0x4
+ 1760 002c 24       		.uleb128 0x24
+ 1761 002d 00       		.byte	0
+ 1762 002e 0B       		.uleb128 0xb
+ 1763 002f 0B       		.uleb128 0xb
+ 1764 0030 3E       		.uleb128 0x3e
+ 1765 0031 0B       		.uleb128 0xb
+ 1766 0032 03       		.uleb128 0x3
+ 1767 0033 08       		.uleb128 0x8
+ 1768 0034 00       		.byte	0
+ 1769 0035 00       		.byte	0
+ 1770 0036 05       		.uleb128 0x5
+ 1771 0037 2E       		.uleb128 0x2e
+ 1772 0038 01       		.byte	0x1
+ 1773 0039 3F       		.uleb128 0x3f
+ARM GAS  C:\Users\corne\AppData\Local\Temp\cczZFaNz.s 			page 35
+
+
+ 1774 003a 19       		.uleb128 0x19
+ 1775 003b 03       		.uleb128 0x3
+ 1776 003c 0E       		.uleb128 0xe
+ 1777 003d 3A       		.uleb128 0x3a
+ 1778 003e 0B       		.uleb128 0xb
+ 1779 003f 3B       		.uleb128 0x3b
+ 1780 0040 0B       		.uleb128 0xb
+ 1781 0041 27       		.uleb128 0x27
+ 1782 0042 19       		.uleb128 0x19
+ 1783 0043 11       		.uleb128 0x11
+ 1784 0044 01       		.uleb128 0x1
+ 1785 0045 12       		.uleb128 0x12
+ 1786 0046 06       		.uleb128 0x6
+ 1787 0047 40       		.uleb128 0x40
+ 1788 0048 18       		.uleb128 0x18
+ 1789 0049 9742     		.uleb128 0x2117
+ 1790 004b 19       		.uleb128 0x19
+ 1791 004c 01       		.uleb128 0x1
+ 1792 004d 13       		.uleb128 0x13
+ 1793 004e 00       		.byte	0
+ 1794 004f 00       		.byte	0
+ 1795 0050 06       		.uleb128 0x6
+ 1796 0051 05       		.uleb128 0x5
+ 1797 0052 00       		.byte	0
+ 1798 0053 03       		.uleb128 0x3
+ 1799 0054 0E       		.uleb128 0xe
+ 1800 0055 3A       		.uleb128 0x3a
+ 1801 0056 0B       		.uleb128 0xb
+ 1802 0057 3B       		.uleb128 0x3b
+ 1803 0058 0B       		.uleb128 0xb
+ 1804 0059 49       		.uleb128 0x49
+ 1805 005a 13       		.uleb128 0x13
+ 1806 005b 02       		.uleb128 0x2
+ 1807 005c 17       		.uleb128 0x17
+ 1808 005d 00       		.byte	0
+ 1809 005e 00       		.byte	0
+ 1810 005f 07       		.uleb128 0x7
+ 1811 0060 05       		.uleb128 0x5
+ 1812 0061 00       		.byte	0
+ 1813 0062 03       		.uleb128 0x3
+ 1814 0063 08       		.uleb128 0x8
+ 1815 0064 3A       		.uleb128 0x3a
+ 1816 0065 0B       		.uleb128 0xb
+ 1817 0066 3B       		.uleb128 0x3b
+ 1818 0067 0B       		.uleb128 0xb
+ 1819 0068 49       		.uleb128 0x49
+ 1820 0069 13       		.uleb128 0x13
+ 1821 006a 02       		.uleb128 0x2
+ 1822 006b 17       		.uleb128 0x17
+ 1823 006c 00       		.byte	0
+ 1824 006d 00       		.byte	0
+ 1825 006e 08       		.uleb128 0x8
+ 1826 006f 34       		.uleb128 0x34
+ 1827 0070 00       		.byte	0
+ 1828 0071 03       		.uleb128 0x3
+ 1829 0072 0E       		.uleb128 0xe
+ 1830 0073 3A       		.uleb128 0x3a
+ARM GAS  C:\Users\corne\AppData\Local\Temp\cczZFaNz.s 			page 36
+
+
+ 1831 0074 0B       		.uleb128 0xb
+ 1832 0075 3B       		.uleb128 0x3b
+ 1833 0076 0B       		.uleb128 0xb
+ 1834 0077 49       		.uleb128 0x49
+ 1835 0078 13       		.uleb128 0x13
+ 1836 0079 02       		.uleb128 0x2
+ 1837 007a 17       		.uleb128 0x17
+ 1838 007b 00       		.byte	0
+ 1839 007c 00       		.byte	0
+ 1840 007d 09       		.uleb128 0x9
+ 1841 007e 898201   		.uleb128 0x4109
+ 1842 0081 01       		.byte	0x1
+ 1843 0082 11       		.uleb128 0x11
+ 1844 0083 01       		.uleb128 0x1
+ 1845 0084 31       		.uleb128 0x31
+ 1846 0085 13       		.uleb128 0x13
+ 1847 0086 01       		.uleb128 0x1
+ 1848 0087 13       		.uleb128 0x13
+ 1849 0088 00       		.byte	0
+ 1850 0089 00       		.byte	0
+ 1851 008a 0A       		.uleb128 0xa
+ 1852 008b 8A8201   		.uleb128 0x410a
+ 1853 008e 00       		.byte	0
+ 1854 008f 02       		.uleb128 0x2
+ 1855 0090 18       		.uleb128 0x18
+ 1856 0091 9142     		.uleb128 0x2111
+ 1857 0093 18       		.uleb128 0x18
+ 1858 0094 00       		.byte	0
+ 1859 0095 00       		.byte	0
+ 1860 0096 0B       		.uleb128 0xb
+ 1861 0097 898201   		.uleb128 0x4109
+ 1862 009a 00       		.byte	0
+ 1863 009b 11       		.uleb128 0x11
+ 1864 009c 01       		.uleb128 0x1
+ 1865 009d 31       		.uleb128 0x31
+ 1866 009e 13       		.uleb128 0x13
+ 1867 009f 00       		.byte	0
+ 1868 00a0 00       		.byte	0
+ 1869 00a1 0C       		.uleb128 0xc
+ 1870 00a2 0F       		.uleb128 0xf
+ 1871 00a3 00       		.byte	0
+ 1872 00a4 0B       		.uleb128 0xb
+ 1873 00a5 0B       		.uleb128 0xb
+ 1874 00a6 49       		.uleb128 0x49
+ 1875 00a7 13       		.uleb128 0x13
+ 1876 00a8 00       		.byte	0
+ 1877 00a9 00       		.byte	0
+ 1878 00aa 0D       		.uleb128 0xd
+ 1879 00ab 2E       		.uleb128 0x2e
+ 1880 00ac 01       		.byte	0x1
+ 1881 00ad 3F       		.uleb128 0x3f
+ 1882 00ae 19       		.uleb128 0x19
+ 1883 00af 03       		.uleb128 0x3
+ 1884 00b0 0E       		.uleb128 0xe
+ 1885 00b1 3A       		.uleb128 0x3a
+ 1886 00b2 0B       		.uleb128 0xb
+ 1887 00b3 3B       		.uleb128 0x3b
+ARM GAS  C:\Users\corne\AppData\Local\Temp\cczZFaNz.s 			page 37
+
+
+ 1888 00b4 0B       		.uleb128 0xb
+ 1889 00b5 27       		.uleb128 0x27
+ 1890 00b6 19       		.uleb128 0x19
+ 1891 00b7 49       		.uleb128 0x49
+ 1892 00b8 13       		.uleb128 0x13
+ 1893 00b9 11       		.uleb128 0x11
+ 1894 00ba 01       		.uleb128 0x1
+ 1895 00bb 12       		.uleb128 0x12
+ 1896 00bc 06       		.uleb128 0x6
+ 1897 00bd 40       		.uleb128 0x40
+ 1898 00be 18       		.uleb128 0x18
+ 1899 00bf 9742     		.uleb128 0x2117
+ 1900 00c1 19       		.uleb128 0x19
+ 1901 00c2 01       		.uleb128 0x1
+ 1902 00c3 13       		.uleb128 0x13
+ 1903 00c4 00       		.byte	0
+ 1904 00c5 00       		.byte	0
+ 1905 00c6 0E       		.uleb128 0xe
+ 1906 00c7 34       		.uleb128 0x34
+ 1907 00c8 00       		.byte	0
+ 1908 00c9 03       		.uleb128 0x3
+ 1909 00ca 0E       		.uleb128 0xe
+ 1910 00cb 3A       		.uleb128 0x3a
+ 1911 00cc 0B       		.uleb128 0xb
+ 1912 00cd 3B       		.uleb128 0x3b
+ 1913 00ce 0B       		.uleb128 0xb
+ 1914 00cf 49       		.uleb128 0x49
+ 1915 00d0 13       		.uleb128 0x13
+ 1916 00d1 02       		.uleb128 0x2
+ 1917 00d2 18       		.uleb128 0x18
+ 1918 00d3 00       		.byte	0
+ 1919 00d4 00       		.byte	0
+ 1920 00d5 0F       		.uleb128 0xf
+ 1921 00d6 898201   		.uleb128 0x4109
+ 1922 00d9 01       		.byte	0x1
+ 1923 00da 11       		.uleb128 0x11
+ 1924 00db 01       		.uleb128 0x1
+ 1925 00dc 31       		.uleb128 0x31
+ 1926 00dd 13       		.uleb128 0x13
+ 1927 00de 00       		.byte	0
+ 1928 00df 00       		.byte	0
+ 1929 00e0 10       		.uleb128 0x10
+ 1930 00e1 01       		.uleb128 0x1
+ 1931 00e2 01       		.byte	0x1
+ 1932 00e3 49       		.uleb128 0x49
+ 1933 00e4 13       		.uleb128 0x13
+ 1934 00e5 01       		.uleb128 0x1
+ 1935 00e6 13       		.uleb128 0x13
+ 1936 00e7 00       		.byte	0
+ 1937 00e8 00       		.byte	0
+ 1938 00e9 11       		.uleb128 0x11
+ 1939 00ea 21       		.uleb128 0x21
+ 1940 00eb 00       		.byte	0
+ 1941 00ec 49       		.uleb128 0x49
+ 1942 00ed 13       		.uleb128 0x13
+ 1943 00ee 2F       		.uleb128 0x2f
+ 1944 00ef 0B       		.uleb128 0xb
+ARM GAS  C:\Users\corne\AppData\Local\Temp\cczZFaNz.s 			page 38
+
+
+ 1945 00f0 00       		.byte	0
+ 1946 00f1 00       		.byte	0
+ 1947 00f2 12       		.uleb128 0x12
+ 1948 00f3 34       		.uleb128 0x34
+ 1949 00f4 00       		.byte	0
+ 1950 00f5 03       		.uleb128 0x3
+ 1951 00f6 08       		.uleb128 0x8
+ 1952 00f7 3A       		.uleb128 0x3a
+ 1953 00f8 0B       		.uleb128 0xb
+ 1954 00f9 3B       		.uleb128 0x3b
+ 1955 00fa 0B       		.uleb128 0xb
+ 1956 00fb 49       		.uleb128 0x49
+ 1957 00fc 13       		.uleb128 0x13
+ 1958 00fd 02       		.uleb128 0x2
+ 1959 00fe 17       		.uleb128 0x17
+ 1960 00ff 00       		.byte	0
+ 1961 0100 00       		.byte	0
+ 1962 0101 13       		.uleb128 0x13
+ 1963 0102 2E       		.uleb128 0x2e
+ 1964 0103 00       		.byte	0
+ 1965 0104 3F       		.uleb128 0x3f
+ 1966 0105 19       		.uleb128 0x19
+ 1967 0106 3C       		.uleb128 0x3c
+ 1968 0107 19       		.uleb128 0x19
+ 1969 0108 6E       		.uleb128 0x6e
+ 1970 0109 0E       		.uleb128 0xe
+ 1971 010a 03       		.uleb128 0x3
+ 1972 010b 0E       		.uleb128 0xe
+ 1973 010c 3A       		.uleb128 0x3a
+ 1974 010d 0B       		.uleb128 0xb
+ 1975 010e 3B       		.uleb128 0x3b
+ 1976 010f 0B       		.uleb128 0xb
+ 1977 0110 00       		.byte	0
+ 1978 0111 00       		.byte	0
+ 1979 0112 14       		.uleb128 0x14
+ 1980 0113 2E       		.uleb128 0x2e
+ 1981 0114 00       		.byte	0
+ 1982 0115 3F       		.uleb128 0x3f
+ 1983 0116 19       		.uleb128 0x19
+ 1984 0117 3C       		.uleb128 0x3c
+ 1985 0118 19       		.uleb128 0x19
+ 1986 0119 6E       		.uleb128 0x6e
+ 1987 011a 0E       		.uleb128 0xe
+ 1988 011b 03       		.uleb128 0x3
+ 1989 011c 0E       		.uleb128 0xe
+ 1990 011d 3A       		.uleb128 0x3a
+ 1991 011e 0B       		.uleb128 0xb
+ 1992 011f 3B       		.uleb128 0x3b
+ 1993 0120 05       		.uleb128 0x5
+ 1994 0121 00       		.byte	0
+ 1995 0122 00       		.byte	0
+ 1996 0123 00       		.byte	0
+ 1997              		.section	.debug_loc,"",%progbits
+ 1998              	.Ldebug_loc0:
+ 1999              	.LLST0:
+ 2000 0000 00000000 		.4byte	.LVL0
+ 2001 0004 0C000000 		.4byte	.LVL1
+ARM GAS  C:\Users\corne\AppData\Local\Temp\cczZFaNz.s 			page 39
+
+
+ 2002 0008 0100     		.2byte	0x1
+ 2003 000a 50       		.byte	0x50
+ 2004 000b 0C000000 		.4byte	.LVL1
+ 2005 000f 40000000 		.4byte	.LFE65
+ 2006 0013 0400     		.2byte	0x4
+ 2007 0015 F3       		.byte	0xf3
+ 2008 0016 01       		.uleb128 0x1
+ 2009 0017 50       		.byte	0x50
+ 2010 0018 9F       		.byte	0x9f
+ 2011 0019 00000000 		.4byte	0
+ 2012 001d 00000000 		.4byte	0
+ 2013              	.LLST1:
+ 2014 0021 00000000 		.4byte	.LVL0
+ 2015 0025 0F000000 		.4byte	.LVL2-1
+ 2016 0029 0100     		.2byte	0x1
+ 2017 002b 51       		.byte	0x51
+ 2018 002c 0F000000 		.4byte	.LVL2-1
+ 2019 0030 40000000 		.4byte	.LFE65
+ 2020 0034 0400     		.2byte	0x4
+ 2021 0036 F3       		.byte	0xf3
+ 2022 0037 01       		.uleb128 0x1
+ 2023 0038 51       		.byte	0x51
+ 2024 0039 9F       		.byte	0x9f
+ 2025 003a 00000000 		.4byte	0
+ 2026 003e 00000000 		.4byte	0
+ 2027              	.LLST2:
+ 2028 0042 00000000 		.4byte	.LVL0
+ 2029 0046 0F000000 		.4byte	.LVL2-1
+ 2030 004a 0100     		.2byte	0x1
+ 2031 004c 52       		.byte	0x52
+ 2032 004d 0F000000 		.4byte	.LVL2-1
+ 2033 0051 3E000000 		.4byte	.LVL16
+ 2034 0055 0100     		.2byte	0x1
+ 2035 0057 56       		.byte	0x56
+ 2036 0058 00000000 		.4byte	0
+ 2037 005c 00000000 		.4byte	0
+ 2038              	.LLST3:
+ 2039 0060 00000000 		.4byte	.LVL0
+ 2040 0064 0F000000 		.4byte	.LVL2-1
+ 2041 0068 0100     		.2byte	0x1
+ 2042 006a 53       		.byte	0x53
+ 2043 006b 0F000000 		.4byte	.LVL2-1
+ 2044 006f 28000000 		.4byte	.LVL8
+ 2045 0073 0400     		.2byte	0x4
+ 2046 0075 F3       		.byte	0xf3
+ 2047 0076 01       		.uleb128 0x1
+ 2048 0077 53       		.byte	0x53
+ 2049 0078 9F       		.byte	0x9f
+ 2050 0079 28000000 		.4byte	.LVL8
+ 2051 007d 32000000 		.4byte	.LVL11
+ 2052 0081 0100     		.2byte	0x1
+ 2053 0083 54       		.byte	0x54
+ 2054 0084 32000000 		.4byte	.LVL11
+ 2055 0088 36000000 		.4byte	.LVL12
+ 2056 008c 0100     		.2byte	0x1
+ 2057 008e 55       		.byte	0x55
+ 2058 008f 36000000 		.4byte	.LVL12
+ARM GAS  C:\Users\corne\AppData\Local\Temp\cczZFaNz.s 			page 40
+
+
+ 2059 0093 3E000000 		.4byte	.LVL14
+ 2060 0097 0100     		.2byte	0x1
+ 2061 0099 54       		.byte	0x54
+ 2062 009a 3E000000 		.4byte	.LVL14
+ 2063 009e 3E000000 		.4byte	.LVL15
+ 2064 00a2 0300     		.2byte	0x3
+ 2065 00a4 75       		.byte	0x75
+ 2066 00a5 7F       		.sleb128 -1
+ 2067 00a6 9F       		.byte	0x9f
+ 2068 00a7 00000000 		.4byte	0
+ 2069 00ab 00000000 		.4byte	0
+ 2070              	.LLST4:
+ 2071 00af 1A000000 		.4byte	.LVL4
+ 2072 00b3 1F000000 		.4byte	.LVL6-1
+ 2073 00b7 0100     		.2byte	0x1
+ 2074 00b9 50       		.byte	0x50
+ 2075 00ba 00000000 		.4byte	0
+ 2076 00be 00000000 		.4byte	0
+ 2077              	.LLST5:
+ 2078 00c2 1C000000 		.4byte	.LVL5
+ 2079 00c6 28000000 		.4byte	.LVL8
+ 2080 00ca 0100     		.2byte	0x1
+ 2081 00cc 54       		.byte	0x54
+ 2082 00cd 00000000 		.4byte	0
+ 2083 00d1 00000000 		.4byte	0
+ 2084              	.LLST6:
+ 2085 00d5 00000000 		.4byte	.LVL17
+ 2086 00d9 0F000000 		.4byte	.LVL19-1
+ 2087 00dd 0100     		.2byte	0x1
+ 2088 00df 50       		.byte	0x50
+ 2089 00e0 0F000000 		.4byte	.LVL19-1
+ 2090 00e4 50000000 		.4byte	.LFE66
+ 2091 00e8 0400     		.2byte	0x4
+ 2092 00ea F3       		.byte	0xf3
+ 2093 00eb 01       		.uleb128 0x1
+ 2094 00ec 50       		.byte	0x50
+ 2095 00ed 9F       		.byte	0x9f
+ 2096 00ee 00000000 		.4byte	0
+ 2097 00f2 00000000 		.4byte	0
+ 2098              	.LLST7:
+ 2099 00f6 00000000 		.4byte	.LVL17
+ 2100 00fa 0C000000 		.4byte	.LVL18
+ 2101 00fe 0100     		.2byte	0x1
+ 2102 0100 51       		.byte	0x51
+ 2103 0101 0C000000 		.4byte	.LVL18
+ 2104 0105 50000000 		.4byte	.LFE66
+ 2105 0109 0400     		.2byte	0x4
+ 2106 010b F3       		.byte	0xf3
+ 2107 010c 01       		.uleb128 0x1
+ 2108 010d 51       		.byte	0x51
+ 2109 010e 9F       		.byte	0x9f
+ 2110 010f 00000000 		.4byte	0
+ 2111 0113 00000000 		.4byte	0
+ 2112              	.LLST8:
+ 2113 0117 00000000 		.4byte	.LVL17
+ 2114 011b 0F000000 		.4byte	.LVL19-1
+ 2115 011f 0100     		.2byte	0x1
+ARM GAS  C:\Users\corne\AppData\Local\Temp\cczZFaNz.s 			page 41
+
+
+ 2116 0121 52       		.byte	0x52
+ 2117 0122 0F000000 		.4byte	.LVL19-1
+ 2118 0126 4E000000 		.4byte	.LVL34
+ 2119 012a 0100     		.2byte	0x1
+ 2120 012c 55       		.byte	0x55
+ 2121 012d 00000000 		.4byte	0
+ 2122 0131 00000000 		.4byte	0
+ 2123              	.LLST9:
+ 2124 0135 00000000 		.4byte	.LVL17
+ 2125 0139 0F000000 		.4byte	.LVL19-1
+ 2126 013d 0100     		.2byte	0x1
+ 2127 013f 53       		.byte	0x53
+ 2128 0140 0F000000 		.4byte	.LVL19-1
+ 2129 0144 2A000000 		.4byte	.LVL25
+ 2130 0148 0400     		.2byte	0x4
+ 2131 014a F3       		.byte	0xf3
+ 2132 014b 01       		.uleb128 0x1
+ 2133 014c 53       		.byte	0x53
+ 2134 014d 9F       		.byte	0x9f
+ 2135 014e 2A000000 		.4byte	.LVL25
+ 2136 0152 2C000000 		.4byte	.LVL26
+ 2137 0156 0100     		.2byte	0x1
+ 2138 0158 53       		.byte	0x53
+ 2139 0159 2C000000 		.4byte	.LVL26
+ 2140 015d 38000000 		.4byte	.LVL29
+ 2141 0161 0100     		.2byte	0x1
+ 2142 0163 54       		.byte	0x54
+ 2143 0164 38000000 		.4byte	.LVL29
+ 2144 0168 3C000000 		.4byte	.LVL30
+ 2145 016c 0100     		.2byte	0x1
+ 2146 016e 53       		.byte	0x53
+ 2147 016f 3C000000 		.4byte	.LVL30
+ 2148 0173 4E000000 		.4byte	.LVL33
+ 2149 0177 0100     		.2byte	0x1
+ 2150 0179 54       		.byte	0x54
+ 2151 017a 00000000 		.4byte	0
+ 2152 017e 00000000 		.4byte	0
+ 2153              	.LLST10:
+ 2154 0182 12000000 		.4byte	.LVL20
+ 2155 0186 17000000 		.4byte	.LVL22-1
+ 2156 018a 0100     		.2byte	0x1
+ 2157 018c 50       		.byte	0x50
+ 2158 018d 00000000 		.4byte	0
+ 2159 0191 00000000 		.4byte	0
+ 2160              	.LLST11:
+ 2161 0195 14000000 		.4byte	.LVL21
+ 2162 0199 4E000000 		.4byte	.LVL35
+ 2163 019d 0100     		.2byte	0x1
+ 2164 019f 56       		.byte	0x56
+ 2165 01a0 00000000 		.4byte	0
+ 2166 01a4 00000000 		.4byte	0
+ 2167              	.LLST12:
+ 2168 01a8 00000000 		.4byte	.LVL36
+ 2169 01ac 17000000 		.4byte	.LVL39-1
+ 2170 01b0 0100     		.2byte	0x1
+ 2171 01b2 50       		.byte	0x50
+ 2172 01b3 17000000 		.4byte	.LVL39-1
+ARM GAS  C:\Users\corne\AppData\Local\Temp\cczZFaNz.s 			page 42
+
+
+ 2173 01b7 1C000000 		.4byte	.LFE67
+ 2174 01bb 0400     		.2byte	0x4
+ 2175 01bd F3       		.byte	0xf3
+ 2176 01be 01       		.uleb128 0x1
+ 2177 01bf 50       		.byte	0x50
+ 2178 01c0 9F       		.byte	0x9f
+ 2179 01c1 00000000 		.4byte	0
+ 2180 01c5 00000000 		.4byte	0
+ 2181              	.LLST13:
+ 2182 01c9 00000000 		.4byte	.LVL36
+ 2183 01cd 14000000 		.4byte	.LVL38
+ 2184 01d1 0100     		.2byte	0x1
+ 2185 01d3 51       		.byte	0x51
+ 2186 01d4 14000000 		.4byte	.LVL38
+ 2187 01d8 1C000000 		.4byte	.LFE67
+ 2188 01dc 0400     		.2byte	0x4
+ 2189 01de F3       		.byte	0xf3
+ 2190 01df 01       		.uleb128 0x1
+ 2191 01e0 51       		.byte	0x51
+ 2192 01e1 9F       		.byte	0x9f
+ 2193 01e2 00000000 		.4byte	0
+ 2194 01e6 00000000 		.4byte	0
+ 2195              	.LLST14:
+ 2196 01ea 00000000 		.4byte	.LVL36
+ 2197 01ee 12000000 		.4byte	.LVL37
+ 2198 01f2 0100     		.2byte	0x1
+ 2199 01f4 52       		.byte	0x52
+ 2200 01f5 12000000 		.4byte	.LVL37
+ 2201 01f9 17000000 		.4byte	.LVL39-1
+ 2202 01fd 0200     		.2byte	0x2
+ 2203 01ff 74       		.byte	0x74
+ 2204 0200 02       		.sleb128 2
+ 2205 0201 17000000 		.4byte	.LVL39-1
+ 2206 0205 1C000000 		.4byte	.LFE67
+ 2207 0209 0400     		.2byte	0x4
+ 2208 020b F3       		.byte	0xf3
+ 2209 020c 01       		.uleb128 0x1
+ 2210 020d 52       		.byte	0x52
+ 2211 020e 9F       		.byte	0x9f
+ 2212 020f 00000000 		.4byte	0
+ 2213 0213 00000000 		.4byte	0
+ 2214              	.LLST15:
+ 2215 0217 00000000 		.4byte	.LVL40
+ 2216 021b 0B000000 		.4byte	.LVL42-1
+ 2217 021f 0100     		.2byte	0x1
+ 2218 0221 50       		.byte	0x50
+ 2219 0222 0B000000 		.4byte	.LVL42-1
+ 2220 0226 32000000 		.4byte	.LFE68
+ 2221 022a 0400     		.2byte	0x4
+ 2222 022c F3       		.byte	0xf3
+ 2223 022d 01       		.uleb128 0x1
+ 2224 022e 50       		.byte	0x50
+ 2225 022f 9F       		.byte	0x9f
+ 2226 0230 00000000 		.4byte	0
+ 2227 0234 00000000 		.4byte	0
+ 2228              	.LLST16:
+ 2229 0238 00000000 		.4byte	.LVL40
+ARM GAS  C:\Users\corne\AppData\Local\Temp\cczZFaNz.s 			page 43
+
+
+ 2230 023c 08000000 		.4byte	.LVL41
+ 2231 0240 0100     		.2byte	0x1
+ 2232 0242 51       		.byte	0x51
+ 2233 0243 08000000 		.4byte	.LVL41
+ 2234 0247 32000000 		.4byte	.LFE68
+ 2235 024b 0400     		.2byte	0x4
+ 2236 024d F3       		.byte	0xf3
+ 2237 024e 01       		.uleb128 0x1
+ 2238 024f 51       		.byte	0x51
+ 2239 0250 9F       		.byte	0x9f
+ 2240 0251 00000000 		.4byte	0
+ 2241 0255 00000000 		.4byte	0
+ 2242              	.LLST17:
+ 2243 0259 2A000000 		.4byte	.LVL47
+ 2244 025d 30000000 		.4byte	.LVL49
+ 2245 0261 0100     		.2byte	0x1
+ 2246 0263 54       		.byte	0x54
+ 2247 0264 30000000 		.4byte	.LVL49
+ 2248 0268 32000000 		.4byte	.LFE68
+ 2249 026c 0100     		.2byte	0x1
+ 2250 026e 50       		.byte	0x50
+ 2251 026f 00000000 		.4byte	0
+ 2252 0273 00000000 		.4byte	0
+ 2253              	.LLST18:
+ 2254 0277 00000000 		.4byte	.LVL50
+ 2255 027b 1D000000 		.4byte	.LVL55-1
+ 2256 027f 0100     		.2byte	0x1
+ 2257 0281 50       		.byte	0x50
+ 2258 0282 1D000000 		.4byte	.LVL55-1
+ 2259 0286 B2000000 		.4byte	.LFE69
+ 2260 028a 0400     		.2byte	0x4
+ 2261 028c F3       		.byte	0xf3
+ 2262 028d 01       		.uleb128 0x1
+ 2263 028e 50       		.byte	0x50
+ 2264 028f 9F       		.byte	0x9f
+ 2265 0290 00000000 		.4byte	0
+ 2266 0294 00000000 		.4byte	0
+ 2267              	.LLST19:
+ 2268 0298 00000000 		.4byte	.LVL50
+ 2269 029c 1A000000 		.4byte	.LVL54
+ 2270 02a0 0100     		.2byte	0x1
+ 2271 02a2 51       		.byte	0x51
+ 2272 02a3 1A000000 		.4byte	.LVL54
+ 2273 02a7 40000000 		.4byte	.LVL61
+ 2274 02ab 0400     		.2byte	0x4
+ 2275 02ad F3       		.byte	0xf3
+ 2276 02ae 01       		.uleb128 0x1
+ 2277 02af 51       		.byte	0x51
+ 2278 02b0 9F       		.byte	0x9f
+ 2279 02b1 80000000 		.4byte	.LVL73
+ 2280 02b5 96000000 		.4byte	.LVL77
+ 2281 02b9 0100     		.2byte	0x1
+ 2282 02bb 54       		.byte	0x54
+ 2283 02bc 00000000 		.4byte	0
+ 2284 02c0 00000000 		.4byte	0
+ 2285              	.LLST20:
+ 2286 02c4 00000000 		.4byte	.LVL50
+ARM GAS  C:\Users\corne\AppData\Local\Temp\cczZFaNz.s 			page 44
+
+
+ 2287 02c8 1D000000 		.4byte	.LVL55-1
+ 2288 02cc 0100     		.2byte	0x1
+ 2289 02ce 52       		.byte	0x52
+ 2290 02cf 1D000000 		.4byte	.LVL55-1
+ 2291 02d3 AC000000 		.4byte	.LVL84
+ 2292 02d7 0100     		.2byte	0x1
+ 2293 02d9 56       		.byte	0x56
+ 2294 02da 00000000 		.4byte	0
+ 2295 02de 00000000 		.4byte	0
+ 2296              	.LLST21:
+ 2297 02e2 00000000 		.4byte	.LVL50
+ 2298 02e6 10000000 		.4byte	.LVL51
+ 2299 02ea 0100     		.2byte	0x1
+ 2300 02ec 53       		.byte	0x53
+ 2301 02ed 10000000 		.4byte	.LVL51
+ 2302 02f1 40000000 		.4byte	.LVL61
+ 2303 02f5 0400     		.2byte	0x4
+ 2304 02f7 F3       		.byte	0xf3
+ 2305 02f8 01       		.uleb128 0x1
+ 2306 02f9 53       		.byte	0x53
+ 2307 02fa 9F       		.byte	0x9f
+ 2308 02fb 40000000 		.4byte	.LVL61
+ 2309 02ff 98000000 		.4byte	.LVL78
+ 2310 0303 0100     		.2byte	0x1
+ 2311 0305 55       		.byte	0x55
+ 2312 0306 98000000 		.4byte	.LVL78
+ 2313 030a 9C000000 		.4byte	.LVL79
+ 2314 030e 0100     		.2byte	0x1
+ 2315 0310 57       		.byte	0x57
+ 2316 0311 9C000000 		.4byte	.LVL79
+ 2317 0315 AC000000 		.4byte	.LVL83
+ 2318 0319 0100     		.2byte	0x1
+ 2319 031b 55       		.byte	0x55
+ 2320 031c AC000000 		.4byte	.LVL83
+ 2321 0320 AC000000 		.4byte	.LVL85
+ 2322 0324 0300     		.2byte	0x3
+ 2323 0326 77       		.byte	0x77
+ 2324 0327 7F       		.sleb128 -1
+ 2325 0328 9F       		.byte	0x9f
+ 2326 0329 00000000 		.4byte	0
+ 2327 032d 00000000 		.4byte	0
+ 2328              	.LLST22:
+ 2329 0331 12000000 		.4byte	.LVL52
+ 2330 0335 AC000000 		.4byte	.LVL86
+ 2331 0339 0100     		.2byte	0x1
+ 2332 033b 58       		.byte	0x58
+ 2333 033c 00000000 		.4byte	0
+ 2334 0340 00000000 		.4byte	0
+ 2335              	.LLST23:
+ 2336 0344 16000000 		.4byte	.LVL53
+ 2337 0348 50000000 		.4byte	.LVL65
+ 2338 034c 0100     		.2byte	0x1
+ 2339 034e 54       		.byte	0x54
+ 2340 034f 52000000 		.4byte	.LVL66
+ 2341 0353 5A000000 		.4byte	.LVL67
+ 2342 0357 0100     		.2byte	0x1
+ 2343 0359 54       		.byte	0x54
+ARM GAS  C:\Users\corne\AppData\Local\Temp\cczZFaNz.s 			page 45
+
+
+ 2344 035a 5A000000 		.4byte	.LVL67
+ 2345 035e 96000000 		.4byte	.LVL77
+ 2346 0362 0200     		.2byte	0x2
+ 2347 0364 30       		.byte	0x30
+ 2348 0365 9F       		.byte	0x9f
+ 2349 0366 98000000 		.4byte	.LVL78
+ 2350 036a AC000000 		.4byte	.LVL82
+ 2351 036e 0100     		.2byte	0x1
+ 2352 0370 54       		.byte	0x54
+ 2353 0371 00000000 		.4byte	0
+ 2354 0375 00000000 		.4byte	0
+ 2355              	.LLST24:
+ 2356 0379 00000000 		.4byte	.LVL87
+ 2357 037d 1D000000 		.4byte	.LVL91-1
+ 2358 0381 0100     		.2byte	0x1
+ 2359 0383 50       		.byte	0x50
+ 2360 0384 1D000000 		.4byte	.LVL91-1
+ 2361 0388 F0000000 		.4byte	.LFE70
+ 2362 038c 0400     		.2byte	0x4
+ 2363 038e F3       		.byte	0xf3
+ 2364 038f 01       		.uleb128 0x1
+ 2365 0390 50       		.byte	0x50
+ 2366 0391 9F       		.byte	0x9f
+ 2367 0392 00000000 		.4byte	0
+ 2368 0396 00000000 		.4byte	0
+ 2369              	.LLST25:
+ 2370 039a 00000000 		.4byte	.LVL87
+ 2371 039e 1D000000 		.4byte	.LVL91-1
+ 2372 03a2 0100     		.2byte	0x1
+ 2373 03a4 51       		.byte	0x51
+ 2374 03a5 1D000000 		.4byte	.LVL91-1
+ 2375 03a9 5C000000 		.4byte	.LVL100
+ 2376 03ad 0400     		.2byte	0x4
+ 2377 03af F3       		.byte	0xf3
+ 2378 03b0 01       		.uleb128 0x1
+ 2379 03b1 51       		.byte	0x51
+ 2380 03b2 9F       		.byte	0x9f
+ 2381 03b3 AE000000 		.4byte	.LVL113
+ 2382 03b7 D8000000 		.4byte	.LVL120
+ 2383 03bb 0100     		.2byte	0x1
+ 2384 03bd 55       		.byte	0x55
+ 2385 03be 00000000 		.4byte	0
+ 2386 03c2 00000000 		.4byte	0
+ 2387              	.LLST26:
+ 2388 03c6 00000000 		.4byte	.LVL87
+ 2389 03ca 1D000000 		.4byte	.LVL91-1
+ 2390 03ce 0100     		.2byte	0x1
+ 2391 03d0 52       		.byte	0x52
+ 2392 03d1 1D000000 		.4byte	.LVL91-1
+ 2393 03d5 E8000000 		.4byte	.LVL126
+ 2394 03d9 0100     		.2byte	0x1
+ 2395 03db 56       		.byte	0x56
+ 2396 03dc 00000000 		.4byte	0
+ 2397 03e0 00000000 		.4byte	0
+ 2398              	.LLST27:
+ 2399 03e4 00000000 		.4byte	.LVL87
+ 2400 03e8 14000000 		.4byte	.LVL88
+ARM GAS  C:\Users\corne\AppData\Local\Temp\cczZFaNz.s 			page 46
+
+
+ 2401 03ec 0100     		.2byte	0x1
+ 2402 03ee 53       		.byte	0x53
+ 2403 03ef 14000000 		.4byte	.LVL88
+ 2404 03f3 5C000000 		.4byte	.LVL100
+ 2405 03f7 0400     		.2byte	0x4
+ 2406 03f9 F3       		.byte	0xf3
+ 2407 03fa 01       		.uleb128 0x1
+ 2408 03fb 53       		.byte	0x53
+ 2409 03fc 9F       		.byte	0x9f
+ 2410 03fd 5C000000 		.4byte	.LVL100
+ 2411 0401 DA000000 		.4byte	.LVL121
+ 2412 0405 0100     		.2byte	0x1
+ 2413 0407 54       		.byte	0x54
+ 2414 0408 DA000000 		.4byte	.LVL121
+ 2415 040c DE000000 		.4byte	.LVL122
+ 2416 0410 0100     		.2byte	0x1
+ 2417 0412 55       		.byte	0x55
+ 2418 0413 DE000000 		.4byte	.LVL122
+ 2419 0417 E8000000 		.4byte	.LVL124
+ 2420 041b 0100     		.2byte	0x1
+ 2421 041d 54       		.byte	0x54
+ 2422 041e E8000000 		.4byte	.LVL124
+ 2423 0422 E8000000 		.4byte	.LVL125
+ 2424 0426 0300     		.2byte	0x3
+ 2425 0428 75       		.byte	0x75
+ 2426 0429 7F       		.sleb128 -1
+ 2427 042a 9F       		.byte	0x9f
+ 2428 042b 00000000 		.4byte	0
+ 2429 042f 00000000 		.4byte	0
+ 2430              	.LLST28:
+ 2431 0433 16000000 		.4byte	.LVL89
+ 2432 0437 E8000000 		.4byte	.LVL128
+ 2433 043b 0100     		.2byte	0x1
+ 2434 043d 59       		.byte	0x59
+ 2435 043e 00000000 		.4byte	0
+ 2436 0442 00000000 		.4byte	0
+ 2437              	.LLST29:
+ 2438 0446 1A000000 		.4byte	.LVL90
+ 2439 044a 7C000000 		.4byte	.LVL105
+ 2440 044e 0100     		.2byte	0x1
+ 2441 0450 57       		.byte	0x57
+ 2442 0451 7E000000 		.4byte	.LVL106
+ 2443 0455 86000000 		.4byte	.LVL107
+ 2444 0459 0100     		.2byte	0x1
+ 2445 045b 57       		.byte	0x57
+ 2446 045c 86000000 		.4byte	.LVL107
+ 2447 0460 D8000000 		.4byte	.LVL120
+ 2448 0464 0200     		.2byte	0x2
+ 2449 0466 30       		.byte	0x30
+ 2450 0467 9F       		.byte	0x9f
+ 2451 0468 DA000000 		.4byte	.LVL121
+ 2452 046c E8000000 		.4byte	.LVL127
+ 2453 0470 0100     		.2byte	0x1
+ 2454 0472 57       		.byte	0x57
+ 2455 0473 00000000 		.4byte	0
+ 2456 0477 00000000 		.4byte	0
+ 2457              		.section	.debug_aranges,"",%progbits
+ARM GAS  C:\Users\corne\AppData\Local\Temp\cczZFaNz.s 			page 47
+
+
+ 2458 0000 44000000 		.4byte	0x44
+ 2459 0004 0200     		.2byte	0x2
+ 2460 0006 00000000 		.4byte	.Ldebug_info0
+ 2461 000a 04       		.byte	0x4
+ 2462 000b 00       		.byte	0
+ 2463 000c 0000     		.2byte	0
+ 2464 000e 0000     		.2byte	0
+ 2465 0010 00000000 		.4byte	.LFB65
+ 2466 0014 40000000 		.4byte	.LFE65-.LFB65
+ 2467 0018 00000000 		.4byte	.LFB66
+ 2468 001c 50000000 		.4byte	.LFE66-.LFB66
+ 2469 0020 00000000 		.4byte	.LFB67
+ 2470 0024 1C000000 		.4byte	.LFE67-.LFB67
+ 2471 0028 00000000 		.4byte	.LFB68
+ 2472 002c 32000000 		.4byte	.LFE68-.LFB68
+ 2473 0030 00000000 		.4byte	.LFB69
+ 2474 0034 B2000000 		.4byte	.LFE69-.LFB69
+ 2475 0038 00000000 		.4byte	.LFB70
+ 2476 003c F0000000 		.4byte	.LFE70-.LFB70
+ 2477 0040 00000000 		.4byte	0
+ 2478 0044 00000000 		.4byte	0
+ 2479              		.section	.debug_ranges,"",%progbits
+ 2480              	.Ldebug_ranges0:
+ 2481 0000 00000000 		.4byte	.LFB65
+ 2482 0004 40000000 		.4byte	.LFE65
+ 2483 0008 00000000 		.4byte	.LFB66
+ 2484 000c 50000000 		.4byte	.LFE66
+ 2485 0010 00000000 		.4byte	.LFB67
+ 2486 0014 1C000000 		.4byte	.LFE67
+ 2487 0018 00000000 		.4byte	.LFB68
+ 2488 001c 32000000 		.4byte	.LFE68
+ 2489 0020 00000000 		.4byte	.LFB69
+ 2490 0024 B2000000 		.4byte	.LFE69
+ 2491 0028 00000000 		.4byte	.LFB70
+ 2492 002c F0000000 		.4byte	.LFE70
+ 2493 0030 00000000 		.4byte	0
+ 2494 0034 00000000 		.4byte	0
+ 2495              		.section	.debug_line,"",%progbits
+ 2496              	.Ldebug_line0:
+ 2497 0000 3C020000 		.section	.debug_str,"MS",%progbits,1
+ 2497      02005A01 
+ 2497      00000201 
+ 2497      FB0E0D00 
+ 2497      01010101 
+ 2498              	.LASF46:
+ 2499 0000 433A5C55 		.ascii	"C:\\Users\\corne\\Dropbox\\prive\\projects\\Wireles"
+ 2499      73657273 
+ 2499      5C636F72 
+ 2499      6E655C44 
+ 2499      726F7062 
+ 2500 002d 735F7365 		.ascii	"s_sensornode\\Software\\Wireless_sensornode\\Firmwa"
+ 2500      6E736F72 
+ 2500      6E6F6465 
+ 2500      5C536F66 
+ 2500      74776172 
+ 2501 005d 72655F56 		.ascii	"re_V0.1.cydsn\000"
+ 2501      302E312E 
+ARM GAS  C:\Users\corne\AppData\Local\Temp\cczZFaNz.s 			page 48
+
+
+ 2501      63796473 
+ 2501      6E00
+ 2502              	.LASF23:
+ 2503 006b 48696768 		.ascii	"HighByte\000"
+ 2503      42797465 
+ 2503      00
+ 2504              	.LASF3:
+ 2505 0074 5F5F7569 		.ascii	"__uint8_t\000"
+ 2505      6E74385F 
+ 2505      7400
+ 2506              	.LASF25:
+ 2507 007e 45455052 		.ascii	"EEPROM_WriteBuf\000"
+ 2507      4F4D5F57 
+ 2507      72697465 
+ 2507      42756600 
+ 2508              	.LASF21:
+ 2509 008e 73756261 		.ascii	"subaddr\000"
+ 2509      64647200 
+ 2510              	.LASF43:
+ 2511 0096 4932435F 		.ascii	"I2C_I2CMasterClearReadBuf\000"
+ 2511      4932434D 
+ 2511      61737465 
+ 2511      72436C65 
+ 2511      61725265 
+ 2512              	.LASF5:
+ 2513 00b0 73686F72 		.ascii	"short unsigned int\000"
+ 2513      7420756E 
+ 2513      7369676E 
+ 2513      65642069 
+ 2513      6E7400
+ 2514              	.LASF28:
+ 2515 00c3 45455052 		.ascii	"EEPROM_ReadBuf\000"
+ 2515      4F4D5F52 
+ 2515      65616442 
+ 2515      756600
+ 2516              	.LASF15:
+ 2517 00d2 666C6F61 		.ascii	"float\000"
+ 2517      7400
+ 2518              	.LASF22:
+ 2519 00d8 64617461 		.ascii	"data\000"
+ 2519      00
+ 2520              	.LASF1:
+ 2521 00dd 756E7369 		.ascii	"unsigned char\000"
+ 2521      676E6564 
+ 2521      20636861 
+ 2521      7200
+ 2522              	.LASF35:
+ 2523 00eb 4932435F 		.ascii	"I2C_I2CMasterSendStart\000"
+ 2523      4932434D 
+ 2523      61737465 
+ 2523      7253656E 
+ 2523      64537461 
+ 2524              	.LASF41:
+ 2525 0102 43794465 		.ascii	"CyDelayCycles\000"
+ 2525      6C617943 
+ 2525      79636C65 
+ 2525      7300
+ARM GAS  C:\Users\corne\AppData\Local\Temp\cczZFaNz.s 			page 49
+
+
+ 2526              	.LASF8:
+ 2527 0110 6C6F6E67 		.ascii	"long unsigned int\000"
+ 2527      20756E73 
+ 2527      69676E65 
+ 2527      6420696E 
+ 2527      7400
+ 2528              	.LASF40:
+ 2529 0122 4932435F 		.ascii	"I2C_I2CMasterWriteBuf\000"
+ 2529      4932434D 
+ 2529      61737465 
+ 2529      72577269 
+ 2529      74654275 
+ 2530              	.LASF20:
+ 2531 0138 61646472 		.ascii	"addr\000"
+ 2531      00
+ 2532              	.LASF34:
+ 2533 013d 45455052 		.ascii	"EEPROM_WC_Write\000"
+ 2533      4F4D5F57 
+ 2533      435F5772 
+ 2533      69746500 
+ 2534              	.LASF30:
+ 2535 014d 45455052 		.ascii	"EEPROM_WriteBuffer\000"
+ 2535      4F4D5F57 
+ 2535      72697465 
+ 2535      42756666 
+ 2535      657200
+ 2536              	.LASF45:
+ 2537 0160 45455052 		.ascii	"EEPROM.c\000"
+ 2537      4F4D2E63 
+ 2537      00
+ 2538              	.LASF4:
+ 2539 0169 5F5F7569 		.ascii	"__uint16_t\000"
+ 2539      6E743136 
+ 2539      5F7400
+ 2540              	.LASF16:
+ 2541 0174 646F7562 		.ascii	"double\000"
+ 2541      6C6500
+ 2542              	.LASF7:
+ 2543 017b 5F5F7569 		.ascii	"__uint32_t\000"
+ 2543      6E743332 
+ 2543      5F7400
+ 2544              	.LASF27:
+ 2545 0186 45455052 		.ascii	"EEPROM_Writebuffer\000"
+ 2545      4F4D5F57 
+ 2545      72697465 
+ 2545      62756666 
+ 2545      657200
+ 2546              	.LASF38:
+ 2547 0199 4932435F 		.ascii	"I2C_I2CMasterSendRestart\000"
+ 2547      4932434D 
+ 2547      61737465 
+ 2547      7253656E 
+ 2547      64526573 
+ 2548              	.LASF11:
+ 2549 01b2 756E7369 		.ascii	"unsigned int\000"
+ 2549      676E6564 
+ 2549      20696E74 
+ARM GAS  C:\Users\corne\AppData\Local\Temp\cczZFaNz.s 			page 50
+
+
+ 2549      00
+ 2550              	.LASF33:
+ 2551 01bf 45455052 		.ascii	"EEPROM_ReadBuffer\000"
+ 2551      4F4D5F52 
+ 2551      65616442 
+ 2551      75666665 
+ 2551      7200
+ 2552              	.LASF10:
+ 2553 01d1 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 2553      206C6F6E 
+ 2553      6720756E 
+ 2553      7369676E 
+ 2553      65642069 
+ 2554              	.LASF12:
+ 2555 01e8 75696E74 		.ascii	"uint8_t\000"
+ 2555      385F7400 
+ 2556              	.LASF26:
+ 2557 01f0 45455052 		.ascii	"EEPROM_WriteByte\000"
+ 2557      4F4D5F57 
+ 2557      72697465 
+ 2557      42797465 
+ 2557      00
+ 2558              	.LASF44:
+ 2559 0201 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 2559      43313120 
+ 2559      352E342E 
+ 2559      31203230 
+ 2559      31363036 
+ 2560 0234 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m0 -mthumb -g -O"
+ 2560      20726576 
+ 2560      6973696F 
+ 2560      6E203233 
+ 2560      37373135 
+ 2561 0267 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
+ 2561      66756E63 
+ 2561      74696F6E 
+ 2561      2D736563 
+ 2561      74696F6E 
+ 2562              	.LASF19:
+ 2563 028f 73697A65 		.ascii	"sizetype\000"
+ 2563      74797065 
+ 2563      00
+ 2564              	.LASF9:
+ 2565 0298 6C6F6E67 		.ascii	"long long int\000"
+ 2565      206C6F6E 
+ 2565      6720696E 
+ 2565      7400
+ 2566              	.LASF17:
+ 2567 02a6 63686172 		.ascii	"char\000"
+ 2567      00
+ 2568              	.LASF36:
+ 2569 02ab 4932435F 		.ascii	"I2C_I2CMasterWriteByte\000"
+ 2569      4932434D 
+ 2569      61737465 
+ 2569      72577269 
+ 2569      74654279 
+ 2570              	.LASF2:
+ARM GAS  C:\Users\corne\AppData\Local\Temp\cczZFaNz.s 			page 51
+
+
+ 2571 02c2 73686F72 		.ascii	"short int\000"
+ 2571      7420696E 
+ 2571      7400
+ 2572              	.LASF13:
+ 2573 02cc 75696E74 		.ascii	"uint16_t\000"
+ 2573      31365F74 
+ 2573      00
+ 2574              	.LASF29:
+ 2575 02d5 45455052 		.ascii	"EEPROM_ReadByte\000"
+ 2575      4F4D5F52 
+ 2575      65616442 
+ 2575      79746500 
+ 2576              	.LASF39:
+ 2577 02e5 4932435F 		.ascii	"I2C_I2CMasterReadByte\000"
+ 2577      4932434D 
+ 2577      61737465 
+ 2577      72526561 
+ 2577      64427974 
+ 2578              	.LASF32:
+ 2579 02fb 62797465 		.ascii	"byteaddr\000"
+ 2579      61646472 
+ 2579      00
+ 2580              	.LASF14:
+ 2581 0304 75696E74 		.ascii	"uint32_t\000"
+ 2581      33325F74 
+ 2581      00
+ 2582              	.LASF6:
+ 2583 030d 6C6F6E67 		.ascii	"long int\000"
+ 2583      20696E74 
+ 2583      00
+ 2584              	.LASF18:
+ 2585 0316 6C6F6E67 		.ascii	"long double\000"
+ 2585      20646F75 
+ 2585      626C6500 
+ 2586              	.LASF24:
+ 2587 0322 4C6F7742 		.ascii	"LowByte\000"
+ 2587      79746500 
+ 2588              	.LASF0:
+ 2589 032a 7369676E 		.ascii	"signed char\000"
+ 2589      65642063 
+ 2589      68617200 
+ 2590              	.LASF31:
+ 2591 0336 70616765 		.ascii	"pageaddr\000"
+ 2591      61646472 
+ 2591      00
+ 2592              	.LASF42:
+ 2593 033f 43794465 		.ascii	"CyDelay\000"
+ 2593      6C617900 
+ 2594              	.LASF37:
+ 2595 0347 4932435F 		.ascii	"I2C_I2CMasterSendStop\000"
+ 2595      4932434D 
+ 2595      61737465 
+ 2595      7253656E 
+ 2595      6453746F 
+ 2596              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

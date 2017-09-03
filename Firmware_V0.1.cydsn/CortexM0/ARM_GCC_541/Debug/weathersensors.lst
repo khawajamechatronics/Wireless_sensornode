@@ -1,0 +1,1905 @@
+ARM GAS  C:\Users\corne\AppData\Local\Temp\ccpoOR4q.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m0
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 0
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"weathersensors.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.Counter_ISR,"ax",%progbits
+  20              		.align	2
+  21              		.global	Counter_ISR
+  22              		.code	16
+  23              		.thumb_func
+  24              		.type	Counter_ISR, %function
+  25              	Counter_ISR:
+  26              	.LFB66:
+  27              		.file 1 "weathersensors.c"
+   1:weathersensors.c **** /* ========================================
+   2:weathersensors.c ****  *
+   3:weathersensors.c ****  * Copyright YOUR COMPANY, THE YEAR
+   4:weathersensors.c ****  * All Rights Reserved
+   5:weathersensors.c ****  * UNPUBLISHED, LICENSED SOFTWARE.
+   6:weathersensors.c ****  *
+   7:weathersensors.c ****  * CONFIDENTIAL AND PROPRIETARY INFORMATION
+   8:weathersensors.c ****  * WHICH IS THE PROPERTY OF your company.
+   9:weathersensors.c ****  *
+  10:weathersensors.c ****  * ========================================
+  11:weathersensors.c **** */
+  12:weathersensors.c **** 
+  13:weathersensors.c **** #include "weathersensors.h"
+  14:weathersensors.c **** 
+  15:weathersensors.c **** //Local functions
+  16:weathersensors.c **** uint16  wind_vane_lut[8] = {218,372,657,1647,2941,2600,2232,1112};
+  17:weathersensors.c **** winddirection olddirection= north;
+  18:weathersensors.c **** void lookupWindVane(winddirection *p_angle, uint16 ain)
+  19:weathersensors.c **** {
+  20:weathersensors.c ****     uint16  diff;
+  21:weathersensors.c ****     int i=0;
+  22:weathersensors.c ****     for( i=0; i<8; i+=1 )
+  23:weathersensors.c ****     {
+  24:weathersensors.c ****         diff = abs( wind_vane_lut[i] - ain );
+  25:weathersensors.c ****         if( diff <= 18 )
+  26:weathersensors.c ****         {
+  27:weathersensors.c ****             *p_angle =  i;
+  28:weathersensors.c ****             return;
+  29:weathersensors.c ****         }
+  30:weathersensors.c ****     }
+ARM GAS  C:\Users\corne\AppData\Local\Temp\ccpoOR4q.s 			page 2
+
+
+  31:weathersensors.c ****     *p_angle = invalid;
+  32:weathersensors.c ****     return;
+  33:weathersensors.c **** }
+  34:weathersensors.c **** 
+  35:weathersensors.c **** /* Variable to store the number of times the Counter has overflown */
+  36:weathersensors.c **** uint32 counter_overflowCount = 0u;
+  37:weathersensors.c **** 
+  38:weathersensors.c **** /* Variable to store the count value that is captured at the instance of the falling edge of the
+  39:weathersensors.c ****  * capture signal */
+  40:weathersensors.c **** uint16 capturedCount = 0u;
+  41:weathersensors.c **** 
+  42:weathersensors.c **** /* Variable to indicate the occurrence of the Capture Interrupt. The Counter generates interrupt on
+  43:weathersensors.c ****  * Terminal count and / or on the Capture event. The flag is set inside the Capture interrupt and c
+  44:weathersensors.c ****  * main.c after processing */
+  45:weathersensors.c **** uint8 CC_ISR_flag = FALSE;
+  46:weathersensors.c **** 
+  47:weathersensors.c **** /*******************************************************************************
+  48:weathersensors.c **** * Function Name: Counter_ISR
+  49:weathersensors.c **** ********************************************************************************
+  50:weathersensors.c **** * Summary:
+  51:weathersensors.c **** *  ISR For Counter Interrupt.
+  52:weathersensors.c **** *
+  53:weathersensors.c **** * Parameters:
+  54:weathersensors.c **** *  None
+  55:weathersensors.c **** *
+  56:weathersensors.c **** * Return:
+  57:weathersensors.c **** *  None
+  58:weathersensors.c **** *
+  59:weathersensors.c **** *******************************************************************************/
+  60:weathersensors.c **** CY_ISR_PROTO(Counter_ISR)
+  61:weathersensors.c **** {
+  28              		.loc 1 61 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32 0000 70B5     		push	{r4, r5, r6, lr}
+  33              		.cfi_def_cfa_offset 16
+  34              		.cfi_offset 4, -16
+  35              		.cfi_offset 5, -12
+  36              		.cfi_offset 6, -8
+  37              		.cfi_offset 14, -4
+  38              	.LVL0:
+  62:weathersensors.c ****     /* Variable to store the Counter Status register. This value is used to determine the event whi
+  63:weathersensors.c ****      * Interrupt (either Terminal Count or Capture). */
+  64:weathersensors.c ****     uint32 counter_status = 0u;
+  65:weathersensors.c **** 
+  66:weathersensors.c ****     /* Read the Counter Status register. The status register stores the info about type of interrup
+  67:weathersensors.c ****     counter_status = Counter_GetInterruptSource();
+  39              		.loc 1 67 0
+  40 0002 FFF7FEFF 		bl	Counter_GetInterruptSource
+  41              	.LVL1:
+  42 0006 0400     		movs	r4, r0
+  43              	.LVL2:
+  68:weathersensors.c **** 
+  69:weathersensors.c ****     /* Check if the Counter interrupt is caused by Terminal Count. This can be checked in the 
+  70:weathersensors.c ****      * status register of the Counter. The Counter status register is read and the value is stored
+  71:weathersensors.c ****      * in counter_status.
+ARM GAS  C:\Users\corne\AppData\Local\Temp\ccpoOR4q.s 			page 3
+
+
+  72:weathersensors.c ****      * The defines Counter_INTR_MASK_TC and Counter_INTR_MASK_CC_MATCH can be seen in Counter.h fil
+  73:weathersensors.c ****      * These defines indicate the type of interrupt*/
+  74:weathersensors.c ****     if ((counter_status & Counter_INTR_MASK_TC) == Counter_INTR_MASK_TC)
+  44              		.loc 1 74 0
+  45 0008 0120     		movs	r0, #1
+  46              	.LVL3:
+  47 000a 2040     		ands	r0, r4
+  48 000c 05D0     		beq	.L2
+  75:weathersensors.c ****     {
+  76:weathersensors.c ****         /* This checks if the interrupt is due to Terminal Count */
+  77:weathersensors.c ****         /* Increment the counter_overflowCount. This variable keeps track of the number of times th
+  78:weathersensors.c ****          * counter had overflown before the capture signal occurred. This count is used to calculat
+  79:weathersensors.c ****          * time when the capture occurs */
+  80:weathersensors.c ****         counter_overflowCount++;
+  49              		.loc 1 80 0
+  50 000e 0B4A     		ldr	r2, .L4
+  51 0010 1368     		ldr	r3, [r2]
+  52 0012 0133     		adds	r3, r3, #1
+  53 0014 1360     		str	r3, [r2]
+  81:weathersensors.c **** 
+  82:weathersensors.c ****         /*Clear Interrupt*/
+  83:weathersensors.c ****         Counter_ClearInterrupt(counter_status & Counter_INTR_MASK_TC);        
+  54              		.loc 1 83 0
+  55 0016 FFF7FEFF 		bl	Counter_ClearInterrupt
+  56              	.LVL4:
+  57              	.L2:
+  84:weathersensors.c ****     }    
+  85:weathersensors.c **** 
+  86:weathersensors.c ****     /* Check if the Counter interrupt is caused by Capture Event */
+  87:weathersensors.c ****     if ((counter_status & Counter_INTR_MASK_CC_MATCH) == Counter_INTR_MASK_CC_MATCH)
+  58              		.loc 1 87 0
+  59 001a 0223     		movs	r3, #2
+  60 001c 1C40     		ands	r4, r3
+  61              	.LVL5:
+  62 001e 0BD0     		beq	.L1
+  88:weathersensors.c ****     {
+  89:weathersensors.c ****         /* Read the value captured by the Counter on the falling edge of the capture signal */
+  90:weathersensors.c ****         capturedCount = Counter_ReadCapture();    
+  63              		.loc 1 90 0
+  64 0020 FFF7FEFF 		bl	Counter_ReadCapture
+  65              	.LVL6:
+  66 0024 054D     		ldr	r5, .L4
+  67 0026 A880     		strh	r0, [r5, #4]
+  91:weathersensors.c ****         Counter_WriteCounter(0);
+  68              		.loc 1 91 0
+  69 0028 0020     		movs	r0, #0
+  70 002a FFF7FEFF 		bl	Counter_WriteCounter
+  71              	.LVL7:
+  92:weathersensors.c **** 
+  93:weathersensors.c ****         /* Set the ISR_flag to TRUE to indicate the occurrence of CC Interrupt */
+  94:weathersensors.c ****         CC_ISR_flag = TRUE;  
+  72              		.loc 1 94 0
+  73 002e 0123     		movs	r3, #1
+  74 0030 AB71     		strb	r3, [r5, #6]
+  95:weathersensors.c **** 
+  96:weathersensors.c ****         /*Clear the Interrupt*/
+  97:weathersensors.c ****         Counter_ClearInterrupt(counter_status & Counter_INTR_MASK_CC_MATCH);
+ARM GAS  C:\Users\corne\AppData\Local\Temp\ccpoOR4q.s 			page 4
+
+
+  75              		.loc 1 97 0
+  76 0032 2000     		movs	r0, r4
+  77 0034 FFF7FEFF 		bl	Counter_ClearInterrupt
+  78              	.LVL8:
+  79              	.L1:
+  98:weathersensors.c ****     }
+  99:weathersensors.c **** }
+  80              		.loc 1 99 0
+  81              		@ sp needed
+  82 0038 70BD     		pop	{r4, r5, r6, pc}
+  83              	.L5:
+  84 003a C046     		.align	2
+  85              	.L4:
+  86 003c 00000000 		.word	.LANCHOR0
+  87              		.cfi_endproc
+  88              	.LFE66:
+  89              		.size	Counter_ISR, .-Counter_ISR
+  90              		.section	.text.lookupWindVane,"ax",%progbits
+  91              		.align	2
+  92              		.global	lookupWindVane
+  93              		.code	16
+  94              		.thumb_func
+  95              		.type	lookupWindVane, %function
+  96              	lookupWindVane:
+  97              	.LFB65:
+  19:weathersensors.c ****     uint16  diff;
+  98              		.loc 1 19 0
+  99              		.cfi_startproc
+ 100              		@ args = 0, pretend = 0, frame = 0
+ 101              		@ frame_needed = 0, uses_anonymous_args = 0
+ 102              	.LVL9:
+ 103 0000 10B5     		push	{r4, lr}
+ 104              		.cfi_def_cfa_offset 8
+ 105              		.cfi_offset 4, -8
+ 106              		.cfi_offset 14, -4
+ 107              	.LVL10:
+  22:weathersensors.c ****     {
+ 108              		.loc 1 22 0
+ 109 0002 0022     		movs	r2, #0
+ 110 0004 0CE0     		b	.L7
+ 111              	.LVL11:
+ 112              	.L10:
+  24:weathersensors.c ****         if( diff <= 18 )
+ 113              		.loc 1 24 0
+ 114 0006 5300     		lsls	r3, r2, #1
+ 115 0008 084C     		ldr	r4, .L11
+ 116 000a 1B5B     		ldrh	r3, [r3, r4]
+ 117 000c 5B1A     		subs	r3, r3, r1
+ 118 000e DC17     		asrs	r4, r3, #31
+ 119 0010 1B19     		adds	r3, r3, r4
+ 120 0012 6340     		eors	r3, r4
+ 121 0014 9BB2     		uxth	r3, r3
+ 122              	.LVL12:
+  25:weathersensors.c ****         {
+ 123              		.loc 1 25 0
+ 124 0016 122B     		cmp	r3, #18
+ 125 0018 01D8     		bhi	.L8
+ARM GAS  C:\Users\corne\AppData\Local\Temp\ccpoOR4q.s 			page 5
+
+
+  27:weathersensors.c ****             return;
+ 126              		.loc 1 27 0
+ 127 001a 0270     		strb	r2, [r0]
+  28:weathersensors.c ****         }
+ 128              		.loc 1 28 0
+ 129 001c 04E0     		b	.L6
+ 130              	.L8:
+  22:weathersensors.c ****     {
+ 131              		.loc 1 22 0 discriminator 2
+ 132 001e 0132     		adds	r2, r2, #1
+ 133              	.LVL13:
+ 134              	.L7:
+  22:weathersensors.c ****     {
+ 135              		.loc 1 22 0 is_stmt 0 discriminator 1
+ 136 0020 072A     		cmp	r2, #7
+ 137 0022 F0DD     		ble	.L10
+  31:weathersensors.c ****     return;
+ 138              		.loc 1 31 0 is_stmt 1
+ 139 0024 0823     		movs	r3, #8
+ 140 0026 0370     		strb	r3, [r0]
+ 141              	.L6:
+  33:weathersensors.c **** 
+ 142              		.loc 1 33 0
+ 143              		@ sp needed
+ 144 0028 10BD     		pop	{r4, pc}
+ 145              	.L12:
+ 146 002a C046     		.align	2
+ 147              	.L11:
+ 148 002c 00000000 		.word	.LANCHOR1
+ 149              		.cfi_endproc
+ 150              	.LFE65:
+ 151              		.size	lookupWindVane, .-lookupWindVane
+ 152              		.section	.text.WEATHER_Setup,"ax",%progbits
+ 153              		.align	2
+ 154              		.global	WEATHER_Setup
+ 155              		.code	16
+ 156              		.thumb_func
+ 157              		.type	WEATHER_Setup, %function
+ 158              	WEATHER_Setup:
+ 159              	.LFB67:
+ 100:weathersensors.c **** 
+ 101:weathersensors.c **** //Public functions
+ 102:weathersensors.c **** void WEATHER_Setup()
+ 103:weathersensors.c **** {
+ 160              		.loc 1 103 0
+ 161              		.cfi_startproc
+ 162              		@ args = 0, pretend = 0, frame = 0
+ 163              		@ frame_needed = 0, uses_anonymous_args = 0
+ 164 0000 10B5     		push	{r4, lr}
+ 165              		.cfi_def_cfa_offset 8
+ 166              		.cfi_offset 4, -8
+ 167              		.cfi_offset 14, -4
+ 104:weathersensors.c ****     Counter_Start();
+ 168              		.loc 1 104 0
+ 169 0002 FFF7FEFF 		bl	Counter_Start
+ 170              	.LVL14:
+ 105:weathersensors.c ****     TIMER0_ISR_StartEx(Counter_ISR);
+ARM GAS  C:\Users\corne\AppData\Local\Temp\ccpoOR4q.s 			page 6
+
+
+ 171              		.loc 1 105 0
+ 172 0006 0348     		ldr	r0, .L14
+ 173 0008 FFF7FEFF 		bl	TIMER0_ISR_StartEx
+ 174              	.LVL15:
+ 106:weathersensors.c ****     CC_ISR_flag = FALSE;
+ 175              		.loc 1 106 0
+ 176 000c 0022     		movs	r2, #0
+ 177 000e 024B     		ldr	r3, .L14+4
+ 178 0010 9A71     		strb	r2, [r3, #6]
+ 107:weathersensors.c **** }
+ 179              		.loc 1 107 0
+ 180              		@ sp needed
+ 181 0012 10BD     		pop	{r4, pc}
+ 182              	.L15:
+ 183              		.align	2
+ 184              	.L14:
+ 185 0014 00000000 		.word	Counter_ISR
+ 186 0018 00000000 		.word	.LANCHOR0
+ 187              		.cfi_endproc
+ 188              	.LFE67:
+ 189              		.size	WEATHER_Setup, .-WEATHER_Setup
+ 190              		.section	.text.WEATHER_getWindDirection,"ax",%progbits
+ 191              		.align	2
+ 192              		.global	WEATHER_getWindDirection
+ 193              		.code	16
+ 194              		.thumb_func
+ 195              		.type	WEATHER_getWindDirection, %function
+ 196              	WEATHER_getWindDirection:
+ 197              	.LFB68:
+ 108:weathersensors.c **** 
+ 109:weathersensors.c **** 
+ 110:weathersensors.c **** winddirection   WEATHER_getWindDirection()
+ 111:weathersensors.c **** {
+ 198              		.loc 1 111 0
+ 199              		.cfi_startproc
+ 200              		@ args = 0, pretend = 0, frame = 8
+ 201              		@ frame_needed = 0, uses_anonymous_args = 0
+ 202 0000 10B5     		push	{r4, lr}
+ 203              		.cfi_def_cfa_offset 8
+ 204              		.cfi_offset 4, -8
+ 205              		.cfi_offset 14, -4
+ 206 0002 82B0     		sub	sp, sp, #8
+ 207              		.cfi_def_cfa_offset 16
+ 208              	.LVL16:
+ 112:weathersensors.c ****     int16 vane_adc = 0;
+ 113:weathersensors.c ****     int16 resultmv=0;
+ 114:weathersensors.c ****     winddirection direction;
+ 115:weathersensors.c ****     
+ 116:weathersensors.c ****     ADC_SAR_IsEndConversion(ADC_SAR_WAIT_FOR_RESULT);
+ 209              		.loc 1 116 0
+ 210 0004 0220     		movs	r0, #2
+ 211 0006 FFF7FEFF 		bl	ADC_SAR_IsEndConversion
+ 212              	.LVL17:
+ 117:weathersensors.c ****     /******************************************************************************
+ 118:weathersensors.c ****     * Adjust data from ADC with respect to Vref value.
+ 119:weathersensors.c ****     * This adjustment is to be done if Vref is set to any other than
+ 120:weathersensors.c ****     * internal 1.024V.
+ARM GAS  C:\Users\corne\AppData\Local\Temp\ccpoOR4q.s 			page 7
+
+
+ 121:weathersensors.c ****     * For more detailed description see Functional Description section
+ 122:weathersensors.c ****     * of DieTemp P4 datasheet.
+ 123:weathersensors.c ****     *******************************************************************************/
+ 124:weathersensors.c ****     vane_adc = ADC_SAR_GetResult16(0);
+ 213              		.loc 1 124 0
+ 214 000a 0020     		movs	r0, #0
+ 215 000c FFF7FEFF 		bl	ADC_SAR_GetResult16
+ 216              	.LVL18:
+ 217 0010 0100     		movs	r1, r0
+ 218              	.LVL19:
+ 125:weathersensors.c ****     resultmv = ADC_SAR_CountsTo_mVolts(0, vane_adc);
+ 219              		.loc 1 125 0
+ 220 0012 0020     		movs	r0, #0
+ 221 0014 FFF7FEFF 		bl	ADC_SAR_CountsTo_mVolts
+ 222              	.LVL20:
+ 126:weathersensors.c ****     lookupWindVane(&direction, resultmv);
+ 223              		.loc 1 126 0
+ 224 0018 81B2     		uxth	r1, r0
+ 225 001a 6B46     		mov	r3, sp
+ 226 001c DC1D     		adds	r4, r3, #7
+ 227 001e 2000     		movs	r0, r4
+ 228              	.LVL21:
+ 229 0020 FFF7FEFF 		bl	lookupWindVane
+ 230              	.LVL22:
+ 127:weathersensors.c ****     if(direction == invalid)
+ 231              		.loc 1 127 0
+ 232 0024 2378     		ldrb	r3, [r4]
+ 233 0026 082B     		cmp	r3, #8
+ 234 0028 03D1     		bne	.L17
+ 128:weathersensors.c ****         direction = olddirection;
+ 235              		.loc 1 128 0
+ 236 002a 044B     		ldr	r3, .L18
+ 237 002c DA79     		ldrb	r2, [r3, #7]
+ 238 002e 6B46     		mov	r3, sp
+ 239 0030 DA71     		strb	r2, [r3, #7]
+ 240              	.L17:
+ 129:weathersensors.c ****     
+ 130:weathersensors.c ****     return direction;
+ 241              		.loc 1 130 0
+ 242 0032 6B46     		mov	r3, sp
+ 243 0034 D879     		ldrb	r0, [r3, #7]
+ 131:weathersensors.c **** }
+ 244              		.loc 1 131 0
+ 245 0036 02B0     		add	sp, sp, #8
+ 246              		@ sp needed
+ 247 0038 10BD     		pop	{r4, pc}
+ 248              	.L19:
+ 249 003a C046     		.align	2
+ 250              	.L18:
+ 251 003c 00000000 		.word	.LANCHOR0
+ 252              		.cfi_endproc
+ 253              	.LFE68:
+ 254              		.size	WEATHER_getWindDirection, .-WEATHER_getWindDirection
+ 255              		.global	__aeabi_idiv
+ 256              		.section	.text.WEATHER_getWindSpeed,"ax",%progbits
+ 257              		.align	2
+ 258              		.global	WEATHER_getWindSpeed
+ARM GAS  C:\Users\corne\AppData\Local\Temp\ccpoOR4q.s 			page 8
+
+
+ 259              		.code	16
+ 260              		.thumb_func
+ 261              		.type	WEATHER_getWindSpeed, %function
+ 262              	WEATHER_getWindSpeed:
+ 263              	.LFB69:
+ 132:weathersensors.c **** 
+ 133:weathersensors.c **** uint8_t WEATHER_getWindSpeed()
+ 134:weathersensors.c **** {
+ 264              		.loc 1 134 0
+ 265              		.cfi_startproc
+ 266              		@ args = 0, pretend = 0, frame = 104
+ 267              		@ frame_needed = 0, uses_anonymous_args = 0
+ 268 0000 00B5     		push	{lr}
+ 269              		.cfi_def_cfa_offset 4
+ 270              		.cfi_offset 14, -4
+ 271 0002 9BB0     		sub	sp, sp, #108
+ 272              		.cfi_def_cfa_offset 112
+ 135:weathersensors.c ****     uint8_t windspeed;
+ 136:weathersensors.c ****     windspeed = 2400/capturedCount;
+ 273              		.loc 1 136 0
+ 274 0004 084B     		ldr	r3, .L21
+ 275 0006 9988     		ldrh	r1, [r3, #4]
+ 276 0008 9620     		movs	r0, #150
+ 277 000a 0001     		lsls	r0, r0, #4
+ 278 000c FFF7FEFF 		bl	__aeabi_idiv
+ 279              	.LVL23:
+ 137:weathersensors.c ****     char8 outstring[100];
+ 138:weathersensors.c ****     sprintf(outstring, "%d\r\n", windspeed);
+ 280              		.loc 1 138 0
+ 281 0010 FF22     		movs	r2, #255
+ 282 0012 0240     		ands	r2, r0
+ 283 0014 0549     		ldr	r1, .L21+4
+ 284 0016 01A8     		add	r0, sp, #4
+ 285              	.LVL24:
+ 286 0018 FFF7FEFF 		bl	sprintf
+ 287              	.LVL25:
+ 139:weathersensors.c ****     UART_UartPutString(outstring);
+ 288              		.loc 1 139 0
+ 289 001c 01A8     		add	r0, sp, #4
+ 290 001e FFF7FEFF 		bl	UART_UartPutString
+ 291              	.LVL26:
+ 140:weathersensors.c ****     
+ 141:weathersensors.c ****     return 0;
+ 142:weathersensors.c **** }
+ 292              		.loc 1 142 0
+ 293 0022 0020     		movs	r0, #0
+ 294 0024 1BB0     		add	sp, sp, #108
+ 295              		@ sp needed
+ 296 0026 00BD     		pop	{pc}
+ 297              	.L22:
+ 298              		.align	2
+ 299              	.L21:
+ 300 0028 00000000 		.word	.LANCHOR0
+ 301 002c 00000000 		.word	.LC6
+ 302              		.cfi_endproc
+ 303              	.LFE69:
+ 304              		.size	WEATHER_getWindSpeed, .-WEATHER_getWindSpeed
+ARM GAS  C:\Users\corne\AppData\Local\Temp\ccpoOR4q.s 			page 9
+
+
+ 305              		.global	CC_ISR_flag
+ 306              		.global	capturedCount
+ 307              		.global	counter_overflowCount
+ 308              		.global	olddirection
+ 309              		.global	wind_vane_lut
+ 310              		.data
+ 311              		.align	2
+ 312              		.set	.LANCHOR1,. + 0
+ 313              		.type	wind_vane_lut, %object
+ 314              		.size	wind_vane_lut, 16
+ 315              	wind_vane_lut:
+ 316 0000 DA00     		.short	218
+ 317 0002 7401     		.short	372
+ 318 0004 9102     		.short	657
+ 319 0006 6F06     		.short	1647
+ 320 0008 7D0B     		.short	2941
+ 321 000a 280A     		.short	2600
+ 322 000c B808     		.short	2232
+ 323 000e 5804     		.short	1112
+ 324              		.section	.rodata.str1.4,"aMS",%progbits,1
+ 325              		.align	2
+ 326              	.LC6:
+ 327 0000 25640D0A 		.ascii	"%d\015\012\000"
+ 327      00
+ 328              		.bss
+ 329              		.align	2
+ 330              		.set	.LANCHOR0,. + 0
+ 331              		.type	counter_overflowCount, %object
+ 332              		.size	counter_overflowCount, 4
+ 333              	counter_overflowCount:
+ 334 0000 00000000 		.space	4
+ 335              		.type	capturedCount, %object
+ 336              		.size	capturedCount, 2
+ 337              	capturedCount:
+ 338 0004 0000     		.space	2
+ 339              		.type	CC_ISR_flag, %object
+ 340              		.size	CC_ISR_flag, 1
+ 341              	CC_ISR_flag:
+ 342 0006 00       		.space	1
+ 343              		.type	olddirection, %object
+ 344              		.size	olddirection, 1
+ 345              	olddirection:
+ 346 0007 00       		.space	1
+ 347              		.text
+ 348              	.Letext0:
+ 349              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\4.1\\psoc creator\\import\\gnu\\arm\\5.4.
+ 350              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\4.1\\psoc creator\\import\\gnu\\arm\\5.4.
+ 351              		.file 4 "Generated_Source\\PSoC4/cytypes.h"
+ 352              		.file 5 "weathersensors.h"
+ 353              		.file 6 "Generated_Source\\PSoC4/Counter.h"
+ 354              		.file 7 "Generated_Source\\PSoC4/TIMER0_ISR.h"
+ 355              		.file 8 "Generated_Source\\PSoC4/ADC_SAR.h"
+ 356              		.file 9 "c:\\program files (x86)\\cypress\\psoc creator\\4.1\\psoc creator\\import\\gnu\\arm\\5.4.
+ 357              		.file 10 "Generated_Source\\PSoC4/UART_SPI_UART.h"
+ 358              		.section	.debug_info,"",%progbits
+ 359              	.Ldebug_info0:
+ 360 0000 0D040000 		.4byte	0x40d
+ARM GAS  C:\Users\corne\AppData\Local\Temp\ccpoOR4q.s 			page 10
+
+
+ 361 0004 0400     		.2byte	0x4
+ 362 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 363 000a 04       		.byte	0x4
+ 364 000b 01       		.uleb128 0x1
+ 365 000c 84000000 		.4byte	.LASF59
+ 366 0010 0C       		.byte	0xc
+ 367 0011 1A000000 		.4byte	.LASF60
+ 368 0015 12030000 		.4byte	.LASF61
+ 369 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 370 001d 00000000 		.4byte	0
+ 371 0021 00000000 		.4byte	.Ldebug_line0
+ 372 0025 02       		.uleb128 0x2
+ 373 0026 01       		.byte	0x1
+ 374 0027 06       		.byte	0x6
+ 375 0028 F2010000 		.4byte	.LASF0
+ 376 002c 03       		.uleb128 0x3
+ 377 002d 8E010000 		.4byte	.LASF9
+ 378 0031 02       		.byte	0x2
+ 379 0032 1D       		.byte	0x1d
+ 380 0033 37000000 		.4byte	0x37
+ 381 0037 02       		.uleb128 0x2
+ 382 0038 01       		.byte	0x1
+ 383 0039 08       		.byte	0x8
+ 384 003a D6010000 		.4byte	.LASF1
+ 385 003e 02       		.uleb128 0x2
+ 386 003f 02       		.byte	0x2
+ 387 0040 05       		.byte	0x5
+ 388 0041 7A000000 		.4byte	.LASF2
+ 389 0045 02       		.uleb128 0x2
+ 390 0046 02       		.byte	0x2
+ 391 0047 07       		.byte	0x7
+ 392 0048 68020000 		.4byte	.LASF3
+ 393 004c 02       		.uleb128 0x2
+ 394 004d 04       		.byte	0x4
+ 395 004e 05       		.byte	0x5
+ 396 004f 93020000 		.4byte	.LASF4
+ 397 0053 02       		.uleb128 0x2
+ 398 0054 04       		.byte	0x4
+ 399 0055 07       		.byte	0x7
+ 400 0056 D7020000 		.4byte	.LASF5
+ 401 005a 02       		.uleb128 0x2
+ 402 005b 08       		.byte	0x8
+ 403 005c 05       		.byte	0x5
+ 404 005d 42010000 		.4byte	.LASF6
+ 405 0061 02       		.uleb128 0x2
+ 406 0062 08       		.byte	0x8
+ 407 0063 07       		.byte	0x7
+ 408 0064 FE010000 		.4byte	.LASF7
+ 409 0068 04       		.uleb128 0x4
+ 410 0069 04       		.byte	0x4
+ 411 006a 05       		.byte	0x5
+ 412 006b 696E7400 		.ascii	"int\000"
+ 413 006f 02       		.uleb128 0x2
+ 414 0070 04       		.byte	0x4
+ 415 0071 07       		.byte	0x7
+ 416 0072 32020000 		.4byte	.LASF8
+ 417 0076 03       		.uleb128 0x3
+ARM GAS  C:\Users\corne\AppData\Local\Temp\ccpoOR4q.s 			page 11
+
+
+ 418 0077 12010000 		.4byte	.LASF10
+ 419 007b 03       		.byte	0x3
+ 420 007c 18       		.byte	0x18
+ 421 007d 2C000000 		.4byte	0x2c
+ 422 0081 05       		.uleb128 0x5
+ 423 0082 20010000 		.4byte	.LASF11
+ 424 0086 04       		.byte	0x4
+ 425 0087 B901     		.2byte	0x1b9
+ 426 0089 37000000 		.4byte	0x37
+ 427 008d 05       		.uleb128 0x5
+ 428 008e C9020000 		.4byte	.LASF12
+ 429 0092 04       		.byte	0x4
+ 430 0093 BA01     		.2byte	0x1ba
+ 431 0095 45000000 		.4byte	0x45
+ 432 0099 05       		.uleb128 0x5
+ 433 009a D0020000 		.4byte	.LASF13
+ 434 009e 04       		.byte	0x4
+ 435 009f BB01     		.2byte	0x1bb
+ 436 00a1 53000000 		.4byte	0x53
+ 437 00a5 05       		.uleb128 0x5
+ 438 00a6 1A010000 		.4byte	.LASF14
+ 439 00aa 04       		.byte	0x4
+ 440 00ab BD01     		.2byte	0x1bd
+ 441 00ad 3E000000 		.4byte	0x3e
+ 442 00b1 02       		.uleb128 0x2
+ 443 00b2 04       		.byte	0x4
+ 444 00b3 04       		.byte	0x4
+ 445 00b4 26010000 		.4byte	.LASF15
+ 446 00b8 02       		.uleb128 0x2
+ 447 00b9 08       		.byte	0x8
+ 448 00ba 04       		.byte	0x4
+ 449 00bb E9020000 		.4byte	.LASF16
+ 450 00bf 05       		.uleb128 0x5
+ 451 00c0 58000000 		.4byte	.LASF17
+ 452 00c4 04       		.byte	0x4
+ 453 00c5 CA01     		.2byte	0x1ca
+ 454 00c7 CB000000 		.4byte	0xcb
+ 455 00cb 02       		.uleb128 0x2
+ 456 00cc 01       		.byte	0x1
+ 457 00cd 08       		.byte	0x8
+ 458 00ce 8E020000 		.4byte	.LASF18
+ 459 00d2 02       		.uleb128 0x2
+ 460 00d3 08       		.byte	0x8
+ 461 00d4 04       		.byte	0x4
+ 462 00d5 CA010000 		.4byte	.LASF19
+ 463 00d9 02       		.uleb128 0x2
+ 464 00da 04       		.byte	0x4
+ 465 00db 07       		.byte	0x7
+ 466 00dc 91030000 		.4byte	.LASF20
+ 467 00e0 06       		.uleb128 0x6
+ 468 00e1 45020000 		.4byte	.LASF30
+ 469 00e5 01       		.byte	0x1
+ 470 00e6 37000000 		.4byte	0x37
+ 471 00ea 05       		.byte	0x5
+ 472 00eb 1D       		.byte	0x1d
+ 473 00ec 27010000 		.4byte	0x127
+ 474 00f0 07       		.uleb128 0x7
+ARM GAS  C:\Users\corne\AppData\Local\Temp\ccpoOR4q.s 			page 12
+
+
+ 475 00f1 3F020000 		.4byte	.LASF21
+ 476 00f5 00       		.byte	0
+ 477 00f6 07       		.uleb128 0x7
+ 478 00f7 5D010000 		.4byte	.LASF22
+ 479 00fb 01       		.byte	0x1
+ 480 00fc 07       		.uleb128 0x7
+ 481 00fd F0020000 		.4byte	.LASF23
+ 482 0101 02       		.byte	0x2
+ 483 0102 07       		.uleb128 0x7
+ 484 0103 68000000 		.4byte	.LASF24
+ 485 0107 03       		.byte	0x3
+ 486 0108 07       		.uleb128 0x7
+ 487 0109 EC010000 		.4byte	.LASF25
+ 488 010d 04       		.byte	0x4
+ 489 010e 07       		.uleb128 0x7
+ 490 010f 67010000 		.4byte	.LASF26
+ 491 0113 05       		.byte	0x5
+ 492 0114 07       		.uleb128 0x7
+ 493 0115 00000000 		.4byte	.LASF27
+ 494 0119 06       		.byte	0x6
+ 495 011a 07       		.uleb128 0x7
+ 496 011b C9030000 		.4byte	.LASF28
+ 497 011f 07       		.byte	0x7
+ 498 0120 07       		.uleb128 0x7
+ 499 0121 72000000 		.4byte	.LASF29
+ 500 0125 08       		.byte	0x8
+ 501 0126 00       		.byte	0
+ 502 0127 03       		.uleb128 0x3
+ 503 0128 45020000 		.4byte	.LASF30
+ 504 012c 05       		.byte	0x5
+ 505 012d 28       		.byte	0x28
+ 506 012e E0000000 		.4byte	0xe0
+ 507 0132 08       		.uleb128 0x8
+ 508 0133 4C000000 		.4byte	.LASF31
+ 509 0137 01       		.byte	0x1
+ 510 0138 3C       		.byte	0x3c
+ 511 0139 00000000 		.4byte	.LFB66
+ 512 013d 40000000 		.4byte	.LFE66-.LFB66
+ 513 0141 01       		.uleb128 0x1
+ 514 0142 9C       		.byte	0x9c
+ 515 0143 A2010000 		.4byte	0x1a2
+ 516 0147 09       		.uleb128 0x9
+ 517 0148 7F010000 		.4byte	.LASF34
+ 518 014c 01       		.byte	0x1
+ 519 014d 40       		.byte	0x40
+ 520 014e 99000000 		.4byte	0x99
+ 521 0152 00000000 		.4byte	.LLST0
+ 522 0156 0A       		.uleb128 0xa
+ 523 0157 06000000 		.4byte	.LVL1
+ 524 015b 91030000 		.4byte	0x391
+ 525 015f 0B       		.uleb128 0xb
+ 526 0160 1A000000 		.4byte	.LVL4
+ 527 0164 9D030000 		.4byte	0x39d
+ 528 0168 75010000 		.4byte	0x175
+ 529 016c 0C       		.uleb128 0xc
+ 530 016d 01       		.uleb128 0x1
+ 531 016e 50       		.byte	0x50
+ARM GAS  C:\Users\corne\AppData\Local\Temp\ccpoOR4q.s 			page 13
+
+
+ 532 016f 04       		.uleb128 0x4
+ 533 0170 74       		.byte	0x74
+ 534 0171 00       		.sleb128 0
+ 535 0172 31       		.byte	0x31
+ 536 0173 1A       		.byte	0x1a
+ 537 0174 00       		.byte	0
+ 538 0175 0A       		.uleb128 0xa
+ 539 0176 24000000 		.4byte	.LVL6
+ 540 017a A9030000 		.4byte	0x3a9
+ 541 017e 0B       		.uleb128 0xb
+ 542 017f 2E000000 		.4byte	.LVL7
+ 543 0183 B5030000 		.4byte	0x3b5
+ 544 0187 91010000 		.4byte	0x191
+ 545 018b 0C       		.uleb128 0xc
+ 546 018c 01       		.uleb128 0x1
+ 547 018d 50       		.byte	0x50
+ 548 018e 01       		.uleb128 0x1
+ 549 018f 30       		.byte	0x30
+ 550 0190 00       		.byte	0
+ 551 0191 0D       		.uleb128 0xd
+ 552 0192 38000000 		.4byte	.LVL8
+ 553 0196 9D030000 		.4byte	0x39d
+ 554 019a 0C       		.uleb128 0xc
+ 555 019b 01       		.uleb128 0x1
+ 556 019c 50       		.byte	0x50
+ 557 019d 02       		.uleb128 0x2
+ 558 019e 74       		.byte	0x74
+ 559 019f 00       		.sleb128 0
+ 560 01a0 00       		.byte	0
+ 561 01a1 00       		.byte	0
+ 562 01a2 08       		.uleb128 0x8
+ 563 01a3 BA030000 		.4byte	.LASF32
+ 564 01a7 01       		.byte	0x1
+ 565 01a8 12       		.byte	0x12
+ 566 01a9 00000000 		.4byte	.LFB65
+ 567 01ad 30000000 		.4byte	.LFE65-.LFB65
+ 568 01b1 01       		.uleb128 0x1
+ 569 01b2 9C       		.byte	0x9c
+ 570 01b3 EE010000 		.4byte	0x1ee
+ 571 01b7 0E       		.uleb128 0xe
+ 572 01b8 B2030000 		.4byte	.LASF33
+ 573 01bc 01       		.byte	0x1
+ 574 01bd 12       		.byte	0x12
+ 575 01be EE010000 		.4byte	0x1ee
+ 576 01c2 01       		.uleb128 0x1
+ 577 01c3 50       		.byte	0x50
+ 578 01c4 0F       		.uleb128 0xf
+ 579 01c5 61696E00 		.ascii	"ain\000"
+ 580 01c9 01       		.byte	0x1
+ 581 01ca 12       		.byte	0x12
+ 582 01cb 8D000000 		.4byte	0x8d
+ 583 01cf 01       		.uleb128 0x1
+ 584 01d0 51       		.byte	0x51
+ 585 01d1 09       		.uleb128 0x9
+ 586 01d2 2B000000 		.4byte	.LASF35
+ 587 01d6 01       		.byte	0x1
+ 588 01d7 14       		.byte	0x14
+ARM GAS  C:\Users\corne\AppData\Local\Temp\ccpoOR4q.s 			page 14
+
+
+ 589 01d8 8D000000 		.4byte	0x8d
+ 590 01dc 2A000000 		.4byte	.LLST1
+ 591 01e0 10       		.uleb128 0x10
+ 592 01e1 6900     		.ascii	"i\000"
+ 593 01e3 01       		.byte	0x1
+ 594 01e4 15       		.byte	0x15
+ 595 01e5 68000000 		.4byte	0x68
+ 596 01e9 3D000000 		.4byte	.LLST2
+ 597 01ed 00       		.byte	0
+ 598 01ee 11       		.uleb128 0x11
+ 599 01ef 04       		.byte	0x4
+ 600 01f0 27010000 		.4byte	0x127
+ 601 01f4 12       		.uleb128 0x12
+ 602 01f5 71010000 		.4byte	.LASF62
+ 603 01f9 01       		.byte	0x1
+ 604 01fa 66       		.byte	0x66
+ 605 01fb 00000000 		.4byte	.LFB67
+ 606 01ff 1C000000 		.4byte	.LFE67-.LFB67
+ 607 0203 01       		.uleb128 0x1
+ 608 0204 9C       		.byte	0x9c
+ 609 0205 26020000 		.4byte	0x226
+ 610 0209 0A       		.uleb128 0xa
+ 611 020a 06000000 		.4byte	.LVL14
+ 612 020e C1030000 		.4byte	0x3c1
+ 613 0212 0D       		.uleb128 0xd
+ 614 0213 0C000000 		.4byte	.LVL15
+ 615 0217 CD030000 		.4byte	0x3cd
+ 616 021b 0C       		.uleb128 0xc
+ 617 021c 01       		.uleb128 0x1
+ 618 021d 50       		.byte	0x50
+ 619 021e 05       		.uleb128 0x5
+ 620 021f 03       		.byte	0x3
+ 621 0220 00000000 		.4byte	Counter_ISR
+ 622 0224 00       		.byte	0
+ 623 0225 00       		.byte	0
+ 624 0226 13       		.uleb128 0x13
+ 625 0227 D3030000 		.4byte	.LASF36
+ 626 022b 01       		.byte	0x1
+ 627 022c 6E       		.byte	0x6e
+ 628 022d 27010000 		.4byte	0x127
+ 629 0231 00000000 		.4byte	.LFB68
+ 630 0235 40000000 		.4byte	.LFE68-.LFB68
+ 631 0239 01       		.uleb128 0x1
+ 632 023a 9C       		.byte	0x9c
+ 633 023b B5020000 		.4byte	0x2b5
+ 634 023f 09       		.uleb128 0x9
+ 635 0240 05000000 		.4byte	.LASF37
+ 636 0244 01       		.byte	0x1
+ 637 0245 70       		.byte	0x70
+ 638 0246 A5000000 		.4byte	0xa5
+ 639 024a 5C000000 		.4byte	.LLST3
+ 640 024e 09       		.uleb128 0x9
+ 641 024f 15020000 		.4byte	.LASF38
+ 642 0253 01       		.byte	0x1
+ 643 0254 71       		.byte	0x71
+ 644 0255 A5000000 		.4byte	0xa5
+ 645 0259 7B000000 		.4byte	.LLST4
+ARM GAS  C:\Users\corne\AppData\Local\Temp\ccpoOR4q.s 			page 15
+
+
+ 646 025d 14       		.uleb128 0x14
+ 647 025e 5E000000 		.4byte	.LASF39
+ 648 0262 01       		.byte	0x1
+ 649 0263 72       		.byte	0x72
+ 650 0264 27010000 		.4byte	0x127
+ 651 0268 02       		.uleb128 0x2
+ 652 0269 91       		.byte	0x91
+ 653 026a 77       		.sleb128 -9
+ 654 026b 0B       		.uleb128 0xb
+ 655 026c 0A000000 		.4byte	.LVL17
+ 656 0270 D8030000 		.4byte	0x3d8
+ 657 0274 7E020000 		.4byte	0x27e
+ 658 0278 0C       		.uleb128 0xc
+ 659 0279 01       		.uleb128 0x1
+ 660 027a 50       		.byte	0x50
+ 661 027b 01       		.uleb128 0x1
+ 662 027c 32       		.byte	0x32
+ 663 027d 00       		.byte	0
+ 664 027e 0B       		.uleb128 0xb
+ 665 027f 10000000 		.4byte	.LVL18
+ 666 0283 E3030000 		.4byte	0x3e3
+ 667 0287 91020000 		.4byte	0x291
+ 668 028b 0C       		.uleb128 0xc
+ 669 028c 01       		.uleb128 0x1
+ 670 028d 50       		.byte	0x50
+ 671 028e 01       		.uleb128 0x1
+ 672 028f 30       		.byte	0x30
+ 673 0290 00       		.byte	0
+ 674 0291 0B       		.uleb128 0xb
+ 675 0292 18000000 		.4byte	.LVL20
+ 676 0296 EE030000 		.4byte	0x3ee
+ 677 029a A4020000 		.4byte	0x2a4
+ 678 029e 0C       		.uleb128 0xc
+ 679 029f 01       		.uleb128 0x1
+ 680 02a0 50       		.byte	0x50
+ 681 02a1 01       		.uleb128 0x1
+ 682 02a2 30       		.byte	0x30
+ 683 02a3 00       		.byte	0
+ 684 02a4 0D       		.uleb128 0xd
+ 685 02a5 24000000 		.4byte	.LVL22
+ 686 02a9 A2010000 		.4byte	0x1a2
+ 687 02ad 0C       		.uleb128 0xc
+ 688 02ae 01       		.uleb128 0x1
+ 689 02af 50       		.byte	0x50
+ 690 02b0 02       		.uleb128 0x2
+ 691 02b1 74       		.byte	0x74
+ 692 02b2 00       		.sleb128 0
+ 693 02b3 00       		.byte	0
+ 694 02b4 00       		.byte	0
+ 695 02b5 15       		.uleb128 0x15
+ 696 02b6 9C020000 		.4byte	.LASF40
+ 697 02ba 01       		.byte	0x1
+ 698 02bb 85       		.byte	0x85
+ 699 02bc 76000000 		.4byte	0x76
+ 700 02c0 00000000 		.4byte	.LFB69
+ 701 02c4 30000000 		.4byte	.LFE69-.LFB69
+ 702 02c8 01       		.uleb128 0x1
+ARM GAS  C:\Users\corne\AppData\Local\Temp\ccpoOR4q.s 			page 16
+
+
+ 703 02c9 9C       		.byte	0x9c
+ 704 02ca 1C030000 		.4byte	0x31c
+ 705 02ce 09       		.uleb128 0x9
+ 706 02cf B1020000 		.4byte	.LASF41
+ 707 02d3 01       		.byte	0x1
+ 708 02d4 87       		.byte	0x87
+ 709 02d5 76000000 		.4byte	0x76
+ 710 02d9 A5000000 		.4byte	.LLST5
+ 711 02dd 14       		.uleb128 0x14
+ 712 02de F5020000 		.4byte	.LASF42
+ 713 02e2 01       		.byte	0x1
+ 714 02e3 89       		.byte	0x89
+ 715 02e4 1C030000 		.4byte	0x31c
+ 716 02e8 03       		.uleb128 0x3
+ 717 02e9 91       		.byte	0x91
+ 718 02ea 947F     		.sleb128 -108
+ 719 02ec 0B       		.uleb128 0xb
+ 720 02ed 1C000000 		.4byte	.LVL25
+ 721 02f1 F9030000 		.4byte	0x3f9
+ 722 02f5 0A030000 		.4byte	0x30a
+ 723 02f9 0C       		.uleb128 0xc
+ 724 02fa 01       		.uleb128 0x1
+ 725 02fb 50       		.byte	0x50
+ 726 02fc 03       		.uleb128 0x3
+ 727 02fd 91       		.byte	0x91
+ 728 02fe 947F     		.sleb128 -108
+ 729 0300 0C       		.uleb128 0xc
+ 730 0301 01       		.uleb128 0x1
+ 731 0302 51       		.byte	0x51
+ 732 0303 05       		.uleb128 0x5
+ 733 0304 03       		.byte	0x3
+ 734 0305 00000000 		.4byte	.LC6
+ 735 0309 00       		.byte	0
+ 736 030a 0D       		.uleb128 0xd
+ 737 030b 22000000 		.4byte	.LVL26
+ 738 030f 04040000 		.4byte	0x404
+ 739 0313 0C       		.uleb128 0xc
+ 740 0314 01       		.uleb128 0x1
+ 741 0315 50       		.byte	0x50
+ 742 0316 03       		.uleb128 0x3
+ 743 0317 91       		.byte	0x91
+ 744 0318 947F     		.sleb128 -108
+ 745 031a 00       		.byte	0
+ 746 031b 00       		.byte	0
+ 747 031c 16       		.uleb128 0x16
+ 748 031d BF000000 		.4byte	0xbf
+ 749 0321 2C030000 		.4byte	0x32c
+ 750 0325 17       		.uleb128 0x17
+ 751 0326 D9000000 		.4byte	0xd9
+ 752 032a 63       		.byte	0x63
+ 753 032b 00       		.byte	0
+ 754 032c 16       		.uleb128 0x16
+ 755 032d 8D000000 		.4byte	0x8d
+ 756 0331 3C030000 		.4byte	0x33c
+ 757 0335 17       		.uleb128 0x17
+ 758 0336 D9000000 		.4byte	0xd9
+ 759 033a 07       		.byte	0x7
+ARM GAS  C:\Users\corne\AppData\Local\Temp\ccpoOR4q.s 			page 17
+
+
+ 760 033b 00       		.byte	0
+ 761 033c 18       		.uleb128 0x18
+ 762 033d 30000000 		.4byte	.LASF43
+ 763 0341 01       		.byte	0x1
+ 764 0342 10       		.byte	0x10
+ 765 0343 2C030000 		.4byte	0x32c
+ 766 0347 05       		.uleb128 0x5
+ 767 0348 03       		.byte	0x3
+ 768 0349 00000000 		.4byte	wind_vane_lut
+ 769 034d 18       		.uleb128 0x18
+ 770 034e 50010000 		.4byte	.LASF44
+ 771 0352 01       		.byte	0x1
+ 772 0353 11       		.byte	0x11
+ 773 0354 27010000 		.4byte	0x127
+ 774 0358 05       		.uleb128 0x5
+ 775 0359 03       		.byte	0x3
+ 776 035a 00000000 		.4byte	olddirection
+ 777 035e 18       		.uleb128 0x18
+ 778 035f 2C010000 		.4byte	.LASF45
+ 779 0363 01       		.byte	0x1
+ 780 0364 24       		.byte	0x24
+ 781 0365 99000000 		.4byte	0x99
+ 782 0369 05       		.uleb128 0x5
+ 783 036a 03       		.byte	0x3
+ 784 036b 00000000 		.4byte	counter_overflowCount
+ 785 036f 18       		.uleb128 0x18
+ 786 0370 BB020000 		.4byte	.LASF46
+ 787 0374 01       		.byte	0x1
+ 788 0375 28       		.byte	0x28
+ 789 0376 8D000000 		.4byte	0x8d
+ 790 037a 05       		.uleb128 0x5
+ 791 037b 03       		.byte	0x3
+ 792 037c 00000000 		.4byte	capturedCount
+ 793 0380 18       		.uleb128 0x18
+ 794 0381 0E000000 		.4byte	.LASF47
+ 795 0385 01       		.byte	0x1
+ 796 0386 2D       		.byte	0x2d
+ 797 0387 81000000 		.4byte	0x81
+ 798 038b 05       		.uleb128 0x5
+ 799 038c 03       		.byte	0x3
+ 800 038d 00000000 		.4byte	CC_ISR_flag
+ 801 0391 19       		.uleb128 0x19
+ 802 0392 AF010000 		.4byte	.LASF48
+ 803 0396 AF010000 		.4byte	.LASF48
+ 804 039a 06       		.byte	0x6
+ 805 039b 4601     		.2byte	0x146
+ 806 039d 19       		.uleb128 0x19
+ 807 039e 98010000 		.4byte	.LASF49
+ 808 03a2 98010000 		.4byte	.LASF49
+ 809 03a6 06       		.byte	0x6
+ 810 03a7 4701     		.2byte	0x147
+ 811 03a9 19       		.uleb128 0x19
+ 812 03aa 1E020000 		.4byte	.LASF50
+ 813 03ae 1E020000 		.4byte	.LASF50
+ 814 03b2 06       		.byte	0x6
+ 815 03b3 4D01     		.2byte	0x14d
+ 816 03b5 19       		.uleb128 0x19
+ARM GAS  C:\Users\corne\AppData\Local\Temp\ccpoOR4q.s 			page 18
+
+
+ 817 03b6 53020000 		.4byte	.LASF51
+ 818 03ba 53020000 		.4byte	.LASF51
+ 819 03be 06       		.byte	0x6
+ 820 03bf 4A01     		.2byte	0x14a
+ 821 03c1 19       		.uleb128 0x19
+ 822 03c2 3E000000 		.4byte	.LASF52
+ 823 03c6 3E000000 		.4byte	.LASF52
+ 824 03ca 06       		.byte	0x6
+ 825 03cb 3201     		.2byte	0x132
+ 826 03cd 1A       		.uleb128 0x1a
+ 827 03ce 7B020000 		.4byte	.LASF53
+ 828 03d2 7B020000 		.4byte	.LASF53
+ 829 03d6 07       		.byte	0x7
+ 830 03d7 18       		.byte	0x18
+ 831 03d8 1A       		.uleb128 0x1a
+ 832 03d9 9A030000 		.4byte	.LASF54
+ 833 03dd 9A030000 		.4byte	.LASF54
+ 834 03e1 08       		.byte	0x8
+ 835 03e2 9E       		.byte	0x9e
+ 836 03e3 1A       		.uleb128 0x1a
+ 837 03e4 7D030000 		.4byte	.LASF55
+ 838 03e8 7D030000 		.4byte	.LASF55
+ 839 03ec 08       		.byte	0x8
+ 840 03ed 9F       		.byte	0x9f
+ 841 03ee 1A       		.uleb128 0x1a
+ 842 03ef EC030000 		.4byte	.LASF56
+ 843 03f3 EC030000 		.4byte	.LASF56
+ 844 03f7 08       		.byte	0x8
+ 845 03f8 AB       		.byte	0xab
+ 846 03f9 1A       		.uleb128 0x1a
+ 847 03fa E4010000 		.4byte	.LASF57
+ 848 03fe E4010000 		.4byte	.LASF57
+ 849 0402 09       		.byte	0x9
+ 850 0403 E7       		.byte	0xe7
+ 851 0404 19       		.uleb128 0x19
+ 852 0405 FF020000 		.4byte	.LASF58
+ 853 0409 FF020000 		.4byte	.LASF58
+ 854 040d 0A       		.byte	0xa
+ 855 040e 2103     		.2byte	0x321
+ 856 0410 00       		.byte	0
+ 857              		.section	.debug_abbrev,"",%progbits
+ 858              	.Ldebug_abbrev0:
+ 859 0000 01       		.uleb128 0x1
+ 860 0001 11       		.uleb128 0x11
+ 861 0002 01       		.byte	0x1
+ 862 0003 25       		.uleb128 0x25
+ 863 0004 0E       		.uleb128 0xe
+ 864 0005 13       		.uleb128 0x13
+ 865 0006 0B       		.uleb128 0xb
+ 866 0007 03       		.uleb128 0x3
+ 867 0008 0E       		.uleb128 0xe
+ 868 0009 1B       		.uleb128 0x1b
+ 869 000a 0E       		.uleb128 0xe
+ 870 000b 55       		.uleb128 0x55
+ 871 000c 17       		.uleb128 0x17
+ 872 000d 11       		.uleb128 0x11
+ 873 000e 01       		.uleb128 0x1
+ARM GAS  C:\Users\corne\AppData\Local\Temp\ccpoOR4q.s 			page 19
+
+
+ 874 000f 10       		.uleb128 0x10
+ 875 0010 17       		.uleb128 0x17
+ 876 0011 00       		.byte	0
+ 877 0012 00       		.byte	0
+ 878 0013 02       		.uleb128 0x2
+ 879 0014 24       		.uleb128 0x24
+ 880 0015 00       		.byte	0
+ 881 0016 0B       		.uleb128 0xb
+ 882 0017 0B       		.uleb128 0xb
+ 883 0018 3E       		.uleb128 0x3e
+ 884 0019 0B       		.uleb128 0xb
+ 885 001a 03       		.uleb128 0x3
+ 886 001b 0E       		.uleb128 0xe
+ 887 001c 00       		.byte	0
+ 888 001d 00       		.byte	0
+ 889 001e 03       		.uleb128 0x3
+ 890 001f 16       		.uleb128 0x16
+ 891 0020 00       		.byte	0
+ 892 0021 03       		.uleb128 0x3
+ 893 0022 0E       		.uleb128 0xe
+ 894 0023 3A       		.uleb128 0x3a
+ 895 0024 0B       		.uleb128 0xb
+ 896 0025 3B       		.uleb128 0x3b
+ 897 0026 0B       		.uleb128 0xb
+ 898 0027 49       		.uleb128 0x49
+ 899 0028 13       		.uleb128 0x13
+ 900 0029 00       		.byte	0
+ 901 002a 00       		.byte	0
+ 902 002b 04       		.uleb128 0x4
+ 903 002c 24       		.uleb128 0x24
+ 904 002d 00       		.byte	0
+ 905 002e 0B       		.uleb128 0xb
+ 906 002f 0B       		.uleb128 0xb
+ 907 0030 3E       		.uleb128 0x3e
+ 908 0031 0B       		.uleb128 0xb
+ 909 0032 03       		.uleb128 0x3
+ 910 0033 08       		.uleb128 0x8
+ 911 0034 00       		.byte	0
+ 912 0035 00       		.byte	0
+ 913 0036 05       		.uleb128 0x5
+ 914 0037 16       		.uleb128 0x16
+ 915 0038 00       		.byte	0
+ 916 0039 03       		.uleb128 0x3
+ 917 003a 0E       		.uleb128 0xe
+ 918 003b 3A       		.uleb128 0x3a
+ 919 003c 0B       		.uleb128 0xb
+ 920 003d 3B       		.uleb128 0x3b
+ 921 003e 05       		.uleb128 0x5
+ 922 003f 49       		.uleb128 0x49
+ 923 0040 13       		.uleb128 0x13
+ 924 0041 00       		.byte	0
+ 925 0042 00       		.byte	0
+ 926 0043 06       		.uleb128 0x6
+ 927 0044 04       		.uleb128 0x4
+ 928 0045 01       		.byte	0x1
+ 929 0046 03       		.uleb128 0x3
+ 930 0047 0E       		.uleb128 0xe
+ARM GAS  C:\Users\corne\AppData\Local\Temp\ccpoOR4q.s 			page 20
+
+
+ 931 0048 0B       		.uleb128 0xb
+ 932 0049 0B       		.uleb128 0xb
+ 933 004a 49       		.uleb128 0x49
+ 934 004b 13       		.uleb128 0x13
+ 935 004c 3A       		.uleb128 0x3a
+ 936 004d 0B       		.uleb128 0xb
+ 937 004e 3B       		.uleb128 0x3b
+ 938 004f 0B       		.uleb128 0xb
+ 939 0050 01       		.uleb128 0x1
+ 940 0051 13       		.uleb128 0x13
+ 941 0052 00       		.byte	0
+ 942 0053 00       		.byte	0
+ 943 0054 07       		.uleb128 0x7
+ 944 0055 28       		.uleb128 0x28
+ 945 0056 00       		.byte	0
+ 946 0057 03       		.uleb128 0x3
+ 947 0058 0E       		.uleb128 0xe
+ 948 0059 1C       		.uleb128 0x1c
+ 949 005a 0B       		.uleb128 0xb
+ 950 005b 00       		.byte	0
+ 951 005c 00       		.byte	0
+ 952 005d 08       		.uleb128 0x8
+ 953 005e 2E       		.uleb128 0x2e
+ 954 005f 01       		.byte	0x1
+ 955 0060 3F       		.uleb128 0x3f
+ 956 0061 19       		.uleb128 0x19
+ 957 0062 03       		.uleb128 0x3
+ 958 0063 0E       		.uleb128 0xe
+ 959 0064 3A       		.uleb128 0x3a
+ 960 0065 0B       		.uleb128 0xb
+ 961 0066 3B       		.uleb128 0x3b
+ 962 0067 0B       		.uleb128 0xb
+ 963 0068 27       		.uleb128 0x27
+ 964 0069 19       		.uleb128 0x19
+ 965 006a 11       		.uleb128 0x11
+ 966 006b 01       		.uleb128 0x1
+ 967 006c 12       		.uleb128 0x12
+ 968 006d 06       		.uleb128 0x6
+ 969 006e 40       		.uleb128 0x40
+ 970 006f 18       		.uleb128 0x18
+ 971 0070 9742     		.uleb128 0x2117
+ 972 0072 19       		.uleb128 0x19
+ 973 0073 01       		.uleb128 0x1
+ 974 0074 13       		.uleb128 0x13
+ 975 0075 00       		.byte	0
+ 976 0076 00       		.byte	0
+ 977 0077 09       		.uleb128 0x9
+ 978 0078 34       		.uleb128 0x34
+ 979 0079 00       		.byte	0
+ 980 007a 03       		.uleb128 0x3
+ 981 007b 0E       		.uleb128 0xe
+ 982 007c 3A       		.uleb128 0x3a
+ 983 007d 0B       		.uleb128 0xb
+ 984 007e 3B       		.uleb128 0x3b
+ 985 007f 0B       		.uleb128 0xb
+ 986 0080 49       		.uleb128 0x49
+ 987 0081 13       		.uleb128 0x13
+ARM GAS  C:\Users\corne\AppData\Local\Temp\ccpoOR4q.s 			page 21
+
+
+ 988 0082 02       		.uleb128 0x2
+ 989 0083 17       		.uleb128 0x17
+ 990 0084 00       		.byte	0
+ 991 0085 00       		.byte	0
+ 992 0086 0A       		.uleb128 0xa
+ 993 0087 898201   		.uleb128 0x4109
+ 994 008a 00       		.byte	0
+ 995 008b 11       		.uleb128 0x11
+ 996 008c 01       		.uleb128 0x1
+ 997 008d 31       		.uleb128 0x31
+ 998 008e 13       		.uleb128 0x13
+ 999 008f 00       		.byte	0
+ 1000 0090 00       		.byte	0
+ 1001 0091 0B       		.uleb128 0xb
+ 1002 0092 898201   		.uleb128 0x4109
+ 1003 0095 01       		.byte	0x1
+ 1004 0096 11       		.uleb128 0x11
+ 1005 0097 01       		.uleb128 0x1
+ 1006 0098 31       		.uleb128 0x31
+ 1007 0099 13       		.uleb128 0x13
+ 1008 009a 01       		.uleb128 0x1
+ 1009 009b 13       		.uleb128 0x13
+ 1010 009c 00       		.byte	0
+ 1011 009d 00       		.byte	0
+ 1012 009e 0C       		.uleb128 0xc
+ 1013 009f 8A8201   		.uleb128 0x410a
+ 1014 00a2 00       		.byte	0
+ 1015 00a3 02       		.uleb128 0x2
+ 1016 00a4 18       		.uleb128 0x18
+ 1017 00a5 9142     		.uleb128 0x2111
+ 1018 00a7 18       		.uleb128 0x18
+ 1019 00a8 00       		.byte	0
+ 1020 00a9 00       		.byte	0
+ 1021 00aa 0D       		.uleb128 0xd
+ 1022 00ab 898201   		.uleb128 0x4109
+ 1023 00ae 01       		.byte	0x1
+ 1024 00af 11       		.uleb128 0x11
+ 1025 00b0 01       		.uleb128 0x1
+ 1026 00b1 31       		.uleb128 0x31
+ 1027 00b2 13       		.uleb128 0x13
+ 1028 00b3 00       		.byte	0
+ 1029 00b4 00       		.byte	0
+ 1030 00b5 0E       		.uleb128 0xe
+ 1031 00b6 05       		.uleb128 0x5
+ 1032 00b7 00       		.byte	0
+ 1033 00b8 03       		.uleb128 0x3
+ 1034 00b9 0E       		.uleb128 0xe
+ 1035 00ba 3A       		.uleb128 0x3a
+ 1036 00bb 0B       		.uleb128 0xb
+ 1037 00bc 3B       		.uleb128 0x3b
+ 1038 00bd 0B       		.uleb128 0xb
+ 1039 00be 49       		.uleb128 0x49
+ 1040 00bf 13       		.uleb128 0x13
+ 1041 00c0 02       		.uleb128 0x2
+ 1042 00c1 18       		.uleb128 0x18
+ 1043 00c2 00       		.byte	0
+ 1044 00c3 00       		.byte	0
+ARM GAS  C:\Users\corne\AppData\Local\Temp\ccpoOR4q.s 			page 22
+
+
+ 1045 00c4 0F       		.uleb128 0xf
+ 1046 00c5 05       		.uleb128 0x5
+ 1047 00c6 00       		.byte	0
+ 1048 00c7 03       		.uleb128 0x3
+ 1049 00c8 08       		.uleb128 0x8
+ 1050 00c9 3A       		.uleb128 0x3a
+ 1051 00ca 0B       		.uleb128 0xb
+ 1052 00cb 3B       		.uleb128 0x3b
+ 1053 00cc 0B       		.uleb128 0xb
+ 1054 00cd 49       		.uleb128 0x49
+ 1055 00ce 13       		.uleb128 0x13
+ 1056 00cf 02       		.uleb128 0x2
+ 1057 00d0 18       		.uleb128 0x18
+ 1058 00d1 00       		.byte	0
+ 1059 00d2 00       		.byte	0
+ 1060 00d3 10       		.uleb128 0x10
+ 1061 00d4 34       		.uleb128 0x34
+ 1062 00d5 00       		.byte	0
+ 1063 00d6 03       		.uleb128 0x3
+ 1064 00d7 08       		.uleb128 0x8
+ 1065 00d8 3A       		.uleb128 0x3a
+ 1066 00d9 0B       		.uleb128 0xb
+ 1067 00da 3B       		.uleb128 0x3b
+ 1068 00db 0B       		.uleb128 0xb
+ 1069 00dc 49       		.uleb128 0x49
+ 1070 00dd 13       		.uleb128 0x13
+ 1071 00de 02       		.uleb128 0x2
+ 1072 00df 17       		.uleb128 0x17
+ 1073 00e0 00       		.byte	0
+ 1074 00e1 00       		.byte	0
+ 1075 00e2 11       		.uleb128 0x11
+ 1076 00e3 0F       		.uleb128 0xf
+ 1077 00e4 00       		.byte	0
+ 1078 00e5 0B       		.uleb128 0xb
+ 1079 00e6 0B       		.uleb128 0xb
+ 1080 00e7 49       		.uleb128 0x49
+ 1081 00e8 13       		.uleb128 0x13
+ 1082 00e9 00       		.byte	0
+ 1083 00ea 00       		.byte	0
+ 1084 00eb 12       		.uleb128 0x12
+ 1085 00ec 2E       		.uleb128 0x2e
+ 1086 00ed 01       		.byte	0x1
+ 1087 00ee 3F       		.uleb128 0x3f
+ 1088 00ef 19       		.uleb128 0x19
+ 1089 00f0 03       		.uleb128 0x3
+ 1090 00f1 0E       		.uleb128 0xe
+ 1091 00f2 3A       		.uleb128 0x3a
+ 1092 00f3 0B       		.uleb128 0xb
+ 1093 00f4 3B       		.uleb128 0x3b
+ 1094 00f5 0B       		.uleb128 0xb
+ 1095 00f6 11       		.uleb128 0x11
+ 1096 00f7 01       		.uleb128 0x1
+ 1097 00f8 12       		.uleb128 0x12
+ 1098 00f9 06       		.uleb128 0x6
+ 1099 00fa 40       		.uleb128 0x40
+ 1100 00fb 18       		.uleb128 0x18
+ 1101 00fc 9742     		.uleb128 0x2117
+ARM GAS  C:\Users\corne\AppData\Local\Temp\ccpoOR4q.s 			page 23
+
+
+ 1102 00fe 19       		.uleb128 0x19
+ 1103 00ff 01       		.uleb128 0x1
+ 1104 0100 13       		.uleb128 0x13
+ 1105 0101 00       		.byte	0
+ 1106 0102 00       		.byte	0
+ 1107 0103 13       		.uleb128 0x13
+ 1108 0104 2E       		.uleb128 0x2e
+ 1109 0105 01       		.byte	0x1
+ 1110 0106 3F       		.uleb128 0x3f
+ 1111 0107 19       		.uleb128 0x19
+ 1112 0108 03       		.uleb128 0x3
+ 1113 0109 0E       		.uleb128 0xe
+ 1114 010a 3A       		.uleb128 0x3a
+ 1115 010b 0B       		.uleb128 0xb
+ 1116 010c 3B       		.uleb128 0x3b
+ 1117 010d 0B       		.uleb128 0xb
+ 1118 010e 49       		.uleb128 0x49
+ 1119 010f 13       		.uleb128 0x13
+ 1120 0110 11       		.uleb128 0x11
+ 1121 0111 01       		.uleb128 0x1
+ 1122 0112 12       		.uleb128 0x12
+ 1123 0113 06       		.uleb128 0x6
+ 1124 0114 40       		.uleb128 0x40
+ 1125 0115 18       		.uleb128 0x18
+ 1126 0116 9742     		.uleb128 0x2117
+ 1127 0118 19       		.uleb128 0x19
+ 1128 0119 01       		.uleb128 0x1
+ 1129 011a 13       		.uleb128 0x13
+ 1130 011b 00       		.byte	0
+ 1131 011c 00       		.byte	0
+ 1132 011d 14       		.uleb128 0x14
+ 1133 011e 34       		.uleb128 0x34
+ 1134 011f 00       		.byte	0
+ 1135 0120 03       		.uleb128 0x3
+ 1136 0121 0E       		.uleb128 0xe
+ 1137 0122 3A       		.uleb128 0x3a
+ 1138 0123 0B       		.uleb128 0xb
+ 1139 0124 3B       		.uleb128 0x3b
+ 1140 0125 0B       		.uleb128 0xb
+ 1141 0126 49       		.uleb128 0x49
+ 1142 0127 13       		.uleb128 0x13
+ 1143 0128 02       		.uleb128 0x2
+ 1144 0129 18       		.uleb128 0x18
+ 1145 012a 00       		.byte	0
+ 1146 012b 00       		.byte	0
+ 1147 012c 15       		.uleb128 0x15
+ 1148 012d 2E       		.uleb128 0x2e
+ 1149 012e 01       		.byte	0x1
+ 1150 012f 3F       		.uleb128 0x3f
+ 1151 0130 19       		.uleb128 0x19
+ 1152 0131 03       		.uleb128 0x3
+ 1153 0132 0E       		.uleb128 0xe
+ 1154 0133 3A       		.uleb128 0x3a
+ 1155 0134 0B       		.uleb128 0xb
+ 1156 0135 3B       		.uleb128 0x3b
+ 1157 0136 0B       		.uleb128 0xb
+ 1158 0137 49       		.uleb128 0x49
+ARM GAS  C:\Users\corne\AppData\Local\Temp\ccpoOR4q.s 			page 24
+
+
+ 1159 0138 13       		.uleb128 0x13
+ 1160 0139 11       		.uleb128 0x11
+ 1161 013a 01       		.uleb128 0x1
+ 1162 013b 12       		.uleb128 0x12
+ 1163 013c 06       		.uleb128 0x6
+ 1164 013d 40       		.uleb128 0x40
+ 1165 013e 18       		.uleb128 0x18
+ 1166 013f 9642     		.uleb128 0x2116
+ 1167 0141 19       		.uleb128 0x19
+ 1168 0142 01       		.uleb128 0x1
+ 1169 0143 13       		.uleb128 0x13
+ 1170 0144 00       		.byte	0
+ 1171 0145 00       		.byte	0
+ 1172 0146 16       		.uleb128 0x16
+ 1173 0147 01       		.uleb128 0x1
+ 1174 0148 01       		.byte	0x1
+ 1175 0149 49       		.uleb128 0x49
+ 1176 014a 13       		.uleb128 0x13
+ 1177 014b 01       		.uleb128 0x1
+ 1178 014c 13       		.uleb128 0x13
+ 1179 014d 00       		.byte	0
+ 1180 014e 00       		.byte	0
+ 1181 014f 17       		.uleb128 0x17
+ 1182 0150 21       		.uleb128 0x21
+ 1183 0151 00       		.byte	0
+ 1184 0152 49       		.uleb128 0x49
+ 1185 0153 13       		.uleb128 0x13
+ 1186 0154 2F       		.uleb128 0x2f
+ 1187 0155 0B       		.uleb128 0xb
+ 1188 0156 00       		.byte	0
+ 1189 0157 00       		.byte	0
+ 1190 0158 18       		.uleb128 0x18
+ 1191 0159 34       		.uleb128 0x34
+ 1192 015a 00       		.byte	0
+ 1193 015b 03       		.uleb128 0x3
+ 1194 015c 0E       		.uleb128 0xe
+ 1195 015d 3A       		.uleb128 0x3a
+ 1196 015e 0B       		.uleb128 0xb
+ 1197 015f 3B       		.uleb128 0x3b
+ 1198 0160 0B       		.uleb128 0xb
+ 1199 0161 49       		.uleb128 0x49
+ 1200 0162 13       		.uleb128 0x13
+ 1201 0163 3F       		.uleb128 0x3f
+ 1202 0164 19       		.uleb128 0x19
+ 1203 0165 02       		.uleb128 0x2
+ 1204 0166 18       		.uleb128 0x18
+ 1205 0167 00       		.byte	0
+ 1206 0168 00       		.byte	0
+ 1207 0169 19       		.uleb128 0x19
+ 1208 016a 2E       		.uleb128 0x2e
+ 1209 016b 00       		.byte	0
+ 1210 016c 3F       		.uleb128 0x3f
+ 1211 016d 19       		.uleb128 0x19
+ 1212 016e 3C       		.uleb128 0x3c
+ 1213 016f 19       		.uleb128 0x19
+ 1214 0170 6E       		.uleb128 0x6e
+ 1215 0171 0E       		.uleb128 0xe
+ARM GAS  C:\Users\corne\AppData\Local\Temp\ccpoOR4q.s 			page 25
+
+
+ 1216 0172 03       		.uleb128 0x3
+ 1217 0173 0E       		.uleb128 0xe
+ 1218 0174 3A       		.uleb128 0x3a
+ 1219 0175 0B       		.uleb128 0xb
+ 1220 0176 3B       		.uleb128 0x3b
+ 1221 0177 05       		.uleb128 0x5
+ 1222 0178 00       		.byte	0
+ 1223 0179 00       		.byte	0
+ 1224 017a 1A       		.uleb128 0x1a
+ 1225 017b 2E       		.uleb128 0x2e
+ 1226 017c 00       		.byte	0
+ 1227 017d 3F       		.uleb128 0x3f
+ 1228 017e 19       		.uleb128 0x19
+ 1229 017f 3C       		.uleb128 0x3c
+ 1230 0180 19       		.uleb128 0x19
+ 1231 0181 6E       		.uleb128 0x6e
+ 1232 0182 0E       		.uleb128 0xe
+ 1233 0183 03       		.uleb128 0x3
+ 1234 0184 0E       		.uleb128 0xe
+ 1235 0185 3A       		.uleb128 0x3a
+ 1236 0186 0B       		.uleb128 0xb
+ 1237 0187 3B       		.uleb128 0x3b
+ 1238 0188 0B       		.uleb128 0xb
+ 1239 0189 00       		.byte	0
+ 1240 018a 00       		.byte	0
+ 1241 018b 00       		.byte	0
+ 1242              		.section	.debug_loc,"",%progbits
+ 1243              	.Ldebug_loc0:
+ 1244              	.LLST0:
+ 1245 0000 02000000 		.4byte	.LVL0
+ 1246 0004 08000000 		.4byte	.LVL2
+ 1247 0008 0200     		.2byte	0x2
+ 1248 000a 30       		.byte	0x30
+ 1249 000b 9F       		.byte	0x9f
+ 1250 000c 08000000 		.4byte	.LVL2
+ 1251 0010 0A000000 		.4byte	.LVL3
+ 1252 0014 0100     		.2byte	0x1
+ 1253 0016 50       		.byte	0x50
+ 1254 0017 0A000000 		.4byte	.LVL3
+ 1255 001b 1E000000 		.4byte	.LVL5
+ 1256 001f 0100     		.2byte	0x1
+ 1257 0021 54       		.byte	0x54
+ 1258 0022 00000000 		.4byte	0
+ 1259 0026 00000000 		.4byte	0
+ 1260              	.LLST1:
+ 1261 002a 16000000 		.4byte	.LVL12
+ 1262 002e 20000000 		.4byte	.LVL13
+ 1263 0032 0100     		.2byte	0x1
+ 1264 0034 53       		.byte	0x53
+ 1265 0035 00000000 		.4byte	0
+ 1266 0039 00000000 		.4byte	0
+ 1267              	.LLST2:
+ 1268 003d 02000000 		.4byte	.LVL10
+ 1269 0041 06000000 		.4byte	.LVL11
+ 1270 0045 0200     		.2byte	0x2
+ 1271 0047 30       		.byte	0x30
+ 1272 0048 9F       		.byte	0x9f
+ARM GAS  C:\Users\corne\AppData\Local\Temp\ccpoOR4q.s 			page 26
+
+
+ 1273 0049 06000000 		.4byte	.LVL11
+ 1274 004d 30000000 		.4byte	.LFE65
+ 1275 0051 0100     		.2byte	0x1
+ 1276 0053 52       		.byte	0x52
+ 1277 0054 00000000 		.4byte	0
+ 1278 0058 00000000 		.4byte	0
+ 1279              	.LLST3:
+ 1280 005c 04000000 		.4byte	.LVL16
+ 1281 0060 12000000 		.4byte	.LVL19
+ 1282 0064 0200     		.2byte	0x2
+ 1283 0066 30       		.byte	0x30
+ 1284 0067 9F       		.byte	0x9f
+ 1285 0068 12000000 		.4byte	.LVL19
+ 1286 006c 17000000 		.4byte	.LVL20-1
+ 1287 0070 0100     		.2byte	0x1
+ 1288 0072 51       		.byte	0x51
+ 1289 0073 00000000 		.4byte	0
+ 1290 0077 00000000 		.4byte	0
+ 1291              	.LLST4:
+ 1292 007b 04000000 		.4byte	.LVL16
+ 1293 007f 18000000 		.4byte	.LVL20
+ 1294 0083 0200     		.2byte	0x2
+ 1295 0085 30       		.byte	0x30
+ 1296 0086 9F       		.byte	0x9f
+ 1297 0087 18000000 		.4byte	.LVL20
+ 1298 008b 20000000 		.4byte	.LVL21
+ 1299 008f 0100     		.2byte	0x1
+ 1300 0091 50       		.byte	0x50
+ 1301 0092 20000000 		.4byte	.LVL21
+ 1302 0096 23000000 		.4byte	.LVL22-1
+ 1303 009a 0100     		.2byte	0x1
+ 1304 009c 51       		.byte	0x51
+ 1305 009d 00000000 		.4byte	0
+ 1306 00a1 00000000 		.4byte	0
+ 1307              	.LLST5:
+ 1308 00a5 10000000 		.4byte	.LVL23
+ 1309 00a9 18000000 		.4byte	.LVL24
+ 1310 00ad 0100     		.2byte	0x1
+ 1311 00af 50       		.byte	0x50
+ 1312 00b0 00000000 		.4byte	0
+ 1313 00b4 00000000 		.4byte	0
+ 1314              		.section	.debug_aranges,"",%progbits
+ 1315 0000 3C000000 		.4byte	0x3c
+ 1316 0004 0200     		.2byte	0x2
+ 1317 0006 00000000 		.4byte	.Ldebug_info0
+ 1318 000a 04       		.byte	0x4
+ 1319 000b 00       		.byte	0
+ 1320 000c 0000     		.2byte	0
+ 1321 000e 0000     		.2byte	0
+ 1322 0010 00000000 		.4byte	.LFB66
+ 1323 0014 40000000 		.4byte	.LFE66-.LFB66
+ 1324 0018 00000000 		.4byte	.LFB65
+ 1325 001c 30000000 		.4byte	.LFE65-.LFB65
+ 1326 0020 00000000 		.4byte	.LFB67
+ 1327 0024 1C000000 		.4byte	.LFE67-.LFB67
+ 1328 0028 00000000 		.4byte	.LFB68
+ 1329 002c 40000000 		.4byte	.LFE68-.LFB68
+ARM GAS  C:\Users\corne\AppData\Local\Temp\ccpoOR4q.s 			page 27
+
+
+ 1330 0030 00000000 		.4byte	.LFB69
+ 1331 0034 30000000 		.4byte	.LFE69-.LFB69
+ 1332 0038 00000000 		.4byte	0
+ 1333 003c 00000000 		.4byte	0
+ 1334              		.section	.debug_ranges,"",%progbits
+ 1335              	.Ldebug_ranges0:
+ 1336 0000 00000000 		.4byte	.LFB66
+ 1337 0004 40000000 		.4byte	.LFE66
+ 1338 0008 00000000 		.4byte	.LFB65
+ 1339 000c 30000000 		.4byte	.LFE65
+ 1340 0010 00000000 		.4byte	.LFB67
+ 1341 0014 1C000000 		.4byte	.LFE67
+ 1342 0018 00000000 		.4byte	.LFB68
+ 1343 001c 40000000 		.4byte	.LFE68
+ 1344 0020 00000000 		.4byte	.LFB69
+ 1345 0024 30000000 		.4byte	.LFE69
+ 1346 0028 00000000 		.4byte	0
+ 1347 002c 00000000 		.4byte	0
+ 1348              		.section	.debug_line,"",%progbits
+ 1349              	.Ldebug_line0:
+ 1350 0000 91020000 		.section	.debug_str,"MS",%progbits,1
+ 1350      02000C02 
+ 1350      00000201 
+ 1350      FB0E0D00 
+ 1350      01010101 
+ 1351              	.LASF27:
+ 1352 0000 77657374 		.ascii	"west\000"
+ 1352      00
+ 1353              	.LASF37:
+ 1354 0005 76616E65 		.ascii	"vane_adc\000"
+ 1354      5F616463 
+ 1354      00
+ 1355              	.LASF47:
+ 1356 000e 43435F49 		.ascii	"CC_ISR_flag\000"
+ 1356      53525F66 
+ 1356      6C616700 
+ 1357              	.LASF60:
+ 1358 001a 77656174 		.ascii	"weathersensors.c\000"
+ 1358      68657273 
+ 1358      656E736F 
+ 1358      72732E63 
+ 1358      00
+ 1359              	.LASF35:
+ 1360 002b 64696666 		.ascii	"diff\000"
+ 1360      00
+ 1361              	.LASF43:
+ 1362 0030 77696E64 		.ascii	"wind_vane_lut\000"
+ 1362      5F76616E 
+ 1362      655F6C75 
+ 1362      7400
+ 1363              	.LASF52:
+ 1364 003e 436F756E 		.ascii	"Counter_Start\000"
+ 1364      7465725F 
+ 1364      53746172 
+ 1364      7400
+ 1365              	.LASF31:
+ 1366 004c 436F756E 		.ascii	"Counter_ISR\000"
+ARM GAS  C:\Users\corne\AppData\Local\Temp\ccpoOR4q.s 			page 28
+
+
+ 1366      7465725F 
+ 1366      49535200 
+ 1367              	.LASF17:
+ 1368 0058 63686172 		.ascii	"char8\000"
+ 1368      3800
+ 1369              	.LASF39:
+ 1370 005e 64697265 		.ascii	"direction\000"
+ 1370      6374696F 
+ 1370      6E00
+ 1371              	.LASF24:
+ 1372 0068 736F7574 		.ascii	"southeast\000"
+ 1372      68656173 
+ 1372      7400
+ 1373              	.LASF29:
+ 1374 0072 696E7661 		.ascii	"invalid\000"
+ 1374      6C696400 
+ 1375              	.LASF2:
+ 1376 007a 73686F72 		.ascii	"short int\000"
+ 1376      7420696E 
+ 1376      7400
+ 1377              	.LASF59:
+ 1378 0084 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 1378      43313120 
+ 1378      352E342E 
+ 1378      31203230 
+ 1378      31363036 
+ 1379 00b7 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m0 -mthumb -g -O"
+ 1379      20726576 
+ 1379      6973696F 
+ 1379      6E203233 
+ 1379      37373135 
+ 1380 00ea 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
+ 1380      66756E63 
+ 1380      74696F6E 
+ 1380      2D736563 
+ 1380      74696F6E 
+ 1381              	.LASF10:
+ 1382 0112 75696E74 		.ascii	"uint8_t\000"
+ 1382      385F7400 
+ 1383              	.LASF14:
+ 1384 011a 696E7431 		.ascii	"int16\000"
+ 1384      3600
+ 1385              	.LASF11:
+ 1386 0120 75696E74 		.ascii	"uint8\000"
+ 1386      3800
+ 1387              	.LASF15:
+ 1388 0126 666C6F61 		.ascii	"float\000"
+ 1388      7400
+ 1389              	.LASF45:
+ 1390 012c 636F756E 		.ascii	"counter_overflowCount\000"
+ 1390      7465725F 
+ 1390      6F766572 
+ 1390      666C6F77 
+ 1390      436F756E 
+ 1391              	.LASF6:
+ 1392 0142 6C6F6E67 		.ascii	"long long int\000"
+ 1392      206C6F6E 
+ARM GAS  C:\Users\corne\AppData\Local\Temp\ccpoOR4q.s 			page 29
+
+
+ 1392      6720696E 
+ 1392      7400
+ 1393              	.LASF44:
+ 1394 0150 6F6C6464 		.ascii	"olddirection\000"
+ 1394      69726563 
+ 1394      74696F6E 
+ 1394      00
+ 1395              	.LASF22:
+ 1396 015d 6E6F7274 		.ascii	"northeast\000"
+ 1396      68656173 
+ 1396      7400
+ 1397              	.LASF26:
+ 1398 0167 736F7574 		.ascii	"southwest\000"
+ 1398      68776573 
+ 1398      7400
+ 1399              	.LASF62:
+ 1400 0171 57454154 		.ascii	"WEATHER_Setup\000"
+ 1400      4845525F 
+ 1400      53657475 
+ 1400      7000
+ 1401              	.LASF34:
+ 1402 017f 636F756E 		.ascii	"counter_status\000"
+ 1402      7465725F 
+ 1402      73746174 
+ 1402      757300
+ 1403              	.LASF9:
+ 1404 018e 5F5F7569 		.ascii	"__uint8_t\000"
+ 1404      6E74385F 
+ 1404      7400
+ 1405              	.LASF49:
+ 1406 0198 436F756E 		.ascii	"Counter_ClearInterrupt\000"
+ 1406      7465725F 
+ 1406      436C6561 
+ 1406      72496E74 
+ 1406      65727275 
+ 1407              	.LASF48:
+ 1408 01af 436F756E 		.ascii	"Counter_GetInterruptSource\000"
+ 1408      7465725F 
+ 1408      47657449 
+ 1408      6E746572 
+ 1408      72757074 
+ 1409              	.LASF19:
+ 1410 01ca 6C6F6E67 		.ascii	"long double\000"
+ 1410      20646F75 
+ 1410      626C6500 
+ 1411              	.LASF1:
+ 1412 01d6 756E7369 		.ascii	"unsigned char\000"
+ 1412      676E6564 
+ 1412      20636861 
+ 1412      7200
+ 1413              	.LASF57:
+ 1414 01e4 73707269 		.ascii	"sprintf\000"
+ 1414      6E746600 
+ 1415              	.LASF25:
+ 1416 01ec 736F7574 		.ascii	"south\000"
+ 1416      6800
+ 1417              	.LASF0:
+ARM GAS  C:\Users\corne\AppData\Local\Temp\ccpoOR4q.s 			page 30
+
+
+ 1418 01f2 7369676E 		.ascii	"signed char\000"
+ 1418      65642063 
+ 1418      68617200 
+ 1419              	.LASF7:
+ 1420 01fe 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1420      206C6F6E 
+ 1420      6720756E 
+ 1420      7369676E 
+ 1420      65642069 
+ 1421              	.LASF38:
+ 1422 0215 72657375 		.ascii	"resultmv\000"
+ 1422      6C746D76 
+ 1422      00
+ 1423              	.LASF50:
+ 1424 021e 436F756E 		.ascii	"Counter_ReadCapture\000"
+ 1424      7465725F 
+ 1424      52656164 
+ 1424      43617074 
+ 1424      75726500 
+ 1425              	.LASF8:
+ 1426 0232 756E7369 		.ascii	"unsigned int\000"
+ 1426      676E6564 
+ 1426      20696E74 
+ 1426      00
+ 1427              	.LASF21:
+ 1428 023f 6E6F7274 		.ascii	"north\000"
+ 1428      6800
+ 1429              	.LASF30:
+ 1430 0245 77696E64 		.ascii	"winddirection\000"
+ 1430      64697265 
+ 1430      6374696F 
+ 1430      6E00
+ 1431              	.LASF51:
+ 1432 0253 436F756E 		.ascii	"Counter_WriteCounter\000"
+ 1432      7465725F 
+ 1432      57726974 
+ 1432      65436F75 
+ 1432      6E746572 
+ 1433              	.LASF3:
+ 1434 0268 73686F72 		.ascii	"short unsigned int\000"
+ 1434      7420756E 
+ 1434      7369676E 
+ 1434      65642069 
+ 1434      6E7400
+ 1435              	.LASF53:
+ 1436 027b 54494D45 		.ascii	"TIMER0_ISR_StartEx\000"
+ 1436      52305F49 
+ 1436      53525F53 
+ 1436      74617274 
+ 1436      457800
+ 1437              	.LASF18:
+ 1438 028e 63686172 		.ascii	"char\000"
+ 1438      00
+ 1439              	.LASF4:
+ 1440 0293 6C6F6E67 		.ascii	"long int\000"
+ 1440      20696E74 
+ 1440      00
+ARM GAS  C:\Users\corne\AppData\Local\Temp\ccpoOR4q.s 			page 31
+
+
+ 1441              	.LASF40:
+ 1442 029c 57454154 		.ascii	"WEATHER_getWindSpeed\000"
+ 1442      4845525F 
+ 1442      67657457 
+ 1442      696E6453 
+ 1442      70656564 
+ 1443              	.LASF41:
+ 1444 02b1 77696E64 		.ascii	"windspeed\000"
+ 1444      73706565 
+ 1444      6400
+ 1445              	.LASF46:
+ 1446 02bb 63617074 		.ascii	"capturedCount\000"
+ 1446      75726564 
+ 1446      436F756E 
+ 1446      7400
+ 1447              	.LASF12:
+ 1448 02c9 75696E74 		.ascii	"uint16\000"
+ 1448      313600
+ 1449              	.LASF13:
+ 1450 02d0 75696E74 		.ascii	"uint32\000"
+ 1450      333200
+ 1451              	.LASF5:
+ 1452 02d7 6C6F6E67 		.ascii	"long unsigned int\000"
+ 1452      20756E73 
+ 1452      69676E65 
+ 1452      6420696E 
+ 1452      7400
+ 1453              	.LASF16:
+ 1454 02e9 646F7562 		.ascii	"double\000"
+ 1454      6C6500
+ 1455              	.LASF23:
+ 1456 02f0 65617374 		.ascii	"east\000"
+ 1456      00
+ 1457              	.LASF42:
+ 1458 02f5 6F757473 		.ascii	"outstring\000"
+ 1458      7472696E 
+ 1458      6700
+ 1459              	.LASF58:
+ 1460 02ff 55415254 		.ascii	"UART_UartPutString\000"
+ 1460      5F556172 
+ 1460      74507574 
+ 1460      53747269 
+ 1460      6E6700
+ 1461              	.LASF61:
+ 1462 0312 433A5C55 		.ascii	"C:\\Users\\corne\\Dropbox\\prive\\projects\\Wireles"
+ 1462      73657273 
+ 1462      5C636F72 
+ 1462      6E655C44 
+ 1462      726F7062 
+ 1463 033f 735F7365 		.ascii	"s_sensornode\\Software\\Wireless_sensornode\\Firmwa"
+ 1463      6E736F72 
+ 1463      6E6F6465 
+ 1463      5C536F66 
+ 1463      74776172 
+ 1464 036f 72655F56 		.ascii	"re_V0.1.cydsn\000"
+ 1464      302E312E 
+ 1464      63796473 
+ARM GAS  C:\Users\corne\AppData\Local\Temp\ccpoOR4q.s 			page 32
+
+
+ 1464      6E00
+ 1465              	.LASF55:
+ 1466 037d 4144435F 		.ascii	"ADC_SAR_GetResult16\000"
+ 1466      5341525F 
+ 1466      47657452 
+ 1466      6573756C 
+ 1466      74313600 
+ 1467              	.LASF20:
+ 1468 0391 73697A65 		.ascii	"sizetype\000"
+ 1468      74797065 
+ 1468      00
+ 1469              	.LASF54:
+ 1470 039a 4144435F 		.ascii	"ADC_SAR_IsEndConversion\000"
+ 1470      5341525F 
+ 1470      4973456E 
+ 1470      64436F6E 
+ 1470      76657273 
+ 1471              	.LASF33:
+ 1472 03b2 705F616E 		.ascii	"p_angle\000"
+ 1472      676C6500 
+ 1473              	.LASF32:
+ 1474 03ba 6C6F6F6B 		.ascii	"lookupWindVane\000"
+ 1474      75705769 
+ 1474      6E645661 
+ 1474      6E6500
+ 1475              	.LASF28:
+ 1476 03c9 6E6F7274 		.ascii	"northwest\000"
+ 1476      68776573 
+ 1476      7400
+ 1477              	.LASF36:
+ 1478 03d3 57454154 		.ascii	"WEATHER_getWindDirection\000"
+ 1478      4845525F 
+ 1478      67657457 
+ 1478      696E6444 
+ 1478      69726563 
+ 1479              	.LASF56:
+ 1480 03ec 4144435F 		.ascii	"ADC_SAR_CountsTo_mVolts\000"
+ 1480      5341525F 
+ 1480      436F756E 
+ 1480      7473546F 
+ 1480      5F6D566F 
+ 1481              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

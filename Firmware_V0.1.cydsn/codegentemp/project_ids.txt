@@ -1,0 +1,8 @@
+C:\Users\corne\Dropbox\prive\projects\Wireless_sensornode\Software\Wireless_sensornode\Firmware_V0.1.cydsn\Firmware_V0.1.cyprj|d14bc169-03a7-45bb-a21f-b18ce200dc32
+C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\default\CyAnnotationLibrary\CyAnnotationLibrary.cylib\CyAnnotationLibrary.cyprj|65a45356-e9b6-4441-981e-73123998c7f9
+C:\Users\corne\Documents\PSoC Creator\4.1\Downloads ( 4.1).cylib\Downloads ( 4.1).cyprj|f155eaa1-6016-4e55-95eb-88e539d2b6f2
+C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\cycomponentlibraryupdates\CyComponentLibraryUpdates.cylib\CyComponentLibraryUpdates.cyprj|a0b26387-81bd-47c3-b9bc-be613775b835
+C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\CyComponentLibrary.cyprj|5b1bcfae-12ff-404f-a275-617b1f2a3e35
+C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\CyPrimitives.cyprj|4db44971-2bcd-448b-a7ab-31400fb261da
+C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\dev\psoc4\PSoC4AnalogDevice\psoc4arch.cydsn\psoc4arch.cyprj|479072e9-3bda-4327-a0c0-812eb32b930d
+C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\default\CyReferenceLibrary\CyReferenceLibrary.cylib\CyReferenceLibrary.cyprj|bdf82d98-d00c-44c1-8918-4001c9dc2989

@@ -1,0 +1,1000 @@
+ARM GAS  C:\Users\corne\AppData\Local\Temp\ccJ701tr.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m0
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 0
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"PRS_PM.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.PRS_SaveConfig,"ax",%progbits
+  20              		.align	2
+  21              		.global	PRS_SaveConfig
+  22              		.code	16
+  23              		.thumb_func
+  24              		.type	PRS_SaveConfig, %function
+  25              	PRS_SaveConfig:
+  26              	.LFB1:
+  27              		.file 1 "Generated_Source\\PSoC4\\PRS_PM.c"
+   1:Generated_Source\PSoC4/PRS_PM.c **** /*******************************************************************************
+   2:Generated_Source\PSoC4/PRS_PM.c **** * File Name: PRS_PM.c
+   3:Generated_Source\PSoC4/PRS_PM.c **** * Version 2.40
+   4:Generated_Source\PSoC4/PRS_PM.c **** *
+   5:Generated_Source\PSoC4/PRS_PM.c **** * Description:
+   6:Generated_Source\PSoC4/PRS_PM.c **** *  This file provides Sleep APIs for PRS component.
+   7:Generated_Source\PSoC4/PRS_PM.c **** *
+   8:Generated_Source\PSoC4/PRS_PM.c **** * Note:
+   9:Generated_Source\PSoC4/PRS_PM.c **** *  None
+  10:Generated_Source\PSoC4/PRS_PM.c **** *
+  11:Generated_Source\PSoC4/PRS_PM.c **** ********************************************************************************
+  12:Generated_Source\PSoC4/PRS_PM.c **** * Copyright 2008-2013, Cypress Semiconductor Corporation.  All rights reserved.
+  13:Generated_Source\PSoC4/PRS_PM.c **** * You may use this file only in accordance with the license, terms, conditions, 
+  14:Generated_Source\PSoC4/PRS_PM.c **** * disclaimers, and limitations in the end user license agreement accompanying 
+  15:Generated_Source\PSoC4/PRS_PM.c **** * the software package with which this file was provided.
+  16:Generated_Source\PSoC4/PRS_PM.c **** *******************************************************************************/
+  17:Generated_Source\PSoC4/PRS_PM.c **** 
+  18:Generated_Source\PSoC4/PRS_PM.c **** #include "PRS.h"
+  19:Generated_Source\PSoC4/PRS_PM.c **** 
+  20:Generated_Source\PSoC4/PRS_PM.c **** #if ((PRS_TIME_MULTIPLEXING_ENABLE) && (PRS_WAKEUP_BEHAVIOUR == PRS__RESUMEWORK))
+  21:Generated_Source\PSoC4/PRS_PM.c ****     uint8 PRS_sleepState = PRS_NORMAL_SEQUENCE;    
+  22:Generated_Source\PSoC4/PRS_PM.c **** #endif  /* End ((PRS_TIME_MULTIPLEXING_ENABLE) && 
+  23:Generated_Source\PSoC4/PRS_PM.c ****           (PRS_WAKEUP_BEHAVIOUR == PRS__RESUMEWORK)) */
+  24:Generated_Source\PSoC4/PRS_PM.c **** 
+  25:Generated_Source\PSoC4/PRS_PM.c **** 
+  26:Generated_Source\PSoC4/PRS_PM.c **** /*******************************************************************************
+  27:Generated_Source\PSoC4/PRS_PM.c **** * Function Name: PRS_SaveConfig
+  28:Generated_Source\PSoC4/PRS_PM.c **** ********************************************************************************
+  29:Generated_Source\PSoC4/PRS_PM.c **** *
+  30:Generated_Source\PSoC4/PRS_PM.c **** * Summary:
+ARM GAS  C:\Users\corne\AppData\Local\Temp\ccJ701tr.s 			page 2
+
+
+  31:Generated_Source\PSoC4/PRS_PM.c **** *  Saves seed and polynomial registers.
+  32:Generated_Source\PSoC4/PRS_PM.c **** *
+  33:Generated_Source\PSoC4/PRS_PM.c **** * Parameters:
+  34:Generated_Source\PSoC4/PRS_PM.c **** *  void
+  35:Generated_Source\PSoC4/PRS_PM.c **** *
+  36:Generated_Source\PSoC4/PRS_PM.c **** * Return:
+  37:Generated_Source\PSoC4/PRS_PM.c **** *  void
+  38:Generated_Source\PSoC4/PRS_PM.c **** *
+  39:Generated_Source\PSoC4/PRS_PM.c **** * Global Variables:
+  40:Generated_Source\PSoC4/PRS_PM.c **** *  PRS_backup - modified when non-retention registers are saved.
+  41:Generated_Source\PSoC4/PRS_PM.c **** *
+  42:Generated_Source\PSoC4/PRS_PM.c **** *******************************************************************************/
+  43:Generated_Source\PSoC4/PRS_PM.c **** void PRS_SaveConfig(void) 
+  44:Generated_Source\PSoC4/PRS_PM.c **** {    
+  28              		.loc 1 44 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32 0000 10B5     		push	{r4, lr}
+  33              		.cfi_def_cfa_offset 8
+  34              		.cfi_offset 4, -8
+  35              		.cfi_offset 14, -4
+  45:Generated_Source\PSoC4/PRS_PM.c ****     #if (PRS_WAKEUP_BEHAVIOUR == PRS__RESUMEWORK)
+  46:Generated_Source\PSoC4/PRS_PM.c ****         /* Save dff register for time mult */
+  47:Generated_Source\PSoC4/PRS_PM.c ****         #if (PRS_TIME_MULTIPLEXING_ENABLE)
+  48:Generated_Source\PSoC4/PRS_PM.c ****             PRS_backup.dffStatus = PRS_STATUS;
+  49:Generated_Source\PSoC4/PRS_PM.c ****             /* Clear normal dff sequence set */
+  50:Generated_Source\PSoC4/PRS_PM.c ****             PRS_sleepState &= ((uint8)~PRS_NORMAL_SEQUENCE);
+  51:Generated_Source\PSoC4/PRS_PM.c ****         #endif  /* End PRS_TIME_MULTIPLEXING_ENABLE */
+  52:Generated_Source\PSoC4/PRS_PM.c ****         
+  53:Generated_Source\PSoC4/PRS_PM.c ****         /* Save A0 and A1 registers */
+  54:Generated_Source\PSoC4/PRS_PM.c ****         #if (PRS_PRS_SIZE <= 32u)
+  55:Generated_Source\PSoC4/PRS_PM.c ****             PRS_backup.seed = PRS_Read();
+  36              		.loc 1 55 0
+  37 0002 FFF7FEFF 		bl	PRS_Read
+  38              	.LVL0:
+  39 0006 014B     		ldr	r3, .L2
+  40 0008 5880     		strh	r0, [r3, #2]
+  56:Generated_Source\PSoC4/PRS_PM.c ****             
+  57:Generated_Source\PSoC4/PRS_PM.c ****         #else
+  58:Generated_Source\PSoC4/PRS_PM.c ****             PRS_backup.seedUpper = PRS_ReadUpper();
+  59:Generated_Source\PSoC4/PRS_PM.c ****             PRS_backup.seedLower = PRS_ReadLower();
+  60:Generated_Source\PSoC4/PRS_PM.c ****             
+  61:Generated_Source\PSoC4/PRS_PM.c ****         #endif     /* End (PRS_PRS_SIZE <= 32u) */
+  62:Generated_Source\PSoC4/PRS_PM.c ****         
+  63:Generated_Source\PSoC4/PRS_PM.c ****     #endif  /* End (PRS_WAKEUP_BEHAVIOUR == PRS__RESUMEWORK) */
+  64:Generated_Source\PSoC4/PRS_PM.c **** }
+  41              		.loc 1 64 0
+  42              		@ sp needed
+  43 000a 10BD     		pop	{r4, pc}
+  44              	.L3:
+  45              		.align	2
+  46              	.L2:
+  47 000c 00000000 		.word	PRS_backup
+  48              		.cfi_endproc
+  49              	.LFE1:
+  50              		.size	PRS_SaveConfig, .-PRS_SaveConfig
+ARM GAS  C:\Users\corne\AppData\Local\Temp\ccJ701tr.s 			page 3
+
+
+  51              		.section	.text.PRS_Sleep,"ax",%progbits
+  52              		.align	2
+  53              		.global	PRS_Sleep
+  54              		.code	16
+  55              		.thumb_func
+  56              		.type	PRS_Sleep, %function
+  57              	PRS_Sleep:
+  58              	.LFB2:
+  65:Generated_Source\PSoC4/PRS_PM.c **** 
+  66:Generated_Source\PSoC4/PRS_PM.c **** 
+  67:Generated_Source\PSoC4/PRS_PM.c **** /*******************************************************************************
+  68:Generated_Source\PSoC4/PRS_PM.c **** * Function Name: PRS_Sleep
+  69:Generated_Source\PSoC4/PRS_PM.c **** ********************************************************************************
+  70:Generated_Source\PSoC4/PRS_PM.c **** *
+  71:Generated_Source\PSoC4/PRS_PM.c **** * Summary:
+  72:Generated_Source\PSoC4/PRS_PM.c **** *  Stops PRS computation and saves PRS configuration.
+  73:Generated_Source\PSoC4/PRS_PM.c **** *
+  74:Generated_Source\PSoC4/PRS_PM.c **** * Parameters:
+  75:Generated_Source\PSoC4/PRS_PM.c **** *  void
+  76:Generated_Source\PSoC4/PRS_PM.c **** *
+  77:Generated_Source\PSoC4/PRS_PM.c **** * Return:
+  78:Generated_Source\PSoC4/PRS_PM.c **** *  void
+  79:Generated_Source\PSoC4/PRS_PM.c **** *
+  80:Generated_Source\PSoC4/PRS_PM.c **** * Global Variables:
+  81:Generated_Source\PSoC4/PRS_PM.c **** *  PRS_backup - modified when non-retention registers are saved.
+  82:Generated_Source\PSoC4/PRS_PM.c **** *
+  83:Generated_Source\PSoC4/PRS_PM.c **** *******************************************************************************/
+  84:Generated_Source\PSoC4/PRS_PM.c **** void PRS_Sleep(void) 
+  85:Generated_Source\PSoC4/PRS_PM.c **** {
+  59              		.loc 1 85 0
+  60              		.cfi_startproc
+  61              		@ args = 0, pretend = 0, frame = 0
+  62              		@ frame_needed = 0, uses_anonymous_args = 0
+  63 0000 10B5     		push	{r4, lr}
+  64              		.cfi_def_cfa_offset 8
+  65              		.cfi_offset 4, -8
+  66              		.cfi_offset 14, -4
+  86:Generated_Source\PSoC4/PRS_PM.c ****     /* Store PRS enable state */
+  87:Generated_Source\PSoC4/PRS_PM.c ****     if(PRS_IS_PRS_ENABLE(PRS_CONTROL_REG))
+  67              		.loc 1 87 0
+  68 0002 084B     		ldr	r3, .L7
+  69 0004 1B78     		ldrb	r3, [r3]
+  70 0006 DB07     		lsls	r3, r3, #31
+  71 0008 05D5     		bpl	.L5
+  88:Generated_Source\PSoC4/PRS_PM.c ****     {
+  89:Generated_Source\PSoC4/PRS_PM.c ****         PRS_backup.enableState = 1u;
+  72              		.loc 1 89 0
+  73 000a 0122     		movs	r2, #1
+  74 000c 064B     		ldr	r3, .L7+4
+  75 000e 1A70     		strb	r2, [r3]
+  90:Generated_Source\PSoC4/PRS_PM.c ****         PRS_Stop();
+  76              		.loc 1 90 0
+  77 0010 FFF7FEFF 		bl	PRS_Stop
+  78              	.LVL1:
+  79 0014 02E0     		b	.L6
+  80              	.L5:
+  91:Generated_Source\PSoC4/PRS_PM.c ****     }
+ARM GAS  C:\Users\corne\AppData\Local\Temp\ccJ701tr.s 			page 4
+
+
+  92:Generated_Source\PSoC4/PRS_PM.c ****     else
+  93:Generated_Source\PSoC4/PRS_PM.c ****     {
+  94:Generated_Source\PSoC4/PRS_PM.c ****         PRS_backup.enableState = 0u;
+  81              		.loc 1 94 0
+  82 0016 0022     		movs	r2, #0
+  83 0018 034B     		ldr	r3, .L7+4
+  84 001a 1A70     		strb	r2, [r3]
+  85              	.L6:
+  95:Generated_Source\PSoC4/PRS_PM.c ****     }
+  96:Generated_Source\PSoC4/PRS_PM.c ****     
+  97:Generated_Source\PSoC4/PRS_PM.c ****     PRS_SaveConfig();
+  86              		.loc 1 97 0
+  87 001c FFF7FEFF 		bl	PRS_SaveConfig
+  88              	.LVL2:
+  98:Generated_Source\PSoC4/PRS_PM.c **** }
+  89              		.loc 1 98 0
+  90              		@ sp needed
+  91 0020 10BD     		pop	{r4, pc}
+  92              	.L8:
+  93 0022 C046     		.align	2
+  94              	.L7:
+  95 0024 75000F40 		.word	1074724981
+  96 0028 00000000 		.word	PRS_backup
+  97              		.cfi_endproc
+  98              	.LFE2:
+  99              		.size	PRS_Sleep, .-PRS_Sleep
+ 100              		.section	.text.PRS_RestoreConfig,"ax",%progbits
+ 101              		.align	2
+ 102              		.global	PRS_RestoreConfig
+ 103              		.code	16
+ 104              		.thumb_func
+ 105              		.type	PRS_RestoreConfig, %function
+ 106              	PRS_RestoreConfig:
+ 107              	.LFB3:
+  99:Generated_Source\PSoC4/PRS_PM.c **** 
+ 100:Generated_Source\PSoC4/PRS_PM.c **** 
+ 101:Generated_Source\PSoC4/PRS_PM.c **** /*******************************************************************************
+ 102:Generated_Source\PSoC4/PRS_PM.c **** * Function Name: PRS_RestoreConfig
+ 103:Generated_Source\PSoC4/PRS_PM.c **** ********************************************************************************
+ 104:Generated_Source\PSoC4/PRS_PM.c **** *
+ 105:Generated_Source\PSoC4/PRS_PM.c **** * Summary:
+ 106:Generated_Source\PSoC4/PRS_PM.c **** *  Restores seed and polynomial registers.
+ 107:Generated_Source\PSoC4/PRS_PM.c **** *
+ 108:Generated_Source\PSoC4/PRS_PM.c **** * Parameters:
+ 109:Generated_Source\PSoC4/PRS_PM.c **** *  void
+ 110:Generated_Source\PSoC4/PRS_PM.c **** *
+ 111:Generated_Source\PSoC4/PRS_PM.c **** * Return:
+ 112:Generated_Source\PSoC4/PRS_PM.c **** *  void
+ 113:Generated_Source\PSoC4/PRS_PM.c **** *
+ 114:Generated_Source\PSoC4/PRS_PM.c **** *******************************************************************************/
+ 115:Generated_Source\PSoC4/PRS_PM.c **** #if (PRS_WAKEUP_BEHAVIOUR == PRS__RESUMEWORK)
+ 116:Generated_Source\PSoC4/PRS_PM.c ****     #if (PRS_TIME_MULTIPLEXING_ENABLE)
+ 117:Generated_Source\PSoC4/PRS_PM.c ****         void PRS_RestoreConfig(void) 
+ 118:Generated_Source\PSoC4/PRS_PM.c ****         {   
+ 119:Generated_Source\PSoC4/PRS_PM.c ****             /* Restore A0 and A1 registers */
+ 120:Generated_Source\PSoC4/PRS_PM.c ****             #if (PRS_PRS_SIZE <= 32u)
+ 121:Generated_Source\PSoC4/PRS_PM.c ****                 PRS_WriteSeed(PRS_backup.seed);
+ARM GAS  C:\Users\corne\AppData\Local\Temp\ccJ701tr.s 			page 5
+
+
+ 122:Generated_Source\PSoC4/PRS_PM.c ****             #else
+ 123:Generated_Source\PSoC4/PRS_PM.c ****                 PRS_WriteSeedUpper(PRS_backup.seedUpper);
+ 124:Generated_Source\PSoC4/PRS_PM.c ****                 PRS_WriteSeedLower(PRS_backup.seedLower);
+ 125:Generated_Source\PSoC4/PRS_PM.c ****             #endif  /* End (PRS_PRS_SIZE <= 32u) */
+ 126:Generated_Source\PSoC4/PRS_PM.c ****             
+ 127:Generated_Source\PSoC4/PRS_PM.c ****             #if (PRS_RUN_MODE == PRS__CLOCKED)
+ 128:Generated_Source\PSoC4/PRS_PM.c ****                 #if (PRS_PRS_SIZE <= 32u)
+ 129:Generated_Source\PSoC4/PRS_PM.c ****                     PRS_ResetSeedInit(PRS_DEFAULT_SEED);                        
+ 130:Generated_Source\PSoC4/PRS_PM.c ****                 #else
+ 131:Generated_Source\PSoC4/PRS_PM.c ****                     PRS_ResetSeedInitUpper(PRS_DEFAULT_SEED_UPPER);
+ 132:Generated_Source\PSoC4/PRS_PM.c ****                     PRS_ResetSeedInitLower(PRS_DEFAULT_SEED_LOWER); 
+ 133:Generated_Source\PSoC4/PRS_PM.c ****                 #endif  /* End (PRS_PRS_SIZE <= 32u) */ 
+ 134:Generated_Source\PSoC4/PRS_PM.c ****             #endif  /* End (PRS_RUN_MODE == PRS__CLOCKED) */
+ 135:Generated_Source\PSoC4/PRS_PM.c ****             
+ 136:Generated_Source\PSoC4/PRS_PM.c ****             /* Restore dff state for time mult: use async set/reest */
+ 137:Generated_Source\PSoC4/PRS_PM.c ****             /* Set CI, SI, SO, STATE0, STATE1 */
+ 138:Generated_Source\PSoC4/PRS_PM.c ****             PRS_CONTROL_REG = PRS_backup.dffStatus;
+ 139:Generated_Source\PSoC4/PRS_PM.c ****             
+ 140:Generated_Source\PSoC4/PRS_PM.c ****             /* Make pulse, to set trigger to defined state */
+ 141:Generated_Source\PSoC4/PRS_PM.c ****             PRS_EXECUTE_DFF_SET;
+ 142:Generated_Source\PSoC4/PRS_PM.c ****             
+ 143:Generated_Source\PSoC4/PRS_PM.c ****             /* Set normal dff sequence set */
+ 144:Generated_Source\PSoC4/PRS_PM.c ****             PRS_sleepState |= PRS_NORMAL_SEQUENCE;
+ 145:Generated_Source\PSoC4/PRS_PM.c ****         }
+ 146:Generated_Source\PSoC4/PRS_PM.c ****         
+ 147:Generated_Source\PSoC4/PRS_PM.c ****     #else
+ 148:Generated_Source\PSoC4/PRS_PM.c ****         void PRS_RestoreConfig(void) 
+ 149:Generated_Source\PSoC4/PRS_PM.c ****         {   
+ 108              		.loc 1 149 0
+ 109              		.cfi_startproc
+ 110              		@ args = 0, pretend = 0, frame = 0
+ 111              		@ frame_needed = 0, uses_anonymous_args = 0
+ 112 0000 10B5     		push	{r4, lr}
+ 113              		.cfi_def_cfa_offset 8
+ 114              		.cfi_offset 4, -8
+ 115              		.cfi_offset 14, -4
+ 150:Generated_Source\PSoC4/PRS_PM.c ****             /* Restore A0 and A1 registers */
+ 151:Generated_Source\PSoC4/PRS_PM.c ****             #if (PRS_PRS_SIZE <= 32u)
+ 152:Generated_Source\PSoC4/PRS_PM.c ****                 PRS_WriteSeed(PRS_backup.seed);
+ 116              		.loc 1 152 0
+ 117 0002 024B     		ldr	r3, .L10
+ 118 0004 5888     		ldrh	r0, [r3, #2]
+ 119 0006 FFF7FEFF 		bl	PRS_WriteSeed
+ 120              	.LVL3:
+ 153:Generated_Source\PSoC4/PRS_PM.c ****             #else
+ 154:Generated_Source\PSoC4/PRS_PM.c ****                 PRS_WriteSeedUpper(PRS_backup.seedUpper);
+ 155:Generated_Source\PSoC4/PRS_PM.c ****                 PRS_WriteSeedLower(PRS_backup.seedLower);
+ 156:Generated_Source\PSoC4/PRS_PM.c ****             #endif  /* End (PRS_PRS_SIZE <= 32u) */
+ 157:Generated_Source\PSoC4/PRS_PM.c ****             
+ 158:Generated_Source\PSoC4/PRS_PM.c ****             #if (PRS_RUN_MODE == PRS__CLOCKED)
+ 159:Generated_Source\PSoC4/PRS_PM.c ****                 #if (PRS_PRS_SIZE <= 32u)
+ 160:Generated_Source\PSoC4/PRS_PM.c ****                     PRS_ResetSeedInit(PRS_DEFAULT_SEED);                        
+ 161:Generated_Source\PSoC4/PRS_PM.c ****                 #else
+ 162:Generated_Source\PSoC4/PRS_PM.c ****                     PRS_ResetSeedInitUpper(PRS_DEFAULT_SEED_UPPER);
+ 163:Generated_Source\PSoC4/PRS_PM.c ****                     PRS_ResetSeedInitLower(PRS_DEFAULT_SEED_LOWER); 
+ 164:Generated_Source\PSoC4/PRS_PM.c ****                 #endif  /* End (PRS_PRS_SIZE <= 32u) */ 
+ 165:Generated_Source\PSoC4/PRS_PM.c ****             #endif  /* End (PRS_RUN_MODE == PRS__CLOCKED) */
+ARM GAS  C:\Users\corne\AppData\Local\Temp\ccJ701tr.s 			page 6
+
+
+ 166:Generated_Source\PSoC4/PRS_PM.c ****         }
+ 121              		.loc 1 166 0
+ 122              		@ sp needed
+ 123 000a 10BD     		pop	{r4, pc}
+ 124              	.L11:
+ 125              		.align	2
+ 126              	.L10:
+ 127 000c 00000000 		.word	PRS_backup
+ 128              		.cfi_endproc
+ 129              	.LFE3:
+ 130              		.size	PRS_RestoreConfig, .-PRS_RestoreConfig
+ 131              		.section	.text.PRS_Wakeup,"ax",%progbits
+ 132              		.align	2
+ 133              		.global	PRS_Wakeup
+ 134              		.code	16
+ 135              		.thumb_func
+ 136              		.type	PRS_Wakeup, %function
+ 137              	PRS_Wakeup:
+ 138              	.LFB4:
+ 167:Generated_Source\PSoC4/PRS_PM.c ****         
+ 168:Generated_Source\PSoC4/PRS_PM.c ****     #endif  /* End (PRS_TIME_MULTIPLEXING_ENABLE) */
+ 169:Generated_Source\PSoC4/PRS_PM.c ****     
+ 170:Generated_Source\PSoC4/PRS_PM.c **** #else
+ 171:Generated_Source\PSoC4/PRS_PM.c ****     void PRS_RestoreConfig(void) 
+ 172:Generated_Source\PSoC4/PRS_PM.c ****     {
+ 173:Generated_Source\PSoC4/PRS_PM.c ****         PRS_Init();
+ 174:Generated_Source\PSoC4/PRS_PM.c ****     }
+ 175:Generated_Source\PSoC4/PRS_PM.c ****     
+ 176:Generated_Source\PSoC4/PRS_PM.c **** #endif  /* End (PRS_WAKEUP_BEHAVIOUR == PRS__RESUMEWORK) */
+ 177:Generated_Source\PSoC4/PRS_PM.c **** 
+ 178:Generated_Source\PSoC4/PRS_PM.c **** 
+ 179:Generated_Source\PSoC4/PRS_PM.c **** /*******************************************************************************
+ 180:Generated_Source\PSoC4/PRS_PM.c **** * Function Name: PRS_Wakeup
+ 181:Generated_Source\PSoC4/PRS_PM.c **** ********************************************************************************
+ 182:Generated_Source\PSoC4/PRS_PM.c **** *
+ 183:Generated_Source\PSoC4/PRS_PM.c **** * Summary:
+ 184:Generated_Source\PSoC4/PRS_PM.c **** *  Restores PRS configuration and starts PRS computation. 
+ 185:Generated_Source\PSoC4/PRS_PM.c **** *
+ 186:Generated_Source\PSoC4/PRS_PM.c **** * Parameters:
+ 187:Generated_Source\PSoC4/PRS_PM.c **** *  void
+ 188:Generated_Source\PSoC4/PRS_PM.c **** *
+ 189:Generated_Source\PSoC4/PRS_PM.c **** * Return:
+ 190:Generated_Source\PSoC4/PRS_PM.c **** *  void
+ 191:Generated_Source\PSoC4/PRS_PM.c **** *
+ 192:Generated_Source\PSoC4/PRS_PM.c **** *******************************************************************************/
+ 193:Generated_Source\PSoC4/PRS_PM.c **** #if ((PRS_WAKEUP_BEHAVIOUR == PRS__RESUMEWORK) && (PRS_TIME_MULTIPLEXING_ENABLE))
+ 194:Generated_Source\PSoC4/PRS_PM.c ****     void PRS_Wakeup(void) 
+ 195:Generated_Source\PSoC4/PRS_PM.c **** #else
+ 196:Generated_Source\PSoC4/PRS_PM.c ****     void PRS_Wakeup(void) 
+ 197:Generated_Source\PSoC4/PRS_PM.c **** #endif  /* End ((PRS_WAKEUP_BEHAVIOUR == PRS__RESUMEWORK) && 
+ 198:Generated_Source\PSoC4/PRS_PM.c ****                 (PRS_TIME_MULTIPLEXING_ENABLE)) */
+ 199:Generated_Source\PSoC4/PRS_PM.c **** {
+ 139              		.loc 1 199 0
+ 140              		.cfi_startproc
+ 141              		@ args = 0, pretend = 0, frame = 0
+ 142              		@ frame_needed = 0, uses_anonymous_args = 0
+ 143 0000 10B5     		push	{r4, lr}
+ARM GAS  C:\Users\corne\AppData\Local\Temp\ccJ701tr.s 			page 7
+
+
+ 144              		.cfi_def_cfa_offset 8
+ 145              		.cfi_offset 4, -8
+ 146              		.cfi_offset 14, -4
+ 200:Generated_Source\PSoC4/PRS_PM.c ****     PRS_RestoreConfig();
+ 147              		.loc 1 200 0
+ 148 0002 FFF7FEFF 		bl	PRS_RestoreConfig
+ 149              	.LVL4:
+ 201:Generated_Source\PSoC4/PRS_PM.c ****     
+ 202:Generated_Source\PSoC4/PRS_PM.c ****     /* Restore PRS enable state */
+ 203:Generated_Source\PSoC4/PRS_PM.c ****     if (PRS_backup.enableState != 0u)
+ 150              		.loc 1 203 0
+ 151 0006 034B     		ldr	r3, .L14
+ 152 0008 1B78     		ldrb	r3, [r3]
+ 153 000a 002B     		cmp	r3, #0
+ 154 000c 01D0     		beq	.L12
+ 204:Generated_Source\PSoC4/PRS_PM.c ****     {
+ 205:Generated_Source\PSoC4/PRS_PM.c ****         PRS_Enable();
+ 155              		.loc 1 205 0
+ 156 000e FFF7FEFF 		bl	PRS_Enable
+ 157              	.LVL5:
+ 158              	.L12:
+ 206:Generated_Source\PSoC4/PRS_PM.c ****     }
+ 207:Generated_Source\PSoC4/PRS_PM.c **** }
+ 159              		.loc 1 207 0
+ 160              		@ sp needed
+ 161 0012 10BD     		pop	{r4, pc}
+ 162              	.L15:
+ 163              		.align	2
+ 164              	.L14:
+ 165 0014 00000000 		.word	PRS_backup
+ 166              		.cfi_endproc
+ 167              	.LFE4:
+ 168              		.size	PRS_Wakeup, .-PRS_Wakeup
+ 169              		.text
+ 170              	.Letext0:
+ 171              		.file 2 "Generated_Source\\PSoC4\\cytypes.h"
+ 172              		.file 3 "Generated_Source\\PSoC4\\PRS.h"
+ 173              		.section	.debug_info,"",%progbits
+ 174              	.Ldebug_info0:
+ 175 0000 A5010000 		.4byte	0x1a5
+ 176 0004 0400     		.2byte	0x4
+ 177 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 178 000a 04       		.byte	0x4
+ 179 000b 01       		.uleb128 0x1
+ 180 000c 45010000 		.4byte	.LASF28
+ 181 0010 0C       		.byte	0xc
+ 182 0011 25010000 		.4byte	.LASF29
+ 183 0015 A3000000 		.4byte	.LASF30
+ 184 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 185 001d 00000000 		.4byte	0
+ 186 0021 00000000 		.4byte	.Ldebug_line0
+ 187 0025 02       		.uleb128 0x2
+ 188 0026 01       		.byte	0x1
+ 189 0027 06       		.byte	0x6
+ 190 0028 59020000 		.4byte	.LASF0
+ 191 002c 02       		.uleb128 0x2
+ 192 002d 01       		.byte	0x1
+ARM GAS  C:\Users\corne\AppData\Local\Temp\ccJ701tr.s 			page 8
+
+
+ 193 002e 08       		.byte	0x8
+ 194 002f 4D000000 		.4byte	.LASF1
+ 195 0033 02       		.uleb128 0x2
+ 196 0034 02       		.byte	0x2
+ 197 0035 05       		.byte	0x5
+ 198 0036 17020000 		.4byte	.LASF2
+ 199 003a 02       		.uleb128 0x2
+ 200 003b 02       		.byte	0x2
+ 201 003c 07       		.byte	0x7
+ 202 003d 12000000 		.4byte	.LASF3
+ 203 0041 02       		.uleb128 0x2
+ 204 0042 04       		.byte	0x4
+ 205 0043 05       		.byte	0x5
+ 206 0044 26020000 		.4byte	.LASF4
+ 207 0048 02       		.uleb128 0x2
+ 208 0049 04       		.byte	0x4
+ 209 004a 07       		.byte	0x7
+ 210 004b 60000000 		.4byte	.LASF5
+ 211 004f 02       		.uleb128 0x2
+ 212 0050 08       		.byte	0x8
+ 213 0051 05       		.byte	0x5
+ 214 0052 E7010000 		.4byte	.LASF6
+ 215 0056 02       		.uleb128 0x2
+ 216 0057 08       		.byte	0x8
+ 217 0058 07       		.byte	0x7
+ 218 0059 0E010000 		.4byte	.LASF7
+ 219 005d 03       		.uleb128 0x3
+ 220 005e 04       		.byte	0x4
+ 221 005f 05       		.byte	0x5
+ 222 0060 696E7400 		.ascii	"int\000"
+ 223 0064 02       		.uleb128 0x2
+ 224 0065 04       		.byte	0x4
+ 225 0066 07       		.byte	0x7
+ 226 0067 25000000 		.4byte	.LASF8
+ 227 006b 04       		.uleb128 0x4
+ 228 006c 72000000 		.4byte	.LASF9
+ 229 0070 02       		.byte	0x2
+ 230 0071 B901     		.2byte	0x1b9
+ 231 0073 2C000000 		.4byte	0x2c
+ 232 0077 04       		.uleb128 0x4
+ 233 0078 9C000000 		.4byte	.LASF10
+ 234 007c 02       		.byte	0x2
+ 235 007d BA01     		.2byte	0x1ba
+ 236 007f 3A000000 		.4byte	0x3a
+ 237 0083 02       		.uleb128 0x2
+ 238 0084 04       		.byte	0x4
+ 239 0085 04       		.byte	0x4
+ 240 0086 47000000 		.4byte	.LASF11
+ 241 008a 02       		.uleb128 0x2
+ 242 008b 08       		.byte	0x8
+ 243 008c 04       		.byte	0x4
+ 244 008d 8C000000 		.4byte	.LASF12
+ 245 0091 02       		.uleb128 0x2
+ 246 0092 01       		.byte	0x1
+ 247 0093 08       		.byte	0x8
+ 248 0094 03020000 		.4byte	.LASF13
+ 249 0098 04       		.uleb128 0x4
+ARM GAS  C:\Users\corne\AppData\Local\Temp\ccJ701tr.s 			page 9
+
+
+ 250 0099 5B000000 		.4byte	.LASF14
+ 251 009d 02       		.byte	0x2
+ 252 009e 6302     		.2byte	0x263
+ 253 00a0 A4000000 		.4byte	0xa4
+ 254 00a4 05       		.uleb128 0x5
+ 255 00a5 6B000000 		.4byte	0x6b
+ 256 00a9 02       		.uleb128 0x2
+ 257 00aa 08       		.byte	0x8
+ 258 00ab 04       		.byte	0x4
+ 259 00ac 4D020000 		.4byte	.LASF15
+ 260 00b0 02       		.uleb128 0x2
+ 261 00b1 04       		.byte	0x4
+ 262 00b2 07       		.byte	0x7
+ 263 00b3 D3010000 		.4byte	.LASF16
+ 264 00b7 06       		.uleb128 0x6
+ 265 00b8 04       		.byte	0x4
+ 266 00b9 03       		.byte	0x3
+ 267 00ba 31       		.byte	0x31
+ 268 00bb D8000000 		.4byte	0xd8
+ 269 00bf 07       		.uleb128 0x7
+ 270 00c0 2F020000 		.4byte	.LASF17
+ 271 00c4 03       		.byte	0x3
+ 272 00c5 33       		.byte	0x33
+ 273 00c6 6B000000 		.4byte	0x6b
+ 274 00ca 00       		.byte	0
+ 275 00cb 07       		.uleb128 0x7
+ 276 00cc 21020000 		.4byte	.LASF18
+ 277 00d0 03       		.byte	0x3
+ 278 00d1 3D       		.byte	0x3d
+ 279 00d2 77000000 		.4byte	0x77
+ 280 00d6 02       		.byte	0x2
+ 281 00d7 00       		.byte	0
+ 282 00d8 08       		.uleb128 0x8
+ 283 00d9 3B020000 		.4byte	.LASF19
+ 284 00dd 03       		.byte	0x3
+ 285 00de 47       		.byte	0x47
+ 286 00df B7000000 		.4byte	0xb7
+ 287 00e3 09       		.uleb128 0x9
+ 288 00e4 08020000 		.4byte	.LASF20
+ 289 00e8 01       		.byte	0x1
+ 290 00e9 2B       		.byte	0x2b
+ 291 00ea 00000000 		.4byte	.LFB1
+ 292 00ee 10000000 		.4byte	.LFE1-.LFB1
+ 293 00f2 01       		.uleb128 0x1
+ 294 00f3 9C       		.byte	0x9c
+ 295 00f4 02010000 		.4byte	0x102
+ 296 00f8 0A       		.uleb128 0xa
+ 297 00f9 06000000 		.4byte	.LVL0
+ 298 00fd 7C010000 		.4byte	0x17c
+ 299 0101 00       		.byte	0
+ 300 0102 09       		.uleb128 0x9
+ 301 0103 3D000000 		.4byte	.LASF21
+ 302 0107 01       		.byte	0x1
+ 303 0108 54       		.byte	0x54
+ 304 0109 00000000 		.4byte	.LFB2
+ 305 010d 2C000000 		.4byte	.LFE2-.LFB2
+ 306 0111 01       		.uleb128 0x1
+ARM GAS  C:\Users\corne\AppData\Local\Temp\ccJ701tr.s 			page 10
+
+
+ 307 0112 9C       		.byte	0x9c
+ 308 0113 2A010000 		.4byte	0x12a
+ 309 0117 0A       		.uleb128 0xa
+ 310 0118 14000000 		.4byte	.LVL1
+ 311 011c 87010000 		.4byte	0x187
+ 312 0120 0A       		.uleb128 0xa
+ 313 0121 20000000 		.4byte	.LVL2
+ 314 0125 E3000000 		.4byte	0xe3
+ 315 0129 00       		.byte	0
+ 316 012a 09       		.uleb128 0x9
+ 317 012b 00000000 		.4byte	.LASF22
+ 318 012f 01       		.byte	0x1
+ 319 0130 94       		.byte	0x94
+ 320 0131 00000000 		.4byte	.LFB3
+ 321 0135 10000000 		.4byte	.LFE3-.LFB3
+ 322 0139 01       		.uleb128 0x1
+ 323 013a 9C       		.byte	0x9c
+ 324 013b 49010000 		.4byte	0x149
+ 325 013f 0A       		.uleb128 0xa
+ 326 0140 0A000000 		.4byte	.LVL3
+ 327 0144 92010000 		.4byte	0x192
+ 328 0148 00       		.byte	0
+ 329 0149 09       		.uleb128 0x9
+ 330 014a 81000000 		.4byte	.LASF23
+ 331 014e 01       		.byte	0x1
+ 332 014f C4       		.byte	0xc4
+ 333 0150 00000000 		.4byte	.LFB4
+ 334 0154 18000000 		.4byte	.LFE4-.LFB4
+ 335 0158 01       		.uleb128 0x1
+ 336 0159 9C       		.byte	0x9c
+ 337 015a 71010000 		.4byte	0x171
+ 338 015e 0A       		.uleb128 0xa
+ 339 015f 06000000 		.4byte	.LVL4
+ 340 0163 2A010000 		.4byte	0x12a
+ 341 0167 0A       		.uleb128 0xa
+ 342 0168 12000000 		.4byte	.LVL5
+ 343 016c 9D010000 		.4byte	0x19d
+ 344 0170 00       		.byte	0
+ 345 0171 0B       		.uleb128 0xb
+ 346 0172 32000000 		.4byte	.LASF31
+ 347 0176 03       		.byte	0x3
+ 348 0177 4B       		.byte	0x4b
+ 349 0178 D8000000 		.4byte	0xd8
+ 350 017c 0C       		.uleb128 0xc
+ 351 017d 93000000 		.4byte	.LASF24
+ 352 0181 93000000 		.4byte	.LASF24
+ 353 0185 03       		.byte	0x3
+ 354 0186 6D       		.byte	0x6d
+ 355 0187 0C       		.uleb128 0xc
+ 356 0188 78000000 		.4byte	.LASF25
+ 357 018c 78000000 		.4byte	.LASF25
+ 358 0190 03       		.byte	0x3
+ 359 0191 5A       		.byte	0x5a
+ 360 0192 0C       		.uleb128 0xc
+ 361 0193 F5010000 		.4byte	.LASF26
+ 362 0197 F5010000 		.4byte	.LASF26
+ 363 019b 03       		.byte	0x3
+ARM GAS  C:\Users\corne\AppData\Local\Temp\ccJ701tr.s 			page 11
+
+
+ 364 019c 6E       		.byte	0x6e
+ 365 019d 0C       		.uleb128 0xc
+ 366 019e DC010000 		.4byte	.LASF27
+ 367 01a2 DC010000 		.4byte	.LASF27
+ 368 01a6 03       		.byte	0x3
+ 369 01a7 58       		.byte	0x58
+ 370 01a8 00       		.byte	0
+ 371              		.section	.debug_abbrev,"",%progbits
+ 372              	.Ldebug_abbrev0:
+ 373 0000 01       		.uleb128 0x1
+ 374 0001 11       		.uleb128 0x11
+ 375 0002 01       		.byte	0x1
+ 376 0003 25       		.uleb128 0x25
+ 377 0004 0E       		.uleb128 0xe
+ 378 0005 13       		.uleb128 0x13
+ 379 0006 0B       		.uleb128 0xb
+ 380 0007 03       		.uleb128 0x3
+ 381 0008 0E       		.uleb128 0xe
+ 382 0009 1B       		.uleb128 0x1b
+ 383 000a 0E       		.uleb128 0xe
+ 384 000b 55       		.uleb128 0x55
+ 385 000c 17       		.uleb128 0x17
+ 386 000d 11       		.uleb128 0x11
+ 387 000e 01       		.uleb128 0x1
+ 388 000f 10       		.uleb128 0x10
+ 389 0010 17       		.uleb128 0x17
+ 390 0011 00       		.byte	0
+ 391 0012 00       		.byte	0
+ 392 0013 02       		.uleb128 0x2
+ 393 0014 24       		.uleb128 0x24
+ 394 0015 00       		.byte	0
+ 395 0016 0B       		.uleb128 0xb
+ 396 0017 0B       		.uleb128 0xb
+ 397 0018 3E       		.uleb128 0x3e
+ 398 0019 0B       		.uleb128 0xb
+ 399 001a 03       		.uleb128 0x3
+ 400 001b 0E       		.uleb128 0xe
+ 401 001c 00       		.byte	0
+ 402 001d 00       		.byte	0
+ 403 001e 03       		.uleb128 0x3
+ 404 001f 24       		.uleb128 0x24
+ 405 0020 00       		.byte	0
+ 406 0021 0B       		.uleb128 0xb
+ 407 0022 0B       		.uleb128 0xb
+ 408 0023 3E       		.uleb128 0x3e
+ 409 0024 0B       		.uleb128 0xb
+ 410 0025 03       		.uleb128 0x3
+ 411 0026 08       		.uleb128 0x8
+ 412 0027 00       		.byte	0
+ 413 0028 00       		.byte	0
+ 414 0029 04       		.uleb128 0x4
+ 415 002a 16       		.uleb128 0x16
+ 416 002b 00       		.byte	0
+ 417 002c 03       		.uleb128 0x3
+ 418 002d 0E       		.uleb128 0xe
+ 419 002e 3A       		.uleb128 0x3a
+ 420 002f 0B       		.uleb128 0xb
+ARM GAS  C:\Users\corne\AppData\Local\Temp\ccJ701tr.s 			page 12
+
+
+ 421 0030 3B       		.uleb128 0x3b
+ 422 0031 05       		.uleb128 0x5
+ 423 0032 49       		.uleb128 0x49
+ 424 0033 13       		.uleb128 0x13
+ 425 0034 00       		.byte	0
+ 426 0035 00       		.byte	0
+ 427 0036 05       		.uleb128 0x5
+ 428 0037 35       		.uleb128 0x35
+ 429 0038 00       		.byte	0
+ 430 0039 49       		.uleb128 0x49
+ 431 003a 13       		.uleb128 0x13
+ 432 003b 00       		.byte	0
+ 433 003c 00       		.byte	0
+ 434 003d 06       		.uleb128 0x6
+ 435 003e 13       		.uleb128 0x13
+ 436 003f 01       		.byte	0x1
+ 437 0040 0B       		.uleb128 0xb
+ 438 0041 0B       		.uleb128 0xb
+ 439 0042 3A       		.uleb128 0x3a
+ 440 0043 0B       		.uleb128 0xb
+ 441 0044 3B       		.uleb128 0x3b
+ 442 0045 0B       		.uleb128 0xb
+ 443 0046 01       		.uleb128 0x1
+ 444 0047 13       		.uleb128 0x13
+ 445 0048 00       		.byte	0
+ 446 0049 00       		.byte	0
+ 447 004a 07       		.uleb128 0x7
+ 448 004b 0D       		.uleb128 0xd
+ 449 004c 00       		.byte	0
+ 450 004d 03       		.uleb128 0x3
+ 451 004e 0E       		.uleb128 0xe
+ 452 004f 3A       		.uleb128 0x3a
+ 453 0050 0B       		.uleb128 0xb
+ 454 0051 3B       		.uleb128 0x3b
+ 455 0052 0B       		.uleb128 0xb
+ 456 0053 49       		.uleb128 0x49
+ 457 0054 13       		.uleb128 0x13
+ 458 0055 38       		.uleb128 0x38
+ 459 0056 0B       		.uleb128 0xb
+ 460 0057 00       		.byte	0
+ 461 0058 00       		.byte	0
+ 462 0059 08       		.uleb128 0x8
+ 463 005a 16       		.uleb128 0x16
+ 464 005b 00       		.byte	0
+ 465 005c 03       		.uleb128 0x3
+ 466 005d 0E       		.uleb128 0xe
+ 467 005e 3A       		.uleb128 0x3a
+ 468 005f 0B       		.uleb128 0xb
+ 469 0060 3B       		.uleb128 0x3b
+ 470 0061 0B       		.uleb128 0xb
+ 471 0062 49       		.uleb128 0x49
+ 472 0063 13       		.uleb128 0x13
+ 473 0064 00       		.byte	0
+ 474 0065 00       		.byte	0
+ 475 0066 09       		.uleb128 0x9
+ 476 0067 2E       		.uleb128 0x2e
+ 477 0068 01       		.byte	0x1
+ARM GAS  C:\Users\corne\AppData\Local\Temp\ccJ701tr.s 			page 13
+
+
+ 478 0069 3F       		.uleb128 0x3f
+ 479 006a 19       		.uleb128 0x19
+ 480 006b 03       		.uleb128 0x3
+ 481 006c 0E       		.uleb128 0xe
+ 482 006d 3A       		.uleb128 0x3a
+ 483 006e 0B       		.uleb128 0xb
+ 484 006f 3B       		.uleb128 0x3b
+ 485 0070 0B       		.uleb128 0xb
+ 486 0071 27       		.uleb128 0x27
+ 487 0072 19       		.uleb128 0x19
+ 488 0073 11       		.uleb128 0x11
+ 489 0074 01       		.uleb128 0x1
+ 490 0075 12       		.uleb128 0x12
+ 491 0076 06       		.uleb128 0x6
+ 492 0077 40       		.uleb128 0x40
+ 493 0078 18       		.uleb128 0x18
+ 494 0079 9742     		.uleb128 0x2117
+ 495 007b 19       		.uleb128 0x19
+ 496 007c 01       		.uleb128 0x1
+ 497 007d 13       		.uleb128 0x13
+ 498 007e 00       		.byte	0
+ 499 007f 00       		.byte	0
+ 500 0080 0A       		.uleb128 0xa
+ 501 0081 898201   		.uleb128 0x4109
+ 502 0084 00       		.byte	0
+ 503 0085 11       		.uleb128 0x11
+ 504 0086 01       		.uleb128 0x1
+ 505 0087 31       		.uleb128 0x31
+ 506 0088 13       		.uleb128 0x13
+ 507 0089 00       		.byte	0
+ 508 008a 00       		.byte	0
+ 509 008b 0B       		.uleb128 0xb
+ 510 008c 34       		.uleb128 0x34
+ 511 008d 00       		.byte	0
+ 512 008e 03       		.uleb128 0x3
+ 513 008f 0E       		.uleb128 0xe
+ 514 0090 3A       		.uleb128 0x3a
+ 515 0091 0B       		.uleb128 0xb
+ 516 0092 3B       		.uleb128 0x3b
+ 517 0093 0B       		.uleb128 0xb
+ 518 0094 49       		.uleb128 0x49
+ 519 0095 13       		.uleb128 0x13
+ 520 0096 3F       		.uleb128 0x3f
+ 521 0097 19       		.uleb128 0x19
+ 522 0098 3C       		.uleb128 0x3c
+ 523 0099 19       		.uleb128 0x19
+ 524 009a 00       		.byte	0
+ 525 009b 00       		.byte	0
+ 526 009c 0C       		.uleb128 0xc
+ 527 009d 2E       		.uleb128 0x2e
+ 528 009e 00       		.byte	0
+ 529 009f 3F       		.uleb128 0x3f
+ 530 00a0 19       		.uleb128 0x19
+ 531 00a1 3C       		.uleb128 0x3c
+ 532 00a2 19       		.uleb128 0x19
+ 533 00a3 6E       		.uleb128 0x6e
+ 534 00a4 0E       		.uleb128 0xe
+ARM GAS  C:\Users\corne\AppData\Local\Temp\ccJ701tr.s 			page 14
+
+
+ 535 00a5 03       		.uleb128 0x3
+ 536 00a6 0E       		.uleb128 0xe
+ 537 00a7 3A       		.uleb128 0x3a
+ 538 00a8 0B       		.uleb128 0xb
+ 539 00a9 3B       		.uleb128 0x3b
+ 540 00aa 0B       		.uleb128 0xb
+ 541 00ab 00       		.byte	0
+ 542 00ac 00       		.byte	0
+ 543 00ad 00       		.byte	0
+ 544              		.section	.debug_aranges,"",%progbits
+ 545 0000 34000000 		.4byte	0x34
+ 546 0004 0200     		.2byte	0x2
+ 547 0006 00000000 		.4byte	.Ldebug_info0
+ 548 000a 04       		.byte	0x4
+ 549 000b 00       		.byte	0
+ 550 000c 0000     		.2byte	0
+ 551 000e 0000     		.2byte	0
+ 552 0010 00000000 		.4byte	.LFB1
+ 553 0014 10000000 		.4byte	.LFE1-.LFB1
+ 554 0018 00000000 		.4byte	.LFB2
+ 555 001c 2C000000 		.4byte	.LFE2-.LFB2
+ 556 0020 00000000 		.4byte	.LFB3
+ 557 0024 10000000 		.4byte	.LFE3-.LFB3
+ 558 0028 00000000 		.4byte	.LFB4
+ 559 002c 18000000 		.4byte	.LFE4-.LFB4
+ 560 0030 00000000 		.4byte	0
+ 561 0034 00000000 		.4byte	0
+ 562              		.section	.debug_ranges,"",%progbits
+ 563              	.Ldebug_ranges0:
+ 564 0000 00000000 		.4byte	.LFB1
+ 565 0004 10000000 		.4byte	.LFE1
+ 566 0008 00000000 		.4byte	.LFB2
+ 567 000c 2C000000 		.4byte	.LFE2
+ 568 0010 00000000 		.4byte	.LFB3
+ 569 0014 10000000 		.4byte	.LFE3
+ 570 0018 00000000 		.4byte	.LFB4
+ 571 001c 18000000 		.4byte	.LFE4
+ 572 0020 00000000 		.4byte	0
+ 573 0024 00000000 		.4byte	0
+ 574              		.section	.debug_line,"",%progbits
+ 575              	.Ldebug_line0:
+ 576 0000 A5000000 		.section	.debug_str,"MS",%progbits,1
+ 576      02004C00 
+ 576      00000201 
+ 576      FB0E0D00 
+ 576      01010101 
+ 577              	.LASF22:
+ 578 0000 5052535F 		.ascii	"PRS_RestoreConfig\000"
+ 578      52657374 
+ 578      6F726543 
+ 578      6F6E6669 
+ 578      6700
+ 579              	.LASF3:
+ 580 0012 73686F72 		.ascii	"short unsigned int\000"
+ 580      7420756E 
+ 580      7369676E 
+ 580      65642069 
+ARM GAS  C:\Users\corne\AppData\Local\Temp\ccJ701tr.s 			page 15
+
+
+ 580      6E7400
+ 581              	.LASF8:
+ 582 0025 756E7369 		.ascii	"unsigned int\000"
+ 582      676E6564 
+ 582      20696E74 
+ 582      00
+ 583              	.LASF31:
+ 584 0032 5052535F 		.ascii	"PRS_backup\000"
+ 584      6261636B 
+ 584      757000
+ 585              	.LASF21:
+ 586 003d 5052535F 		.ascii	"PRS_Sleep\000"
+ 586      536C6565 
+ 586      7000
+ 587              	.LASF11:
+ 588 0047 666C6F61 		.ascii	"float\000"
+ 588      7400
+ 589              	.LASF1:
+ 590 004d 756E7369 		.ascii	"unsigned char\000"
+ 590      676E6564 
+ 590      20636861 
+ 590      7200
+ 591              	.LASF14:
+ 592 005b 72656738 		.ascii	"reg8\000"
+ 592      00
+ 593              	.LASF5:
+ 594 0060 6C6F6E67 		.ascii	"long unsigned int\000"
+ 594      20756E73 
+ 594      69676E65 
+ 594      6420696E 
+ 594      7400
+ 595              	.LASF9:
+ 596 0072 75696E74 		.ascii	"uint8\000"
+ 596      3800
+ 597              	.LASF25:
+ 598 0078 5052535F 		.ascii	"PRS_Stop\000"
+ 598      53746F70 
+ 598      00
+ 599              	.LASF23:
+ 600 0081 5052535F 		.ascii	"PRS_Wakeup\000"
+ 600      57616B65 
+ 600      757000
+ 601              	.LASF12:
+ 602 008c 646F7562 		.ascii	"double\000"
+ 602      6C6500
+ 603              	.LASF24:
+ 604 0093 5052535F 		.ascii	"PRS_Read\000"
+ 604      52656164 
+ 604      00
+ 605              	.LASF10:
+ 606 009c 75696E74 		.ascii	"uint16\000"
+ 606      313600
+ 607              	.LASF30:
+ 608 00a3 433A5C55 		.ascii	"C:\\Users\\corne\\Dropbox\\prive\\projects\\Wireles"
+ 608      73657273 
+ 608      5C636F72 
+ 608      6E655C44 
+ARM GAS  C:\Users\corne\AppData\Local\Temp\ccJ701tr.s 			page 16
+
+
+ 608      726F7062 
+ 609 00d0 735F7365 		.ascii	"s_sensornode\\Software\\Wireless_sensornode\\Firmwa"
+ 609      6E736F72 
+ 609      6E6F6465 
+ 609      5C536F66 
+ 609      74776172 
+ 610 0100 72655F56 		.ascii	"re_V0.1.cydsn\000"
+ 610      302E312E 
+ 610      63796473 
+ 610      6E00
+ 611              	.LASF7:
+ 612 010e 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 612      206C6F6E 
+ 612      6720756E 
+ 612      7369676E 
+ 612      65642069 
+ 613              	.LASF29:
+ 614 0125 47656E65 		.ascii	"Generated_Source\\PSoC4\\PRS_PM.c\000"
+ 614      72617465 
+ 614      645F536F 
+ 614      75726365 
+ 614      5C50536F 
+ 615              	.LASF28:
+ 616 0145 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 616      43313120 
+ 616      352E342E 
+ 616      31203230 
+ 616      31363036 
+ 617 0178 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m0 -mthumb -g -O"
+ 617      20726576 
+ 617      6973696F 
+ 617      6E203233 
+ 617      37373135 
+ 618 01ab 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
+ 618      66756E63 
+ 618      74696F6E 
+ 618      2D736563 
+ 618      74696F6E 
+ 619              	.LASF16:
+ 620 01d3 73697A65 		.ascii	"sizetype\000"
+ 620      74797065 
+ 620      00
+ 621              	.LASF27:
+ 622 01dc 5052535F 		.ascii	"PRS_Enable\000"
+ 622      456E6162 
+ 622      6C6500
+ 623              	.LASF6:
+ 624 01e7 6C6F6E67 		.ascii	"long long int\000"
+ 624      206C6F6E 
+ 624      6720696E 
+ 624      7400
+ 625              	.LASF26:
+ 626 01f5 5052535F 		.ascii	"PRS_WriteSeed\000"
+ 626      57726974 
+ 626      65536565 
+ 626      6400
+ 627              	.LASF13:
+ARM GAS  C:\Users\corne\AppData\Local\Temp\ccJ701tr.s 			page 17
+
+
+ 628 0203 63686172 		.ascii	"char\000"
+ 628      00
+ 629              	.LASF20:
+ 630 0208 5052535F 		.ascii	"PRS_SaveConfig\000"
+ 630      53617665 
+ 630      436F6E66 
+ 630      696700
+ 631              	.LASF2:
+ 632 0217 73686F72 		.ascii	"short int\000"
+ 632      7420696E 
+ 632      7400
+ 633              	.LASF18:
+ 634 0221 73656564 		.ascii	"seed\000"
+ 634      00
+ 635              	.LASF4:
+ 636 0226 6C6F6E67 		.ascii	"long int\000"
+ 636      20696E74 
+ 636      00
+ 637              	.LASF17:
+ 638 022f 656E6162 		.ascii	"enableState\000"
+ 638      6C655374 
+ 638      61746500 
+ 639              	.LASF19:
+ 640 023b 5052535F 		.ascii	"PRS_BACKUP_STRUCT\000"
+ 640      4241434B 
+ 640      55505F53 
+ 640      54525543 
+ 640      5400
+ 641              	.LASF15:
+ 642 024d 6C6F6E67 		.ascii	"long double\000"
+ 642      20646F75 
+ 642      626C6500 
+ 643              	.LASF0:
+ 644 0259 7369676E 		.ascii	"signed char\000"
+ 644      65642063 
+ 644      68617200 
+ 645              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

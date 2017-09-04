@@ -1,8 +1,0 @@
-C:/Users/corne/Dropbox/prive/projects/Wireless_sensornode/Software/Wireless_sensornode/Firmware_V0.1.cydsn/CortexM0/ARM_GCC_541/Debug/CyBootAsmGnu.o : C:/Users/corne/Dropbox/prive/projects/Wireless_sensornode/Software/Wireless_sensornode/Firmware_V0.1.cydsn/Generated_Source/PSoC4/CyBootAsmGnu.s C:/Users/corne/Dropbox/prive/projects/Wireless_sensornode/Software/Wireless_sensornode/Firmware_V0.1.cydsn/Generated_Source/PSoC4/cydevicegnu_trm.inc C:/Users/corne/Dropbox/prive/projects/Wireless_sensornode/Software/Wireless_sensornode/Firmware_V0.1.cydsn/Generated_Source/PSoC4/cyfittergnu.inc 
-
-C:/Users/corne/Dropbox/prive/projects/Wireless_sensornode/Software/Wireless_sensornode/Firmware_V0.1.cydsn/Generated_Source/PSoC4/CyBootAsmGnu.s : 
-
-C:/Users/corne/Dropbox/prive/projects/Wireless_sensornode/Software/Wireless_sensornode/Firmware_V0.1.cydsn/Generated_Source/PSoC4/cydevicegnu_trm.inc : 
-
-C:/Users/corne/Dropbox/prive/projects/Wireless_sensornode/Software/Wireless_sensornode/Firmware_V0.1.cydsn/Generated_Source/PSoC4/cyfittergnu.inc : 
-

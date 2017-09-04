@@ -25,7 +25,7 @@
       <Tool Name="postbuild" Command="" Options="" />
     </Toolchain>
   </Toolchains>
-  <Project Name="Firmware_V0.1" Path="C:\Users\corne\Dropbox\prive\projects\Wireless_sensornode\Software\Wireless_sensornode\Firmware_V0.1.cydsn" Version="5.50" Type="Normal">
+  <Project Name="Firmware_V0.1" Path="C:\Users\corne\Dropbox\prive\projects\Wireless_sensornode\Software\Wireless_sensornode\Firmware_V0.1.cydsn" Version="5.60" Type="Normal">
     <CMSIS_SVD_File>Firmware_V0.1.svd</CMSIS_SVD_File>
     <Datasheet />
     <LinkerFiles>
@@ -39,13 +39,11 @@
           <File BuildType="BUILD" Toolchain="">main.c</File>
           <File BuildType="BUILD" Toolchain="">bme280.c</File>
           <File BuildType="BUILD" Toolchain="">EEPROM.c</File>
-          <File BuildType="BUILD" Toolchain="">temp_bme280.c</File>
           <File BuildType="BUILD" Toolchain="">weathersensors.c</File>
           <File BuildType="BUILD" Toolchain="">cyapicallbacks.h</File>
           <File BuildType="BUILD" Toolchain="">bme280.h</File>
           <File BuildType="BUILD" Toolchain="">bme280_defs.h</File>
           <File BuildType="BUILD" Toolchain="">EEPROM.h</File>
-          <File BuildType="BUILD" Toolchain="">temp_bme280.h</File>
           <File BuildType="BUILD" Toolchain="">weathersensors.h</File>
         </Files>
       </Folder>
@@ -99,6 +97,7 @@
           <File BuildType="BUILD" Toolchain="ARM IAR Generic">Generated_Source\PSoC4\CyBootAsmIar.s</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\cmsis_armcc.h</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\cmsis_gcc.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\cmsis_compiler.h</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\CyDMA.h</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\CyDMA.c</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\CyLFClk.c</File>
@@ -211,10 +210,6 @@
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\ANEMOMETER.h</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\ANEMOMETER_aliases.h</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\ANEMOMETER_PM.c</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\RAIN_SENSOR.c</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\RAIN_SENSOR.h</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\RAIN_SENSOR_aliases.h</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\RAIN_SENSOR_PM.c</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\P1_GPIO1.c</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\P1_GPIO1.h</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\P1_GPIO1_aliases.h</File>
@@ -293,6 +288,14 @@
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\Clock_C.h</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\TIMER0_ISR.c</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\TIMER0_ISR.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\RainSense.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\RainSense.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\RainSense_aliases.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\RainSense_PM.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\RainSense_Int.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\RainSense_Int.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\Clock_C1.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\Clock_C1.h</File>
         </Files>
       </Folder>
       <Folder BuildType="STRICT" Path="C:\Users\corne\Dropbox\prive\projects\Wireless_sensornode\Software\Wireless_sensornode\Firmware_V0.1.cydsn\Export\ARM_GCC_Generic">

@@ -13,7 +13,7 @@
 <v>Output</v>
 </TreeKeys>
 <TreeStates>
-<CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237 type_name="CyDesigner.Common.Base.Controls.CyTreeViewState" version="1" SelectedNodeId="Wireless_sensornode\Firmware_V0.1\Header Files\weathersensors.h">
+<CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237 type_name="CyDesigner.Common.Base.Controls.CyTreeViewState" version="1" SelectedNodeId="Wireless_sensornode\Firmware_V0.1\Source Files\main.c">
 <ExpandedNodeIds>
 <v>Wireless_sensornode</v>
 <v>Wireless_sensornode\Firmware_V0.1</v>
@@ -39,220 +39,7 @@
 <v>Wireless_sensornode\Firmware_V0.1\Source Files\main.c</v>
 <v>Wireless_sensornode\Firmware_V0.1\Source Files\weathersensors.c</v>
 <v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\ANEMOMETER</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\ANEMOMETER\ANEMOMETER.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\ANEMOMETER\ANEMOMETER.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\ANEMOMETER\ANEMOMETER_aliases.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\ANEMOMETER\ANEMOMETER_PM.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\Clock_1</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\Clock_1\Clock_1.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\Clock_1\Clock_1.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\cy_boot</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\cy_boot\cm0gcc.ld</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\cy_boot\Cm0Iar.icf</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\cy_boot\Cm0RealView.scat</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\cy_boot\Cm0Start.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\cy_boot\cmsis_armcc.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\cy_boot\cmsis_gcc.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\cy_boot\core_cm0.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\cy_boot\core_cm0_psoc4.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\cy_boot\core_cmFunc.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\cy_boot\core_cmInstr.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\cy_boot\CyBootAsmGnu.s</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\cy_boot\CyBootAsmIar.s</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\cy_boot\CyBootAsmRv.s</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\cy_boot\CyFlash.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\cy_boot\CyFlash.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\cy_boot\CyLib.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\cy_boot\CyLib.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\cy_boot\cypins.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\cy_boot\cyPm.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\cy_boot\cyPm.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\cy_boot\cytypes.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\cy_boot\cyutils.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\cy_dmac</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\cy_dmac\CyDMA.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\cy_dmac\CyDMA.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\cy_lfclk</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\cy_lfclk\CyLFClk.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\cy_lfclk\CyLFClk.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\EEPROM_WC</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\EEPROM_WC\EEPROM_WC.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\EEPROM_WC\EEPROM_WC.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\EEPROM_WC\EEPROM_WC_aliases.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\EEPROM_WC\EEPROM_WC_PM.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\I2C</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\I2C\I2C.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\I2C\I2C.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\I2C\I2C_BOOT.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\I2C\I2C_BOOT.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\I2C\I2C_I2C.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\I2C\I2C_I2C.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\I2C\I2C_I2C_BOOT.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\I2C\I2C_I2C_INT.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\I2C\I2C_I2C_MASTER.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\I2C\I2C_I2C_PVT.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\I2C\I2C_PINS.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\I2C\I2C_PM.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\I2C\I2C_PVT.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\I2C_SCB_IRQ</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\I2C_SCB_IRQ\I2C_SCB_IRQ.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\I2C_SCB_IRQ\I2C_SCB_IRQ.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\I2C_SCBCLK</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\I2C_SCBCLK\I2C_SCBCLK.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\I2C_SCBCLK\I2C_SCBCLK.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\I2C_scl</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\I2C_scl\I2C_scl.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\I2C_scl\I2C_scl.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\I2C_scl\I2C_scl_aliases.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\I2C_scl\I2C_scl_PM.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\I2C_sda</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\I2C_sda\I2C_sda.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\I2C_sda\I2C_sda.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\I2C_sda\I2C_sda_aliases.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\I2C_sda\I2C_sda_PM.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\LED_1</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\LED_1\LED_1.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\LED_1\LED_1.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\LED_1\LED_1_aliases.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\LED_1\LED_1_PM.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\LED_2</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\LED_2\LED_2.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\LED_2\LED_2.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\LED_2\LED_2_aliases.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\LED_2\LED_2_PM.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\LED_3</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\LED_3\LED_3.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\LED_3\LED_3.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\LED_3\LED_3_aliases.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\LED_3\LED_3_PM.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\P1_GPIO1</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\P1_GPIO1\P1_GPIO1.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\P1_GPIO1\P1_GPIO1.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\P1_GPIO1\P1_GPIO1_aliases.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\P1_GPIO1\P1_GPIO1_PM.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\P1_GPIO2</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\P1_GPIO2\P1_GPIO2.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\P1_GPIO2\P1_GPIO2.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\P1_GPIO2\P1_GPIO2_aliases.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\P1_GPIO2\P1_GPIO2_PM.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\P1_GPIO3</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\P1_GPIO3\P1_GPIO3.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\P1_GPIO3\P1_GPIO3.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\P1_GPIO3\P1_GPIO3_aliases.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\P1_GPIO3\P1_GPIO3_PM.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\P1_GPIO4</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\P1_GPIO4\P1_GPIO4.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\P1_GPIO4\P1_GPIO4.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\P1_GPIO4\P1_GPIO4_aliases.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\P1_GPIO4\P1_GPIO4_PM.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\P1_GPIO5</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\P1_GPIO5\P1_GPIO5.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\P1_GPIO5\P1_GPIO5.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\P1_GPIO5\P1_GPIO5_aliases.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\P1_GPIO5\P1_GPIO5_PM.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\P1_TxD</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\P1_TxD\P1_TxD.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\P1_TxD\P1_TxD.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\P1_TxD\P1_TxD_aliases.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\P1_TxD\P1_TxD_PM.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\PRS</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\PRS\PRS.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\PRS\PRS.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\PRS\PRS_PM.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\RFM69HW_DIO0</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\RFM69HW_DIO0\RFM69HW_DIO0.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\RFM69HW_DIO0\RFM69HW_DIO0.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\RFM69HW_DIO0\RFM69HW_DIO0_aliases.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\RFM69HW_DIO0\RFM69HW_DIO0_PM.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\RFM69HW_RESET</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\RFM69HW_RESET\RFM69HW_RESET.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\RFM69HW_RESET\RFM69HW_RESET.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\RFM69HW_RESET\RFM69HW_RESET_aliases.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\RFM69HW_RESET\RFM69HW_RESET_PM.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\SPI_RFM69HW</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\SPI_RFM69HW\SPI_RFM69HW.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\SPI_RFM69HW\SPI_RFM69HW.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\SPI_RFM69HW\SPI_RFM69HW_BOOT.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\SPI_RFM69HW\SPI_RFM69HW_BOOT.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\SPI_RFM69HW\SPI_RFM69HW_PINS.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\SPI_RFM69HW\SPI_RFM69HW_PM.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\SPI_RFM69HW\SPI_RFM69HW_PVT.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\SPI_RFM69HW\SPI_RFM69HW_SPI.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\SPI_RFM69HW\SPI_RFM69HW_SPI_BOOT.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\SPI_RFM69HW\SPI_RFM69HW_SPI_UART.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\SPI_RFM69HW\SPI_RFM69HW_SPI_UART.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\SPI_RFM69HW\SPI_RFM69HW_SPI_UART_PVT.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\SPI_RFM69HW_miso_m</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\SPI_RFM69HW_miso_m\SPI_RFM69HW_miso_m.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\SPI_RFM69HW_miso_m\SPI_RFM69HW_miso_m.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\SPI_RFM69HW_miso_m\SPI_RFM69HW_miso_m_aliases.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\SPI_RFM69HW_miso_m\SPI_RFM69HW_miso_m_PM.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\SPI_RFM69HW_mosi_m</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\SPI_RFM69HW_mosi_m\SPI_RFM69HW_mosi_m.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\SPI_RFM69HW_mosi_m\SPI_RFM69HW_mosi_m.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\SPI_RFM69HW_mosi_m\SPI_RFM69HW_mosi_m_aliases.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\SPI_RFM69HW_mosi_m\SPI_RFM69HW_mosi_m_PM.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\SPI_RFM69HW_SCBCLK</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\SPI_RFM69HW_SCBCLK\SPI_RFM69HW_SCBCLK.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\SPI_RFM69HW_SCBCLK\SPI_RFM69HW_SCBCLK.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\SPI_RFM69HW_sclk_m</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\SPI_RFM69HW_sclk_m\SPI_RFM69HW_sclk_m.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\SPI_RFM69HW_sclk_m\SPI_RFM69HW_sclk_m.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\SPI_RFM69HW_sclk_m\SPI_RFM69HW_sclk_m_aliases.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\SPI_RFM69HW_sclk_m\SPI_RFM69HW_sclk_m_PM.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\SPI_RFM69HW_ss0_m</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\SPI_RFM69HW_ss0_m\SPI_RFM69HW_ss0_m.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\SPI_RFM69HW_ss0_m\SPI_RFM69HW_ss0_m.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\SPI_RFM69HW_ss0_m\SPI_RFM69HW_ss0_m_aliases.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\SPI_RFM69HW_ss0_m\SPI_RFM69HW_ss0_m_PM.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\TIMER1</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\TIMER1\TIMER1.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\TIMER1\TIMER1.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\TIMER1\TIMER1_PM.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\UART</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\UART\UART.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\UART\UART.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\UART\UART_BOOT.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\UART\UART_BOOT.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\UART\UART_PINS.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\UART\UART_PM.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\UART\UART_PVT.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\UART\UART_SPI_UART.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\UART\UART_SPI_UART.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\UART\UART_SPI_UART_INT.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\UART\UART_SPI_UART_PVT.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\UART\UART_UART.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\UART\UART_UART_BOOT.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\UART_rx</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\UART_rx\UART_rx.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\UART_rx\UART_rx.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\UART_rx\UART_rx_aliases.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\UART_rx\UART_rx_PM.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\UART_SCBCLK</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\UART_SCBCLK\UART_SCBCLK.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\UART_SCBCLK\UART_SCBCLK.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\UART_tx</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\UART_tx\UART_tx.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\UART_tx\UART_tx.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\UART_tx\UART_tx_aliases.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\UART_tx\UART_tx_PM.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\cycodeshareexport.ld</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\cycodeshareimport.ld</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\cycodeshareimport.scat</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\cydevice_trm.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\cydevicegnu_trm.inc</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\cydeviceiar_trm.inc</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\cydevicerv_trm.inc</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\cydisabledsheets.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\cyfitter.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\cyfitter_cfg.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\cyfitter_cfg.h</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\cyfittergnu.inc</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\cyfitteriar.inc</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\cyfitterrv.inc</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\cymetadata.c</v>
-<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\project.h</v>
+<v>Wireless_sensornode\Firmware_V0.1\Generated_Source\PSoC4\UART_P1</v>
 </ExpandedNodeIds>
 <VisibleNodeIds>
 <v>Wireless_sensornode</v>
@@ -299,6 +86,140 @@
 <ExpandedNodeIds>
 <v>Wireless_sensornode</v>
 <v>Wireless_sensornode\Firmware_V0.1</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\ADC_SAR.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\ADC_SAR_INT.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\ADC_SAR_intClock.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\ADC_SAR_IRQ.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\ADC_SAR_PM.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\ANEMOMETER.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\ANEMOMETER_PM.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\BAT_SENS_P.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\BAT_SENS_P_PM.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\BAT_SENS_SW.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\BAT_SENS_SW_PM.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\BME_MISO.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\BME_MISO_PM.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\BME_MOSI.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\BME_MOSI_PM.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\BME_SCLK.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\BME_SCLK_PM.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\BME_SS.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\BME_SS_PM.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\bme280.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\Clock.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\Clock_1.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\Clock_3.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\Clock_C.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\Clock_C1.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\Cm0Start.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\Counter.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\Counter_PM.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\CyBootAsmGnu.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\CyDMA.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\CydwClock_1.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\cyfitter_cfg.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\CyFlash.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\CyLFClk.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\CyLib.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\cymetadata.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\cyPm.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\Cyuart.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\cyutils.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\EEPROM.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\EEPROM_PULLUP.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\EEPROM_PULLUP_PM.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\EEPROM_WC.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\EEPROM_WC_PM.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\I2C.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\I2C_BOOT.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\I2C_I2C.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\I2C_I2C_BOOT.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\I2C_I2C_INT.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\I2C_I2C_MASTER.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\I2C_PM.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\I2C_SCB_IRQ.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\I2C_SCBCLK.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\I2C_scl.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\I2C_scl_PM.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\I2C_sda.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\I2C_sda_PM.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\LED_1.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\LED_1_PM.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\LED_2.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\LED_2_PM.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\LED_3.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\LED_3_PM.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\main.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\P1_GPIO1.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\P1_GPIO1_PM.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\P1_GPIO2.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\P1_GPIO2_PM.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\P1_GPIO3.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\P1_GPIO3_PM.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\P1_GPIO4.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\P1_GPIO4_PM.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\P1_GPIO5.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\P1_GPIO5_PM.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\P1_TxD.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\P1_TxD_PM.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\PRS.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\PRS_PM.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\R_SENS_P.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\R_SENS_P_PM.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\RainSense.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\RainSense_Int.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\RainSense_PM.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\RFM69HW_DIO0.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\RFM69HW_DIO0_PM.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\RFM69HW_RESET.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\RFM69HW_RESET_PM.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\RTC.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\SPI_RFM69HW.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\SPI_RFM69HW_BOOT.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\SPI_RFM69HW_miso_m.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\SPI_RFM69HW_miso_m_PM.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\SPI_RFM69HW_mosi_m.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\SPI_RFM69HW_mosi_m_PM.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\SPI_RFM69HW_PM.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\SPI_RFM69HW_SCBCLK.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\SPI_RFM69HW_sclk_m.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\SPI_RFM69HW_sclk_m_PM.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\SPI_RFM69HW_SPI.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\SPI_RFM69HW_SPI_BOOT.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\SPI_RFM69HW_SPI_UART.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\SPI_RFM69HW_ss0_m.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\SPI_RFM69HW_ss0_m_PM.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\SPIM.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\SPIM_INT.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\SPIM_PM.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\TIMER0_ISR.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\TIMER1.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\TIMER1_PM.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\UART.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\UART_BOOT.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\UART_P1.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\UART_P1_BOOT.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\UART_P1_INT.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\UART_P1_PM.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\UART_PM.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\UART_rx.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\UART_rx_PM.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\UART_SPI_UART.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\UART_SPI_UART_INT.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\UART_Transmit.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\UART_Transmit_PM.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\UART_tx.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\UART_tx_PM.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\UART_UART.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\UART_UART_BOOT.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\weathersensors.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Firmware_V0.1.elf</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Firmware_V0.1.hex</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Firmware_V0.1.map</v>
 <v>Wireless_sensornode\Firmware_V0.1\Firmware_V0.1.gpdsc</v>
 <v>Wireless_sensornode\Firmware_V0.1\Firmware_V0.1.rpt</v>
 <v>Wireless_sensornode\Firmware_V0.1\Firmware_V0.1_timing.html</v>
@@ -306,9 +227,51 @@
 <VisibleNodeIds>
 <v>Wireless_sensornode</v>
 <v>Wireless_sensornode\Firmware_V0.1</v>
-<v>Wireless_sensornode\Firmware_V0.1\Firmware_V0.1.gpdsc</v>
-<v>Wireless_sensornode\Firmware_V0.1\Firmware_V0.1.rpt</v>
-<v>Wireless_sensornode\Firmware_V0.1\Firmware_V0.1_timing.html</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\ADC_SAR.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\ADC_SAR_INT.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\ADC_SAR_intClock.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\ADC_SAR_IRQ.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\ADC_SAR_PM.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\ANEMOMETER.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\ANEMOMETER_PM.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\BAT_SENS_P.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\BAT_SENS_P_PM.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\BAT_SENS_SW.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\BAT_SENS_SW_PM.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\BME_MISO.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\BME_MISO_PM.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\BME_MOSI.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\BME_MOSI_PM.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\BME_SCLK.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\BME_SCLK_PM.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\BME_SS.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\BME_SS_PM.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\bme280.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\Clock.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\Clock_1.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\Clock_3.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\Clock_C.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\Clock_C1.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\Cm0Start.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\Counter.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\Counter_PM.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\CyBootAsmGnu.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\CyDMA.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\CydwClock_1.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\cyfitter_cfg.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\CyFlash.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\CyLFClk.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\CyLib.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\cymetadata.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\cyPm.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\Cyuart.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\cyutils.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\EEPROM.lst</v>
+<v>Wireless_sensornode\Firmware_V0.1\CortexM0\ARM_GCC_541\Debug\Listing Files\EEPROM_PULLUP.lst</v>
 </VisibleNodeIds>
 </CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237>
 </TreeStates>
@@ -340,6 +303,7 @@
 <v>Wireless_sensornode\Firmware_V0.1\GlitchFilter_v2_0.pdf</v>
 <v>Wireless_sensornode\Firmware_V0.1\Gnd_v1_0</v>
 <v>Wireless_sensornode\Firmware_V0.1\Gnd_v1_0\Gnd_v1_0.pdf</v>
+<v>Wireless_sensornode\Firmware_V0.1\not_v1_0.pdf</v>
 <v>Wireless_sensornode\Firmware_V0.1\PFET_En_v1_0.pdf</v>
 <v>Wireless_sensornode\Firmware_V0.1\Power_v1_0.pdf</v>
 <v>Wireless_sensornode\Firmware_V0.1\PRS_v2_40.pdf</v>
@@ -351,6 +315,7 @@
 <v>Wireless_sensornode\Firmware_V0.1\SPI_Master_v2_50.pdf</v>
 <v>Wireless_sensornode\Firmware_V0.1\TCPWM_P4_v2_10</v>
 <v>Wireless_sensornode\Firmware_V0.1\TCPWM_P4_v2_10\TCPWM_P4_v2_10.pdf</v>
+<v>Wireless_sensornode\Firmware_V0.1\UART_v2_50.pdf</v>
 </ExpandedNodeIds>
 <VisibleNodeIds>
 <v>Wireless_sensornode</v>
@@ -375,6 +340,7 @@
 <v>Wireless_sensornode\Firmware_V0.1\GlitchFilter_v2_0.pdf</v>
 <v>Wireless_sensornode\Firmware_V0.1\Gnd_v1_0</v>
 <v>Wireless_sensornode\Firmware_V0.1\Gnd_v1_0\Gnd_v1_0.pdf</v>
+<v>Wireless_sensornode\Firmware_V0.1\not_v1_0.pdf</v>
 <v>Wireless_sensornode\Firmware_V0.1\PFET_En_v1_0.pdf</v>
 <v>Wireless_sensornode\Firmware_V0.1\Power_v1_0.pdf</v>
 <v>Wireless_sensornode\Firmware_V0.1\PRS_v2_40.pdf</v>
@@ -386,6 +352,7 @@
 <v>Wireless_sensornode\Firmware_V0.1\SPI_Master_v2_50.pdf</v>
 <v>Wireless_sensornode\Firmware_V0.1\TCPWM_P4_v2_10</v>
 <v>Wireless_sensornode\Firmware_V0.1\TCPWM_P4_v2_10\TCPWM_P4_v2_10.pdf</v>
+<v>Wireless_sensornode\Firmware_V0.1\UART_v2_50.pdf</v>
 </VisibleNodeIds>
 </CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237>
 </TreeStatesV2>
@@ -400,15 +367,13 @@
 </CyGuid_fdba8dfd-b15b-4469-9bbb-9e40c3e70997>
 <Unloaded />
 <OpenDocs>
-<name v=".\Firmware_V0.1.cydsn\TopDesign\TopDesign.cysch" />
 <name v=".\Firmware_V0.1.cydsn\main.c" />
-<name v=".\Firmware_V0.1.cydsn\weathersensors.c" />
-<name v=".\Firmware_V0.1.cydsn\Generated_Source\PSoC4\Counter.c" />
-<name v=".\Firmware_V0.1.cydsn\Firmware_V0.1.cydwr" />
-<name v=".\Firmware_V0.1.cydsn\Generated_Source\PSoC4\CyBootAsmGnu.s" />
-<name v=".\Firmware_V0.1.cydsn\weathersensors.h" />
-<name v=".\Firmware_V0.1.cydsn\Generated_Source\PSoC4\SPIM.c" />
+<name v=".\Firmware_V0.1.cydsn\TopDesign\TopDesign.cysch" />
 <name v=".\Firmware_V0.1.cydsn\bme280.c" />
+<name v=".\Firmware_V0.1.cydsn\Firmware_V0.1.cydwr" />
+<name v=".\Firmware_V0.1.cydsn\Generated_Source\PSoC4\UART_P1.c" />
+<name v=".\Firmware_V0.1.cydsn\Generated_Source\PSoC4\UART_SPI_UART.c" />
+<name v=".\Firmware_V0.1.cydsn\Generated_Source\PSoC4\CyLib.c" />
 </OpenDocs>
 <OpenDocsLayout><![CDATA[<?xml version="1.0"?><!--
 
@@ -416,7 +381,7 @@
   Copyright (c) 2001-2016 Actipro Software LLC.  All rights reserved.
   http://www.actiprosoftware.com
 
---><DocumentLayout Version="1.0"><LayoutData><TabbedMdiRootContainer Orientation="Vertical"><TabbedMdiContainer Size="1517, 679" SelectedTabbedMdiWindow="67ef71d5-38df-482c-a86b-d94cc9034840"><DocumentWindow Key="C:\Users\corne\Dropbox\prive\projects\Wireless_sensornode\Software\Wireless_sensornode\Firmware_V0.1.cydsn\TopDesign\TopDesign.cysch" Guid="44a61db1-6fa3-457c-977b-1a9b1828be8d" /><DocumentWindow Key="C:\Users\corne\Dropbox\prive\projects\Wireless_sensornode\Software\Wireless_sensornode\Firmware_V0.1.cydsn\main.c" Guid="3de816f2-da2d-4a04-af82-d32dde8976ad" /><DocumentWindow Key="C:\Users\corne\Dropbox\prive\projects\Wireless_sensornode\Software\Wireless_sensornode\Firmware_V0.1.cydsn\weathersensors.c" Guid="b8e662b2-50ed-4841-aecf-2f090fad839a" /><DocumentWindow Key="C:\Users\corne\Dropbox\prive\projects\Wireless_sensornode\Software\Wireless_sensornode\Firmware_V0.1.cydsn\Generated_Source\PSoC4\Counter.c" Guid="af172fc6-28db-4a2e-8a55-05535faf583d" /><DocumentWindow Key="C:\Users\corne\Dropbox\prive\projects\Wireless_sensornode\Software\Wireless_sensornode\Firmware_V0.1.cydsn\Firmware_V0.1.cydwr" Guid="ed261d3a-838d-4154-aa76-c781b6c34a64" /><DocumentWindow Key="C:\Users\corne\Dropbox\prive\projects\Wireless_sensornode\Software\Wireless_sensornode\Firmware_V0.1.cydsn\Generated_Source\PSoC4\CyBootAsmGnu.s" Guid="1509f78f-d348-4038-81ec-057af38bd697" /><DocumentWindow Key="C:\Users\corne\Dropbox\prive\projects\Wireless_sensornode\Software\Wireless_sensornode\Firmware_V0.1.cydsn\weathersensors.h" Guid="67ef71d5-38df-482c-a86b-d94cc9034840" /><DocumentWindow Key="C:\Users\corne\Dropbox\prive\projects\Wireless_sensornode\Software\Wireless_sensornode\Firmware_V0.1.cydsn\Generated_Source\PSoC4\SPIM.c" Guid="43e5e946-8ebc-475e-b140-1a078cb13e0d" /><DocumentWindow Key="C:\Users\corne\Dropbox\prive\projects\Wireless_sensornode\Software\Wireless_sensornode\Firmware_V0.1.cydsn\bme280.c" Guid="410e94ea-e4f3-4efd-9f89-7297b4d3defb" /><ToolWindow Key="Start Page:bd4649ab-da6b-4d04-a663-c722b8bf99db:Start Page" Guid="0a055ca4-5d71-4e17-ade5-46088c62038c" /></TabbedMdiContainer></TabbedMdiRootContainer><FloatingContainers /></LayoutData></DocumentLayout>]]></OpenDocsLayout>
+--><DocumentLayout Version="1.0"><LayoutData><TabbedMdiRootContainer Orientation="Vertical"><TabbedMdiContainer Size="677, 696" SelectedTabbedMdiWindow="e1eefcd9-dcec-4f68-b6ab-82d482438814"><DocumentWindow Key="C:\Users\Corne\Dropbox\prive\projects\Wireless_sensornode\Software\Wireless_sensornode\Firmware_V0.1.cydsn\main.c" Guid="b8849eab-0a79-4d11-abc9-8fff77c32763" /><DocumentWindow Key="C:\Users\Corne\Dropbox\prive\projects\Wireless_sensornode\Software\Wireless_sensornode\Firmware_V0.1.cydsn\TopDesign\TopDesign.cysch" Guid="4dee881b-5dee-4f41-87d7-3bbd382b7502" /><DocumentWindow Key="C:\Users\Corne\Dropbox\prive\projects\Wireless_sensornode\Software\Wireless_sensornode\Firmware_V0.1.cydsn\bme280.c" Guid="5cfaf605-67a5-4e1b-b6e6-289d9ea113bc" /><DocumentWindow Key="C:\Users\Corne\Dropbox\prive\projects\Wireless_sensornode\Software\Wireless_sensornode\Firmware_V0.1.cydsn\Firmware_V0.1.cydwr" Guid="7522fa28-0547-4388-b826-98513d0af731" /><DocumentWindow Key="C:\Users\Corne\Dropbox\prive\projects\Wireless_sensornode\Software\Wireless_sensornode\Firmware_V0.1.cydsn\Generated_Source\PSoC4\UART_P1.c" Guid="e1eefcd9-dcec-4f68-b6ab-82d482438814" /><DocumentWindow Key="C:\Users\Corne\Dropbox\prive\projects\Wireless_sensornode\Software\Wireless_sensornode\Firmware_V0.1.cydsn\Generated_Source\PSoC4\UART_SPI_UART.c" Guid="aead3556-46dc-4b28-a79b-b72d378202e2" /><DocumentWindow Key="C:\Users\Corne\Dropbox\prive\projects\Wireless_sensornode\Software\Wireless_sensornode\Firmware_V0.1.cydsn\Generated_Source\PSoC4\CyLib.c" Guid="9313347c-4807-4b24-b695-3b163ea9437a" /><ToolWindow Key="Start Page:bd4649ab-da6b-4d04-a663-c722b8bf99db:Start Page" Guid="0a055ca4-5d71-4e17-ade5-46088c62038c" /></TabbedMdiContainer></TabbedMdiRootContainer><FloatingContainers /></LayoutData></DocumentLayout>]]></OpenDocsLayout>
 <config v="" />
 <AutoUpdate v="true" />
 </CyGuid_843a90a4-0c4b-4e44-991d-05e7fb117a21>

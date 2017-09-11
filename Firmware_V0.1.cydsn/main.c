@@ -13,17 +13,116 @@
 #include "bme280.h"
 #include "weathersensors.h"
 #include "stdio.h"
+#include <stdlib.h>
+#include <string.h>
 #include "EEPROM.h"
+
+#define BUFSIZE 75
+char buffer[BUFSIZE];
+int bufpos = 0;
+
+long mEVLT = 0; //Meter reading Electrics - consumption low tariff
+long mEVHT = 0; //Meter reading Electrics - consumption high tariff
+long mEAV = 0;  //Meter reading Electrics - Actual consumption
+long mG = 0;   //Meter reading Gas
+
+void P1_getdata(void)
+{
+    //Setup
+    uint8_t data;
+    uint8_t databuf[31];
+    char outstring[100];
+    sprintf(outstring, "EMPTY");
+    uint8_t i;
+    uint8_t messagestate=0;
+    long tl = 0;
+    long tld = 0;
+    
+    UART_P1_Start();
+    
+    _Bool end = 0;
+    while(end == 0)
+    {
+        while(0 == UART_P1_GetRxBufferSize());
+        data = UART_P1_GetByte() & 0xFF;
+        if(data == 0x2F)
+            end = 1;
+    }
+    end = 0;
+    while(end == 0)
+    {
+        while(0 == UART_P1_GetRxBufferSize());
+        data = UART_P1_GetByte() & 0xFF;
+        if(data == 0x2F)
+            end = 1;
+        //UART_UartPutChar(data);
+        buffer[bufpos] = data & 0x7F;
+        bufpos++;
+        
+        if(data == '\n') //We received a newline
+        {
+            //electraverbruik laag tarief
+            if (sscanf(buffer,"1-0:1.8.1(%ld.%ld", &tl, &tld)==2)
+            {
+                tl *= 1000;
+                tl += tld;
+                mEVLT = tl;
+                sprintf(outstring,"Laag Tarief: %ld Wh\r\n",mEVLT);
+                UART_UartPutString(outstring);
+            }
+            //electraverbruik hoog tarief
+            if (sscanf(buffer,"1-0:1.8.2(%ld.%ld", &tl, &tld)==2)
+            {
+                tl *= 1000;
+                tl += tld;
+                mEVHT = tl;
+                sprintf(outstring,"Hoog Tarief: %ld Wh\r\n",mEVHT);
+                UART_UartPutString(outstring);
+            }
+            //electraverbruik actual usage
+            if (sscanf(buffer,"1-0:1.7.0(%ld.%ld", &tl, &tld)==2)
+            {
+                mEAV = (tl*1000)+tld;
+                sprintf(outstring,"Huidig gebruik: %ld W\r\n",mEAV);
+                UART_UartPutString(outstring);
+            }
+            // 0-1:24.2.1 = Gas (DSMR v4.0) on Kaifa MA105 meter
+            if (strncmp(buffer, "0-1:24.2.1", strlen("0-1:24.2.1")) == 0) 
+            {
+                if (sscanf(strrchr(buffer, '(') + 1, "%d.%d", &tl, &tld) == 2) 
+                {
+                    mG = (tl*1000)+tld;
+                    float gas = mG;
+                    gas = gas / 1000;
+                    sprintf(outstring,"Gas: %ld.%ld\r\n",tl,tld);
+                    UART_UartPutString(outstring);
+                }
+            }
+            for (i=0; i<75; i++)
+            {
+                buffer[i] = 0;
+            }
+            bufpos = 0;
+        }
+    }
+    //Wait until next message
+}
 
 int main(void)
 {
     CyGlobalIntEnable; /* Enable global interrupts. */
+    
+    
+    
+    
+    
     WEATHER_Setup();
     //UART//////////////////////////////////////////////////////
     UART_Start();    
     UART_UartPutString("\r\n***********************************************************************************\r\n");
-    UART_UartPutString("Corne Bos Wireless Sensor Node\r\n");
+    UART_UartPutString("Corne Bos Wireless Sensor Node new edition\r\n");
     UART_UartPutString("\r\n");
+    P1_getdata();
     
     //RTC////////////////////////////////////////////////////////
     

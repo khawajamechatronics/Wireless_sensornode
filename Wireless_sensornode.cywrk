@@ -8,6 +8,8 @@
 <files />
 <projects>
 <v>.\Firmware_V0.1.cydsn\Firmware_V0.1.cyprj</v>
+<v>.\USBFS_UART01.cydsn\USBFS_UART01.cyprj</v>
+<v>.\USBFS_HID01.cydsn\USBFS_HID01.cyprj</v>
 </projects>
 <workspace_id v="615f62af-3c9d-4d47-83a2-facde02d42aa" />
 <WriteAppVersionLastSavedWith v="4.1.0.2686" />

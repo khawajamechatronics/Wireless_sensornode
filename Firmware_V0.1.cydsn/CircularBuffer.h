@@ -2,6 +2,7 @@
 
 #ifndef CircularBuffer_h
 #define CircularBuffer_h
+#include "stddef.h"
 
 /* [] END OF FILE */
 typedef struct circular_buffer

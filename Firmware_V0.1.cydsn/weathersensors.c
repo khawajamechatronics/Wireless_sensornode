@@ -128,7 +128,6 @@ int8_t get_sensor_data_forced_mode()
 
 int8_t BME_SpiRead( uint8_t dev_id,volatile uint8_t reg_addr,volatile uint8_t *data,volatile uint16_t len)
 {
-    volatile int test = 0;
     if(reg_addr == 0x74)
     {
         CyDelay(1);
@@ -137,7 +136,6 @@ int8_t BME_SpiRead( uint8_t dev_id,volatile uint8_t reg_addr,volatile uint8_t *d
     uint8 packetsize = len;
     uint8 dummyBuffer[30];
     volatile uint8 tmpBuffer[30];
-    uint8 status;
     uint32 i=0;
     for(i=0;i<30;i++)
     {
@@ -319,19 +317,21 @@ uint8_t WEATHER_getBME280(bme280_data *comp_data)
 	uint8_t settings_sel;
 	//bme280_data comp_data;
 
-
+    //devp->settings.standby_time = BME280_STANDBY_TIME_1_MS;
+    devp->settings.filter = BME280_FILTER_COEFF_16;
 	devp->settings.osr_h = BME280_OVERSAMPLING_1X;
 	devp->settings.osr_p = BME280_OVERSAMPLING_1X;
 	devp->settings.osr_t = BME280_OVERSAMPLING_1X;
 
-	settings_sel = BME280_OSR_PRESS_SEL|BME280_OSR_TEMP_SEL|BME280_OSR_HUM_SEL;
+	settings_sel = BME280_OSR_PRESS_SEL | BME280_OSR_TEMP_SEL | BME280_OSR_HUM_SEL | BME280_STANDBY_SEL | BME280_FILTER_SEL;
 
 	rslt = bme280_set_sensor_settings(settings_sel, devp);
 	rslt = bme280_set_sensor_mode(BME280_FORCED_MODE, devp);
 	/* Give some delay for the sensor to go into force mode */
 	CyDelay(5);
-
-	rslt = bme280_get_sensor_data(BME280_PRESS | BME280_HUM | BME280_TEMP, comp_data, devp);
+    
+	rslt = bme280_get_sensor_data(BME280_ALL, comp_data, devp);
+    
     #ifdef debug
     char outstring[100];
     uint16 templ = comp_data.temperature;
